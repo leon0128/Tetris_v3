@@ -23,4 +23,15 @@ public:
     void runLoop();
     // シャットダウン
     void shutdown();
+
+private:
+    // 入力処理
+    void inputPorocess();
+    // ゲーム更新
+    void updateGame();
+    // 映像出力
+    void outputProcess();
+
+    // ゲームを続けるか
+    bool mIsContinueGame;
 };
