@@ -83,6 +83,9 @@ bool Game::initializeSDL()
         return false;
     }
 
+    // イメージ
+    IMG_Init();
+
     // フォントの作成
     TTF_Init();
     mFont = TTF_OpenFont("font/Cica-Bold.ttf", 24);
@@ -93,4 +96,20 @@ bool Game::initializeSDL()
     }
     
     return true;
+}
+
+void Game::finalizeSDL()
+{
+    // フォント
+    TTF_CloseFont(mFont);
+    TTF_Quit();
+
+    // イメージ
+    IMG_Quit();
+
+    // レンダラー、ウィンドウ
+    SDL_DestroyRenderer(mRenderer);
+    SDL_DestroyWindow(mWindow);
+
+    SDL_Quit();
 }
