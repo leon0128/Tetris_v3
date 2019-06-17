@@ -26,7 +26,7 @@ public:
 
 private:
     // 入力処理
-    void inputPorocess();
+    void inputProcess();
     // ゲーム更新
     void updateGame();
     // 映像出力
