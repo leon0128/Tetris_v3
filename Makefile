@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -g3 -Wall `sdl2-config --cflags --libs`
+CFLAGS = -g3 -Wall `sdl2-config --cflags --libs` -lSDL2_ttf -lSDL2_image
 
 MAIN = main.cpp game.cpp
 
