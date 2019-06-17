@@ -32,7 +32,7 @@ void Game::runLoop()
 
 void Game::finalize()
 {
-
+    finalizeSDL();
 }
 
 void Game::inputProcess()
@@ -84,7 +84,7 @@ bool Game::initializeSDL()
     }
 
     // イメージ
-    IMG_Init();
+    IMG_Init(IMG_INIT_PNG);
 
     // フォントの作成
     TTF_Init();
