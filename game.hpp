@@ -33,5 +33,5 @@ private:
     void outputProcess();
 
     // ゲームを続けるか
-    bool mIsContinueGame;
+    bool mIsContinuedGame;
 };
