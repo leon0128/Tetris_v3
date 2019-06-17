@@ -22,7 +22,7 @@ public:
     // ゲームループ
     void runLoop();
     // シャットダウン
-    void shutdown();
+    void finalize();
 
 private:
     // 入力処理
@@ -32,6 +32,16 @@ private:
     // 映像出力
     void outputProcess();
 
+    // SDL関連の初期化
+    bool initializeSDL();
+    // SDL関連の削除
+    void finalizeSDL();
+
     // ゲームを続けるか
     bool mIsContinuedGame;
+
+    // SDL関連
+    SDL_Window* mWindow;
+    SDL_Renderer* mRenderer;
+    TTF_Font* mFont;
 };

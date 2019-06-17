@@ -7,7 +7,7 @@ int main(int argc, char** argv)
     {
         game.runLoop();
     }
-    game.shutdown();
-    
+    game.finalize();
+
     return 0;
 }
