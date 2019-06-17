@@ -16,7 +16,7 @@ bool Game::initialize()
     {
         return false;
     }
-    
+
     return true;
 }
 
@@ -85,7 +85,7 @@ bool Game::initializeSDL()
 
     // フォントの作成
     TTF_Init();
-    mFont = TTF_OpenFont("font/Cica_Bold.ttf", 24);
+    mFont = TTF_OpenFont("font/Cica-Bold.ttf", 24);
     if(!mFont)
     {
         SDL_Log("Failed to create font: %s", SDL_GetError());
