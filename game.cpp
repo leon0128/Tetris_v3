@@ -10,12 +10,12 @@ bool Game::initialize()
     return true;
 }
 
-void runLoop()
+void Game::runLoop()
 {
 
 }
 
-void shutdown()
+void Game::shutdown()
 {
-    
+
 }
