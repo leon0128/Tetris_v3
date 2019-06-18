@@ -40,10 +40,12 @@ private:
     // 映像出力
     void outputProcess();
 
-    // SDL関連の初期化
+    // SDL関連の初期化と終了
     bool initializeSDL();
-    // SDL関連の削除
     void finalizeSDL();
+    // その他の初期化と終了
+    void initializeActor();
+    void finalizeActor();
 
     // ゲームを続けるか
     bool mIsContinuedGame;

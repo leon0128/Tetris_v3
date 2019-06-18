@@ -17,6 +17,9 @@ bool Game::initialize()
         return false;
     }
 
+    // Actorなどの初期化
+    initializeActor();
+
     return true;
 }
 
@@ -32,6 +35,7 @@ void Game::runLoop()
 
 void Game::finalize()
 {
+    finalizeActor();
     finalizeSDL();
 }
 
@@ -171,4 +175,14 @@ void Game::finalizeSDL()
     SDL_DestroyWindow(mWindow);
 
     SDL_Quit();
+}
+
+void Game::initializeActor()
+{
+
+}
+
+void Game::finalizeActor()
+{
+
 }
