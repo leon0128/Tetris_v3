@@ -10,7 +10,7 @@ public:
     Actor(class Game* game, int order);
     virtual ~Actor();
 
-    virtual update(){};
+    virtual void update(){};
 
     // メンバ変数の設定、取得
     int getOrder(){return mOrder;}

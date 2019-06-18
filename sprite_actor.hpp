@@ -21,4 +21,6 @@ protected:
     // Textureの大きさ
     int mTextureWidth;
     int mTextureHeight;
+    // 透明度
+    float mClear;
 };
