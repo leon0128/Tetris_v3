@@ -69,6 +69,25 @@ void Game::removeActor(Actor* actor)
     }
 }
 
+void Game::addSpriteActor(SpriteActor* actor)
+{
+    // Actor::mOrderに応じて適切な位置にActorを格納
+    int order = actor->getOrder();
+
+    auto iterator = mComponentSpriteActor.begin();
+    for(;
+        iterator != mComponentSpriteActor.end();
+        iterator++)
+    {
+        if(order < (*iterator)->getOrder())
+        {
+            break;
+        }
+    }
+
+    mComponentSpriteActor.insert(iterator, actor);
+}
+
 void Game::inputProcess()
 {
     // ウィンドウに対するイベント

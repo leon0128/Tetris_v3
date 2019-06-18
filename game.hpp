@@ -31,6 +31,8 @@ public:
     // mCompoentActorに要素を出し入れする関数
     void addActor(class Actor* actor);
     void removeActor(class Actor* actor);
+    // mComponentSpriteActorに要素を出し入れ
+    void addSpriteActor(class SpriteActor* actor);
 
 private:
     // 入力処理
@@ -51,6 +53,8 @@ private:
     bool mIsContinuedGame;
     // Actorクラスは作成時にここに追加される
     std::vector<class Actor*> mComponentActor;
+    // SpriteActorクラス用
+    std::vector<class SpriteActor*> mComponentSpriteActor;
 
     // SDL関連
     SDL_Window* mWindow;
