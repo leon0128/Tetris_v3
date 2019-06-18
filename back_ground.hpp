@@ -1,8 +1,8 @@
 #pragma once
 
-#include "actor.hpp"
+#include "sprite_actor.hpp"
 
-class BackGround : public Actor
+class BackGround : public SpriteActor
 {
 public:
     BackGround(class Game* game, int order);

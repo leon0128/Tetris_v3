@@ -11,7 +11,7 @@ public:
     Actor(class Game* game, int order);
     virtual ~Actor();
 
-    virtual void update(int currentFrame){};
+    virtual void update(int currentFrame){}
 
     // メンバ変数の設定、取得
     int getOrder(){return mOrder;}
