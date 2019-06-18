@@ -3,10 +3,10 @@
 SpriteActor::SpriteActor(Game* game, int order):
     Actor(game, order),
     mTexture(nullptr),
-    mTextureSize(0, 0),
-    mPosition(0, 0),
     mClear(1.0f)
 {
+    mTextureSize = new Vector2();
+    mPosition = new Vector2();
     mGame->addSpriteActor(this);
 }
 
@@ -37,14 +37,22 @@ void SpriteActor::setTexture(SDL_Texture* texture)
     // mTextureの設定
     mTexture = texture;
 
+    if(!mTexture)
+    {
+        return ;
+    }
+    
+    int width, height;
     // mRectangle, mTextureSizeの初期化
     SDL_QueryTexture(mTexture,
                      nullptr,
                      nullptr,
-                     &mTextureSize.x,
-                     &mTextureSize.y);
-    mRectangle.w = mTextureSize.x;
-    mRectangle.h = mTextureSize.y;
-    mRectangle.x = mPosition.x - mTextureSize.x / 2;
-    mRectangle.y = mPosition.y - mTextureSize.y / 2;
+                     &width,
+                     &height);
+    
+    mTextureSize->set(width, height);
+    mRectangle.w = mTextureSize->x;
+    mRectangle.h = mTextureSize->y;
+    mRectangle.x = mPosition->x - mTextureSize->x / 2;
+    mRectangle.y = mPosition->y - mTextureSize->y / 2;
 }

@@ -16,16 +16,16 @@ public:
     // mRectangleの初期化
     void setTexture(SDL_Texture* texture);
     // 透明度の変更
-    void setClear(float clear){mClear = clear;};
+    void setClear(float clear){mClear = clear;}
 
 protected:
     // SDL関連
     SDL_Texture* mTexture;
     SDL_Rect mRectangle;
     // Textureの大きさ
-    Vector2 mTextureSize;
+    class Vector2* mTextureSize;
     // 中心位置
-    Vector2 mPosition;
+    class Vector2* mPosition;
     // 透明度
     float mClear;
 };
