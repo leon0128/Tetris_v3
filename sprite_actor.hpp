@@ -1,7 +1,6 @@
 #pragma once
 
 #include "actor.hpp"
-#include <SDL2/SDL.h>
 
 class SpriteActor : public Actor
 {
