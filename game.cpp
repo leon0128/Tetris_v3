@@ -155,7 +155,7 @@ void Game::outputProcess()
 
     for(auto actor : mComponentSpriteActor)
     {
-        actor->draw();
+        actor->draw(mRenderer);
     }
 
     // バッファの入れ替え
