@@ -11,6 +11,12 @@ public:
     Actor(class Game* game, int order);
     virtual ~Actor();
 
+    // tetrominoの種類を示す列挙体
+    enum EType
+    {
+        I, O, T, L, J, S, Z
+    };
+
     virtual void update(int currentFrame){}
 
     // メンバ変数の設定、取得
