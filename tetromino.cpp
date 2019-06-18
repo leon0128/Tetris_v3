@@ -10,12 +10,24 @@ Tetromino::Tetromino(Game* game,
     mGameBoard(gameBoard),
     mType(type)
 {
+    createBlock(mType);
+}
 
+void Tetromino::updatePosition()
+{
+    for(auto block : mBlock)
+    {
+        block->updatePosition();
+    }
 }
 
 void Tetromino::createBlock(EType type)
 {
     std::array<Vector2*, 4> tempCoordinate;
+    for(int i = 0; i < static_cast<int>(tempCoordinate.size()); i++)
+    {
+        tempCoordinate[i] = new Vector2();
+    }
     SDL_Texture* texture;
 
     // 作成するブロックの各座標を設定
