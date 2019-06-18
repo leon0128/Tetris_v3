@@ -184,5 +184,5 @@ void Game::initializeActor()
 
 void Game::finalizeActor()
 {
-
+    mComponentActor.clear();
 }
