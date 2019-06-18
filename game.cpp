@@ -229,27 +229,6 @@ bool Game::initializeSDL()
         return false;
     }
     
-    return true;
-}
-
-void Game::finalizeSDL()
-{
-    // フォント
-    TTF_CloseFont(mFont);
-    TTF_Quit();
-
-    // イメージ
-    IMG_Quit();
-
-    // レンダラー、ウィンドウ
-    SDL_DestroyRenderer(mRenderer);
-    SDL_DestroyWindow(mWindow);
-
-    SDL_Quit();
-}
-
-void Game::initializeActor()
-{
     // テクスチャの作成
     createTexture("image/game_board.png");
     createTexture("image/side_board.png");
@@ -273,6 +252,34 @@ void Game::initializeActor()
     createTexture("image/tetromino/t_mino.png");
     createTexture("image/tetromino/z_mino.png");
 
+    return true;
+}
+
+void Game::finalizeSDL()
+{
+    // テクスチャ
+    for(auto texture : mTextureMap)
+    {
+        SDL_DestroyTexture(texture.second);
+    }
+    mTextureMap.clear();
+
+    // フォント
+    TTF_CloseFont(mFont);
+    TTF_Quit();
+
+    // イメージ
+    IMG_Quit();
+
+    // レンダラー、ウィンドウ
+    SDL_DestroyRenderer(mRenderer);
+    SDL_DestroyWindow(mWindow);
+
+    SDL_Quit();
+}
+
+void Game::initializeActor()
+{
     // 主要オブジェクト
     new BackGround(this, 10);
 }
