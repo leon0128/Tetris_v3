@@ -5,7 +5,7 @@ MAIN = main.cpp game.cpp
 ACTOR = actor.cpp sprite_actor.cpp back_ground.cpp
 
 main:
-	$(CC) $(MAIN) $(CFLAGS) -o main
+	$(CC) $(MAIN) $(ACTOR) $(CFLAGS) -o main
 
 clean:
 	rm -f main
