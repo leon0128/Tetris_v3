@@ -35,6 +35,36 @@ void Game::finalize()
     finalizeSDL();
 }
 
+void Game::addActor(Actor* actor)
+{
+    // Actor::mOrderに応じて適切な位置にActorを格納
+    int order = actor->getOrder();
+
+    auto iterator = mComponentActor.begin();
+    for(;
+        iterator != mComponentActor.end();
+        iterator++)
+    {
+        if(order < (*iterator)->getOrder())
+        {
+            break;
+        }
+    }
+
+    mComponentActor.insert(iterator, actor);
+}
+
+void Game::removeActor(Actor* actor)
+{
+    auto iterator = std::find(mComponentActor.begin(),
+                              mComponentActor.end(),
+                              actor);
+    if(iterator != mComponentActor.end())
+    {
+        mComponentActor.erase(iterator);
+    }
+}
+
 void Game::inputProcess()
 {
     // ウィンドウに対するイベント

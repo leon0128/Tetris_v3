@@ -5,6 +5,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 // C++標準ライブラリ
+#include <vector>
+#include <algorithm>
 
 // ウィンドウの幅と高さ
 const int WINDOW_WIDTH = 1024;
@@ -24,6 +26,10 @@ public:
     // シャットダウン
     void finalize();
 
+    // mCompoentActorに要素を出し入れする関数
+    void addActor(Actor* actor);
+    void removeActor(Actor* actor);
+
 private:
     // 入力処理
     void inputProcess();
@@ -39,6 +45,8 @@ private:
 
     // ゲームを続けるか
     bool mIsContinuedGame;
+    // Actorクラスは作成時にここに追加される
+    std::vector<Actor*> mComponentActor;
 
     // SDL関連
     SDL_Window* mWindow;
