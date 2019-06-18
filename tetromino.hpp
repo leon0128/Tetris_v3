@@ -1,9 +1,8 @@
 #pragma once
 
-#include "sprite_actor.hpp"
-#include "game_board.hpp"
+#include "actor.hpp"
 
-class Tetromino : public SpriteActor
+class Tetromino : public Actor
 {
 public:
     // 第三引数は所属するゲームボードクラス
@@ -14,4 +13,6 @@ public:
 private:
     // 自身の所属するGameBoard
     class GameBoard* mGameBoard;
+    // ミノの種類
+    enum EType mType;
 };

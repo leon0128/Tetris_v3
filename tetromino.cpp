@@ -1,7 +1,8 @@
 #include "tetromino.hpp"
+#include "game_board.hpp"
 
 Tetromino::Tetromino(Game* game, int order, GameBoard* gameBoard):
-    SpriteActor(game, order),
+    Actor(game, order),
     mGameBoard(gameBoard)
 {
 
