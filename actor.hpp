@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game.hpp"
+#include <SDL2/SDL.h>
 
 class Actor
 {
@@ -12,7 +13,7 @@ public:
 
     // メンバ変数の設定、取得
     int getOrder(){return mOrder;}
-    int setTexture(SDL_Texture* texture){mTexture = texture;}
+    void setTexture(SDL_Texture* texture){mTexture = texture;}
 
 protected:
     // 自身が所属するゲーム
