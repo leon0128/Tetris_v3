@@ -1,5 +1,7 @@
 #pragma once
 
+// 自身で作成したもの
+#include "actor.hpp"
 // SDL関連
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -27,8 +29,8 @@ public:
     void finalize();
 
     // mCompoentActorに要素を出し入れする関数
-    void addActor(Actor* actor);
-    void removeActor(Actor* actor);
+    void addActor(class Actor* actor);
+    void removeActor(class Actor* actor);
 
 private:
     // 入力処理
@@ -46,7 +48,7 @@ private:
     // ゲームを続けるか
     bool mIsContinuedGame;
     // Actorクラスは作成時にここに追加される
-    std::vector<Actor*> mComponentActor;
+    std::vector<class Actor*> mComponentActor;
 
     // SDL関連
     SDL_Window* mWindow;
