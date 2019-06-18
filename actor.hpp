@@ -8,7 +8,7 @@ public:
     // コンストラクタでGame::mComponentActorに自身を追加
     // デストラクタでGame::mCompenentActorから自身を削除
     Actor(class Game* game, int order);
-    ~Actor();
+    virtual ~Actor();
 
     // メンバ変数の設定、取得
     int getOrder(){return mOrder;}
