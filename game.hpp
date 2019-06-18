@@ -35,6 +35,8 @@ public:
     // mComponentSpriteActorに要素を出し入れ
     void addSpriteActor(class SpriteActor* actor);
     void removeSpriteActor(class SpriteActor* actor);
+    // 削除するActorを一時的に格納
+    void deletedActor(class Actor* actor){mRemoveActor.push_back(actor);}
 
 private:
     // 入力処理
@@ -53,8 +55,15 @@ private:
 
     // ゲームを続けるか
     bool mIsContinuedGame;
+    // 60fpsに設定する用
+    Uint32 mTicksCount;
+    // ゲーム開始からのフレーム数
+    int mFrameCount;
+
     // Actorクラスは作成時にここに追加される
     std::vector<class Actor*> mComponentActor;
+    // 削除されるActorを一時的に格納
+    std::vector<class Actor*> mRemoveActor;
     // SpriteActorクラス用
     std::vector<class SpriteActor*> mComponentSpriteActor;
 
