@@ -67,7 +67,16 @@ void Game::updateGame()
 
 void Game::outputProcess()
 {
+    // バッファを灰色で初期化
+    SDL_SetRenderDrawColor(mRenderer,
+                           200,
+                           200,
+                           200,
+                           255);
+    SDL_RenderClear(mRenderer);
 
+    // バッファの入れ替え
+    SDL_RenderPresent(mRenderer);
 }
 
 bool Game::initializeSDL()
