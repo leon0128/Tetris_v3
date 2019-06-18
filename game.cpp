@@ -37,7 +37,27 @@ void Game::finalize()
 
 void Game::inputProcess()
 {
+    // ウィンドウに対するイベント
+    SDL_Event event;
 
+    while(SDL_PollEvent(&event))
+    {
+        switch(event.type)
+        {
+            case (SDL_QUIT):
+                mIsContinuedGame = false;
+                break;
+        }
+    }
+
+    // キーボードの状態を取得
+    const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+
+    // ESCAPEで終了
+    if(keyboardState[SDL_SCANCODE_ESCAPE])
+    {
+        mIsContinuedGame = false;
+    }
 }
 
 void Game::updateGame()
