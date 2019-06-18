@@ -8,7 +8,8 @@ public:
     // 第三引数は所属するゲームボードクラス
     Tetromino(class Game* game,
               int order,
-              class GameBoard* gameBoard);
+              class GameBoard* gameBoard,
+              EType type);
 
 private:
     // 自身の所属するGameBoard
