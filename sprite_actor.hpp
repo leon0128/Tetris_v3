@@ -16,6 +16,8 @@ public:
     void setTexture(SDL_Texture* texture);
     // 透明度の変更
     void setClear(float clear){mClear = clear;}
+    // 拡大率の変更
+    void setScale(float scale);
 
 protected:
     // SDL関連
@@ -27,4 +29,6 @@ protected:
     class Vector2* mPosition;
     // 透明度
     float mClear;
+    // 拡大率
+    float mScale;
 };
