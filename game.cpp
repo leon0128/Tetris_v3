@@ -41,6 +41,11 @@ void Game::finalize()
     finalizeSDL();
 }
 
+SDL_Texture* Game::getTexture(const std::string& filename)
+{
+    SDL_Texture* texture = nullptr;
+}
+
 void Game::addActor(Actor* actor)
 {
     // Actor::mOrderに応じて適切な位置にActorを格納

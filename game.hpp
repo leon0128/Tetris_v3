@@ -10,6 +10,8 @@
 // C++標準ライブラリ
 #include <vector>
 #include <algorithm>
+#include <string>
+#include <unordered_map>
 
 // ウィンドウの幅と高さ
 const int WINDOW_WIDTH = 1024;
@@ -28,6 +30,9 @@ public:
     void runLoop();
     // シャットダウン
     void finalize();
+
+    // 引数のファイルパスのテクスチャを取得する
+    SDL_Texture* getTexture(const std::string& filename);
 
     // mCompoentActorに要素を出し入れする関数
     void addActor(class Actor* actor);
@@ -52,6 +57,8 @@ private:
     // その他の初期化と終了
     void initializeActor();
     void finalizeActor();
+    // 画像ファイルからテクスチャを作成
+    void createTexture(const std::string& filename);
 
     // ゲームを続けるか
     bool mIsContinuedGame;
@@ -66,6 +73,8 @@ private:
     std::vector<class Actor*> mRemoveActor;
     // SpriteActorクラス用
     std::vector<class SpriteActor*> mComponentSpriteActor;
+    // テクスチャのファイルパスとポインタを格納するマップ
+    std::unordered_map<std::string, SDL_Texture*> mTextureMap;
 
     // SDL関連
     SDL_Window* mWindow;
