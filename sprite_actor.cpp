@@ -12,5 +12,9 @@ SpriteActor::SpriteActor(Game* game, int order):
 SpriteActor::~SpriteActor()
 {
     mGame->removeSpriteActor(this);
-    mGame->removeA(this);
+}
+
+void SpriteActor::draw(SDL_Renderer* renderer)
+{
+    
 }

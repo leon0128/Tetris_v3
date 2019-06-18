@@ -7,7 +7,9 @@ class SpriteActor : public Actor
 {
 public:
     SpriteActor(class Game* game, int order);
-    ~SpriteActor();
+    virtual ~SpriteActor();
+
+    virtual void draw(SDL_Renderer* renderer);
 
     // メンバ変数の設定、取得
     void setTexture(SDL_Texture* texture){mTexture = texture;}
