@@ -1,5 +1,9 @@
 #include "game.hpp"
 
+#include "actor.hpp"
+#include "sprite_actor.hpp"
+#include "back_ground.hpp"
+
 Game::Game():
     mIsContinuedGame(true),
     mTicksCount(0),
@@ -250,8 +254,8 @@ void Game::initializeActor()
     createTexture("image/game_board.png");
     createTexture("image/side_board.png");
     createTexture("image/score_board.png");
-    createTexture("image/background_01.png");
-    createTexture("image/background_02.png");
+    createTexture("image/back_ground_01.png");
+    createTexture("image/back_ground_02.png");
 
     createTexture("image/blocks/i.png");
     createTexture("image/blocks/j.png");
@@ -268,6 +272,9 @@ void Game::initializeActor()
     createTexture("image/tetromino/s_mino.png");
     createTexture("image/tetromino/t_mino.png");
     createTexture("image/tetromino/z_mino.png");
+
+    // 主要オブジェクト
+    new BackGround(this, 10);
 }
 
 void Game::finalizeActor()

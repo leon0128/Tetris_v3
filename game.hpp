@@ -1,8 +1,5 @@
 #pragma once
 
-// 自身で作成したもの
-#include "actor.hpp"
-#include "sprite_actor.hpp"
 // SDL関連
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
