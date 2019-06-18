@@ -2,6 +2,7 @@
 
 // 自身で作成したもの
 #include "actor.hpp"
+#include "sprite_actor.hpp"
 // SDL関連
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -33,6 +34,7 @@ public:
     void removeActor(class Actor* actor);
     // mComponentSpriteActorに要素を出し入れ
     void addSpriteActor(class SpriteActor* actor);
+    void removeSpriteActor(class SpriteActor* actor);
 
 private:
     // 入力処理

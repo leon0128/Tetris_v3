@@ -88,6 +88,17 @@ void Game::addSpriteActor(SpriteActor* actor)
     mComponentSpriteActor.insert(iterator, actor);
 }
 
+void Game::removeSpriteActor(SpriteActor* actor)
+{
+    auto iterator = std::find(mComponentSpriteActor.begin(),
+                              mComponentSpriteActor.end(),
+                              actor);
+    if(iterator != mComponentSpriteActor.end())
+    {
+        mComponentSpriteActor.erase(iterator);
+    }
+}
+
 void Game::inputProcess()
 {
     // ウィンドウに対するイベント
