@@ -9,18 +9,21 @@ public:
     SpriteActor(class Game* game, int order);
     virtual ~SpriteActor();
 
+    // 描画のみ
     virtual void draw(SDL_Renderer* renderer);
 
-    // メンバ変数の設定、取得
-    void setTexture(SDL_Texture* texture){mTexture = texture;}
+    // 描画するテクスチャの設定
+    // mRectangleの初期化
+    void setTexture(SDL_Texture* texture);
 
 protected:
     // SDL関連
     SDL_Texture* mTexture;
     SDL_Rect mRectangle;
     // Textureの大きさ
-    int mTextureWidth;
-    int mTextureHeight;
+    Vector2 mTextureSize;
+    // 中心位置
+    Vector2 mPosition;
     // 透明度
     float mClear;
 };

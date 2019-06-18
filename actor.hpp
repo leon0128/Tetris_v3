@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game.hpp"
+#include "vector2.hpp"
 
 class Actor
 {
