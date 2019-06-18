@@ -12,10 +12,13 @@ public:
 
     // メンバ変数の設定、取得
     int getOrder(){return mOrder;}
+    int setTexture(SDL_Texture* texture){mTexture = texture;}
 
 protected:
     // 自身が所属するゲーム
     class Game* mGame;
     // 更新順序
     int mOrder;
+    // テクスチャ
+    SDL_Texture* mTexture;
 };

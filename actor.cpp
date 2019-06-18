@@ -2,7 +2,8 @@
 
 Actor::Actor(Game* game, int order):
     mGame(game),
-    mOrder(order)
+    mOrder(order),
+    mTexture(nullptr)
 {
     mGame->addActor(this);
 }
