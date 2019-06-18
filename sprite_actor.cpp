@@ -20,6 +20,11 @@ void SpriteActor::draw(SDL_Renderer* renderer)
     // mTextureがnullptrでないなら描画
     if(mTexture)
     {
+        // 透明の処理
+        SDL_SetTextureAlphaMod(mTexture, 
+                               static_cast<int>(mClear * 255));
+
+        // 描画
         SDL_RenderCopy(renderer,
                        mTexture,
                        nullptr,

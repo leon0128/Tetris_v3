@@ -15,6 +15,8 @@ public:
     // 描画するテクスチャの設定
     // mRectangleの初期化
     void setTexture(SDL_Texture* texture);
+    // 透明度の変更
+    void setClear(float clear){mClear = clear;};
 
 protected:
     // SDL関連
