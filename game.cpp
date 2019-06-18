@@ -2,6 +2,8 @@
 
 Game::Game():
     mIsContinuedGame(true),
+    mTicksCount(0),
+    mFrameCount(0),    
     mWindow(nullptr),
     mRenderer(nullptr),
     mFont(nullptr)
@@ -126,7 +128,19 @@ void Game::inputProcess()
 
 void Game::updateGame()
 {
+    // 60fps
+    while(!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16)){}
+    // mTicksCountとmFrameCountを更新
+    mTicksCount = SDL_GetTicks();
+    mFrameCount ++;
 
+    // アクターの更新
+    for(auto actor : mComponentActor)
+    {
+        actor->update(mFrameCount);
+    }
+    // いらないActorの削除
+    mRemoveActor.clear();
 }
 
 void Game::outputProcess()
@@ -138,6 +152,11 @@ void Game::outputProcess()
                            200,
                            255);
     SDL_RenderClear(mRenderer);
+
+    for(auto actor : mComponentSpriteActor)
+    {
+        actor->draw();
+    }
 
     // バッファの入れ替え
     SDL_RenderPresent(mRenderer);
