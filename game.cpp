@@ -3,6 +3,7 @@
 #include "actor.hpp"
 #include "sprite_actor.hpp"
 #include "back_ground.hpp"
+#include "game_board.hpp"
 
 Game::Game():
     mIsContinuedGame(true),
@@ -282,6 +283,7 @@ void Game::initializeActor()
 {
     // 主要オブジェクト
     new BackGround(this, 10);
+    new GameBoard(this, 30);
 }
 
 void Game::finalizeActor()
