@@ -9,12 +9,16 @@
 #include <algorithm>
 #include <string>
 #include <unordered_map>
+#include <array>
 
 // ウィンドウの幅と高さ
 const int WINDOW_WIDTH = 1024;
 const int WINDOW_HEIGHT = 768;
 // ゲームボードのブロックの大きさ
 const int BLOCK_SIZE = 35;
+// ゲームボードの縦と横のブロック数
+const int GAMEBOARD_PARALLEL = 10;
+const int GAMEBOARD_VERTICAL = 25;
 
 class Game
 {
