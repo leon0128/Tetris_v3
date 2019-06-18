@@ -44,6 +44,19 @@ void Game::finalize()
 SDL_Texture* Game::getTexture(const std::string& filename)
 {
     SDL_Texture* texture = nullptr;
+
+    // mTextureMapからファイル名のテクスチャを探し見つけたら返す
+    auto iterator = mTextureMap.find(filename);
+    if(iterator != mTextureMap.end())
+    {
+        texture = iterator->second;
+        return texture;
+    }
+    else
+    {
+        SDL_Log("Can not find texture for specified filename.");
+        return texture;
+    }
 }
 
 void Game::addActor(Actor* actor)
@@ -233,10 +246,65 @@ void Game::finalizeSDL()
 
 void Game::initializeActor()
 {
+    // テクスチャの作成
+    createTexture("image/game_board.png");
+    createTexture("image/side_board.png");
+    createTexture("image/score_board.png");
+    createTexture("image/background_01.png");
+    createTexture("image/background_02.png");
 
+    createTexture("image/blocks/i.png");
+    createTexture("image/blocks/j.png");
+    createTexture("image/blocks/l.png");
+    createTexture("image/blocks/o.png");
+    createTexture("image/blocks/s.png");
+    createTexture("image/blocks/z.png");
+    createTexture("image/blocks/t.png");
+
+    createTexture("image/tetromino/i_mino.png");
+    createTexture("image/tetromino/j_mino.png");    
+    createTexture("image/tetromino/l_mino.png");
+    createTexture("image/tetromino/o_mino.png");
+    createTexture("image/tetromino/s_mino.png");
+    createTexture("image/tetromino/t_mino.png");
+    createTexture("image/tetromino/z_mino.png");
 }
 
 void Game::finalizeActor()
 {
     mComponentActor.clear();
+}
+
+void Game::createTexture(const std::string& filename)
+{
+    SDL_Texture* texture = nullptr;
+
+    // テクスチャがすでに作成されている場合、Textureは作成しない
+    auto iterator = mTextureMap.find(filename);
+    if(iterator != mTextureMap.end())
+    {
+        SDL_Log("%s texture is already created.", filename.c_str());
+        return;
+    }
+    
+    // ファイルのロード
+    SDL_Surface* surface = IMG_Load(filename.c_str());
+    if(!surface)
+    {
+        SDL_Log("Failed to load texture file: %s", SDL_GetError());
+        return;
+    }
+
+    // ファイルをテクスチャに変換
+    texture = SDL_CreateTextureFromSurface(mRenderer, surface);
+    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+    SDL_FreeSurface(surface);
+    if(!texture)
+    {
+        SDL_Log("Failed to create texture from surface: %s", SDL_GetError());
+        return ;
+    }
+
+    // mTextureMapに作成したTextureの追加
+    mTextureMap.emplace(filename.c_str(), texture);
 }
