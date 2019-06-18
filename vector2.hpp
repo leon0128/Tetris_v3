@@ -37,12 +37,12 @@ public:
     }
     friend Vector2 operator*(const Vector2& vector, float scale)
     {
-        return Vectorw(static_cast<int>(vector.x * scale), 
+        return Vector2(static_cast<int>(vector.x * scale), 
                        static_cast<int>(vector.y * scale));
     }
     friend Vector2 operator*(float scale, const Vector2& vector)
     {
-        return Vectorw(static_cast<int>(vector.x * scale), 
+        return Vector2(static_cast<int>(vector.x * scale), 
                        static_cast<int>(vector.y * scale));     
     }
 };
