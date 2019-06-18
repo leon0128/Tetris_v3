@@ -2,7 +2,9 @@
 
 SpriteActor::SpriteActor(Game* game, int order):
     Actor(game, order),
-    mTexture(nullptr)
+    mTexture(nullptr),
+    mTextureWidth(0),
+    mTextureHeight(0)
 {
     mGame->addSpriteActor(this);
 }

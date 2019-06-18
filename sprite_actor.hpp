@@ -13,5 +13,10 @@ public:
     void setTexture(SDL_Texture* texture){mTexture = texture;}
 
 protected:
+    // SDL関連
     SDL_Texture* mTexture;
+    SDL_Rect mRectangle;
+    // Textureの大きさ
+    int mTextureWidth;
+    int mTextureHeight;
 };
