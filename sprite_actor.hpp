@@ -19,6 +19,9 @@ public:
     // 拡大率の変更
     void setScale(float scale);
 
+    // mPositionの取得
+    class Vector2* getPosition(){return mPosition;}
+
 protected:
     // SDL関連
     SDL_Texture* mTexture;

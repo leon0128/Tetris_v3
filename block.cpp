@@ -10,17 +10,16 @@ Block::Block(Game* game,
 {
     // mCoordinateの値を初期化
     mCoordinate = new Vector2(coordinate->x, coordinate->y);
-    // 大きさを合わせる
-    setScale(BLOCK_SIZE / 60.0f);
 }
 
 void Block::updatePosition()
 {
     Vector2* center = mGameBoard->getPosition();
     mPosition->setX(center->x + 
-                    (mCoordinate->x - 5) * 
-                    BLOCK_SIZE - BLOCK_SIZE / 2);
+                    (mCoordinate->x - 4) * BLOCK_SIZE - 
+                    BLOCK_SIZE / 2);
     mPosition->setY(center->y -
-                    (mCoordinate->x - 10) * 
-                    BLOCK_SIZE - BLOCK_SIZE / 2);
+                    (mCoordinate->y - 10) * BLOCK_SIZE - 
+                    BLOCK_SIZE / 2);
+    setScale(BLOCK_SIZE / 60.0f);
 }

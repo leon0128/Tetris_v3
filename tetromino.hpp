@@ -11,6 +11,8 @@ public:
               class GameBoard* gameBoard,
               EType type);
 
+    void updatePosition();
+
 private:
     // 引数のタイプに応じてブロックを作成
     void createBlock(EType type);

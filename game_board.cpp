@@ -1,4 +1,5 @@
 #include "game_board.hpp"
+#include "tetromino.hpp"
 
 GameBoard::GameBoard(Game* game, int order):
     SpriteActor(game, order),
@@ -18,5 +19,10 @@ GameBoard::GameBoard(Game* game, int order):
 
 void GameBoard::update(int cuurentFrame)
 {
+    if(!mActiveTetrominio)
+    {
+        mActiveTetrominio = new Tetromino(mGame, 80, this, I);
+    }
 
+    mActiveTetrominio->updatePosition();
 }
