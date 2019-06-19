@@ -16,8 +16,10 @@ Tetromino::Tetromino(Game* game,
 
 void Tetromino::update()
 {
+    mBackup.clear();
     for(auto block : mBlock)
     {
+        mBackup.push_back(block->getCoordinate());
         block->updatePosition();
     }
 }
@@ -159,5 +161,6 @@ void Tetromino::createBlock(EType type)
         block->setTexture(texture);
         block->setScale(static_cast<float>(BLOCK_SIZE) / 60.0f);
         mBlock.push_back(block);
+        mBackup.push_back(coordinate);
     }
 }

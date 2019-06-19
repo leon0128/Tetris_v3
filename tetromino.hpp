@@ -25,12 +25,19 @@ private:
     // 引数のタイプに応じてブロックを作成
     void createBlock(EType type);
 
+    // mBlockの各ブロックが正しい位置にあるか
+    bool isCoordinateCorrect();
+    // 引数の値をmBlockの座標にコピー
+    void copyCoordinate(std::vector<Vector2> backup);
+
     // 自身の所属するGameBoard
     class GameBoard* mGameBoard;
     // ミノの種類
     enum EType mType;
     // ブロックを格納する配列
     std::vector<class Block*> mBlock;
+    // 移動前のブロックの座標を格納
+    std::vector<class Vector2> mBackup;
 
     // 最後に下に移動した時のFrame
     int mDownFrame;
