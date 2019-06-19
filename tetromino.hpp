@@ -21,6 +21,9 @@ public:
     void verticalMove(int direction);
     void rotationMove(int direction);
 
+    // mMoveFrameの取得
+    int getMoveFrame(){return mMoveFrame;}
+
 private:
     // mBlockの各ブロックが正しい位置にあるか
     bool isCoordinateCorrect();
