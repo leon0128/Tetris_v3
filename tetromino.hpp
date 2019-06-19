@@ -21,6 +21,8 @@ public:
     void verticalMove(int direction);
     void rotationMove(int direction);
 
+    // mBlockの取得
+    auto getBlock(){return mBlock;}
     // mMoveFrameの取得
     int getMoveFrame(){return mMoveFrame;}
 
