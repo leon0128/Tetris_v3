@@ -15,6 +15,9 @@ public:
     // いくつかの関数の実行
     void update() override;
 
+    // mGameStateの取得
+    auto getGameState(){return mGameState;}
+
 private:
     // mActiveTetrominoがnullptrの場合、新しいミノを作成
     void pickTetromino();
