@@ -40,7 +40,7 @@ void Tetromino::parallelMove(int displacement)
 void Tetromino::verticalMove(int displacement)
 {
     if(displacement == 0 &&
-       mDownFrame < DROP_COUNT)
+       mGame->getFrameCount() - mDownFrame  < DROP_COUNT)
     {
         return;
     }
@@ -56,7 +56,7 @@ void Tetromino::verticalMove(int displacement)
     }
 
     if(displacement == 0 &&
-       mDownFrame >= DROP_COUNT)
+       mGame->getFrameCount() - mDownFrame >= DROP_COUNT)
     {
         for(auto block : mBlock)
         {
