@@ -281,6 +281,8 @@ void Game::finalizeSDL()
 
 void Game::initializeActor()
 {
+    // 乱数の初期化
+    srand((unsigned int)time(NULL));
     // 主要オブジェクト
     new BackGround(this, 10);
     new GameBoard(this, 30);

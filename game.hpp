@@ -4,12 +4,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-// C++標準ライブラリ
+// C++, C標準ライブラリ
 #include <vector>
 #include <algorithm>
 #include <string>
 #include <unordered_map>
 #include <array>
+#include <time.h>
 
 // ウィンドウの幅と高さ
 const int WINDOW_WIDTH = 1024;
