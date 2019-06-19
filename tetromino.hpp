@@ -43,4 +43,6 @@ private:
 
     // 最後に下に移動した時のFrame
     int mDownFrame;
+    // 最後に座標を移動した時のFrame
+    int mMoveFrame;
 };

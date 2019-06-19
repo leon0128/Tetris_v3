@@ -9,7 +9,8 @@ Tetromino::Tetromino(Game* game,
     Actor(game, order),
     mGameBoard(gameBoard),
     mType(type),
-    mDownFrame(0)
+    mDownFrame(0),
+    mMoveFrame(0)
 {
     createBlock(mType);
 }
@@ -69,7 +70,7 @@ void Tetromino::verticalMove(int direction)
     else
     {
         // 下に下がった時のフレームの更新
-        mDownFrame = mGame->getFrameCount();        
+        mDownFrame = mGame->getFrameCount();
     }
 }
 
@@ -150,6 +151,7 @@ bool Tetromino::isCoordinateCorrect()
         }
     }
 
+    mMoveFrame = mGame->getFrameCount();
     return true;
 }
 
