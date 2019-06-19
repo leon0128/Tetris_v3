@@ -21,5 +21,5 @@ void Block::updatePosition()
     mPosition->setY(center->y -
                     (mCoordinate->y - 10) * BLOCK_SIZE - 
                     BLOCK_SIZE / 2);
-    setScale(BLOCK_SIZE / 60.0f);
+    updateRectangle();
 }

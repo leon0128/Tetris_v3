@@ -94,6 +94,7 @@ void Tetromino::createBlock(EType type)
     {
         Block* block = new Block(mGame, 100, mGameBoard, coordinate);
         block->setTexture(texture);
+        block->setScale(static_cast<float>(BLOCK_SIZE) / 60.0f);
         mBlock.push_back(block);
     }
 }

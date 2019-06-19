@@ -68,8 +68,6 @@ void SpriteActor::setScale(float scale)
 {
     // 描画する際に使用するそれぞれの情報を変更
     *mTextureSize = (*mTextureSize) * (scale / mScale);
-
     updateRectangle();
-
     mScale = scale;
 }
