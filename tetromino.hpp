@@ -12,7 +12,7 @@ public:
               EType type);
 
     // 各ブロックのmCoordinateを元にmPositionを更新
-    void update(int currentFrame) override;
+    void update() override;
 
     // 平行移動と回転移動
     // parallelMove(),vertilcalMove()は、引数の値分座標を移動

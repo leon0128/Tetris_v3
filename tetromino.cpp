@@ -14,7 +14,7 @@ Tetromino::Tetromino(Game* game,
     createBlock(mType);
 }
 
-void Tetromino::update(int currentFrame)
+void Tetromino::update()
 {
     for(auto block : mBlock)
     {
@@ -24,6 +24,11 @@ void Tetromino::update(int currentFrame)
 
 void Tetromino::parallelMove(int displacement)
 {
+    if(displacement == 0)
+    {
+        return;
+    }
+
     for(auto block : mBlock)
     {
         Vector2 temp = block->getCoordinate();
@@ -34,7 +39,33 @@ void Tetromino::parallelMove(int displacement)
 
 void Tetromino::verticalMove(int displacement)
 {
+    if(displacement == 0 &&
+       mDownFrame < DROP_COUNT)
+    {
+        return;
+    }
 
+    if(displacement != 0)
+    {
+        for(auto block : mBlock)
+        {
+            Vector2 temp = block->getCoordinate();
+            temp.y += displacement;
+            block->setCoordinate(temp);
+        }
+    }
+
+    if(displacement == 0 &&
+       mDownFrame >= DROP_COUNT)
+    {
+        for(auto block : mBlock)
+        {
+            Vector2 temp = block->getCoordinate();
+            temp.y += -1;
+            block->setCoordinate(temp);
+        }
+    }
+    mDownFrame = mGame->getFrameCount();
 }
 
 void Tetromino::rotationMove(int direction)

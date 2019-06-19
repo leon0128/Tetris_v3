@@ -45,6 +45,9 @@ public:
     // 削除するActorを一時的に格納
     void deletedActor(class Actor* actor){mRemoveActor.push_back(actor);}
 
+    // 現在のフレームを取得
+    int getFrameCount(){return mFrameCount;}
+
 private:
     // 入力処理
     void inputProcess();

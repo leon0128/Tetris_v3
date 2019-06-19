@@ -17,7 +17,7 @@ public:
         I, O, T, L, J, S, Z
     };
 
-    virtual void update(int currentFrame){}
+    virtual void update(){}
 
     // メンバ変数の設定、取得
     int getOrder(){return mOrder;}

@@ -13,7 +13,7 @@ public:
     GameBoard(class Game* game, int order);
 
     // いくつかの関数の実行
-    void update(int currentFrame) override;
+    void update() override;
 
 private:
     // mActiveTetrominoがnullptrの場合、新しいミノを作成

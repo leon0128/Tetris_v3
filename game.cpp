@@ -160,7 +160,7 @@ void Game::updateGame()
     // アクターの更新
     for(auto actor : mComponentActor)
     {
-        actor->update(mFrameCount);
+        actor->update();
     }
     // いらないActorの削除
     mRemoveActor.clear();

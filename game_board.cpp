@@ -17,7 +17,7 @@ GameBoard::GameBoard(Game* game, int order):
     }
 }
 
-void GameBoard::update(int cuurentFrame)
+void GameBoard::update()
 {
     pickTetromino();
     updateActiveTetromino();
