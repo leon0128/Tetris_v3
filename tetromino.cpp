@@ -14,7 +14,7 @@ Tetromino::Tetromino(Game* game,
     createBlock(mType);
 }
 
-void Tetromino::updatePosition()
+void Tetromino::update(int currentFrame)
 {
     for(auto block : mBlock)
     {

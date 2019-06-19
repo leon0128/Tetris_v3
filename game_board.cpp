@@ -20,8 +20,6 @@ GameBoard::GameBoard(Game* game, int order):
 void GameBoard::update(int cuurentFrame)
 {
     pickTetromino();
-
-    mActiveTetrominio->updatePosition();
 }
 
 void GameBoard::pickTetromino()

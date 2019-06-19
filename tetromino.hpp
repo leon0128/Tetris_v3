@@ -11,7 +11,7 @@ public:
               class GameBoard* gameBoard,
               EType type);
 
-    void updatePosition();
+    void update(int currentFrame) override;
 
 private:
     // 引数のタイプに応じてブロックを作成
