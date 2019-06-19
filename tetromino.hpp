@@ -22,13 +22,13 @@ public:
     void rotationMove(int direction);
 
 private:
-    // 引数のタイプに応じてブロックを作成
-    void createBlock(EType type);
-
     // mBlockの各ブロックが正しい位置にあるか
     bool isCoordinateCorrect();
-    // 引数の値をmBlockの座標にコピー
-    void copyCoordinate(std::vector<Vector2> backup);
+    // mBlockの座標をmBackupに変更
+    void restoreCoordinate();
+    
+    // 引数のタイプに応じてブロックを作成
+    void createBlock(EType type);
 
     // 自身の所属するGameBoard
     class GameBoard* mGameBoard;

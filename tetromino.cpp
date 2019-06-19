@@ -87,7 +87,31 @@ void Tetromino::rotationMove(int direction)
         }
         break;
     }
+}
 
+bool Tetromino::isCoordinateCorrect()
+{
+    auto gameState = mGameBoard->getGameState();
+    Vector2 coordinate;
+
+    for(auto block : mBlock)
+    {
+        coordinate = block->getCoordinate();
+        if(gameState[coordinate.y][coordinate.x])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void Tetromino::restoreCoordinate()
+{
+    for(int i = 0; i < (int)mBlock.size(); i++)
+    {
+        mBlock[i]->setCoordinate(mBackup[i]);
+    }
 }
 
 void Tetromino::createBlock(EType type)
