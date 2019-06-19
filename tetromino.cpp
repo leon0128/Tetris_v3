@@ -59,6 +59,32 @@ void Tetromino::verticalMove(int direction)
 
 void Tetromino::rotationMove(int direction)
 {
+    if(direction == 0)
+    {
+        return;
+    }
+
+    // 優先度の高いブロックを中心として処理
+    for(int i = 0; i < (int)mBlock.size(); i++)
+    {
+        for(auto block : mBlock)
+        {
+            Vector2 target, distance;
+            target = block->getCoordinate();
+            distance = target - mBlock[i]->getCoordinate();
+
+            target.x += direction * 
+                        distance.y -
+                        distance.x;
+            target.y += -1 *
+                        direction *
+                        distance.x -
+                        distance.y;
+            
+            block->setCoordinate(target);
+        }
+        break;
+    }
 
 }
 
