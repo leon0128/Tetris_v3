@@ -24,6 +24,7 @@ public:
 
     // mPositionの取得
     class Vector2* getPosition(){return mPosition;}
+    void setPosition(Vector2* position){mPosition = position;}
 
 protected:
     // SDL関連
