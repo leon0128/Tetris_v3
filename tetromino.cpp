@@ -8,7 +8,8 @@ Tetromino::Tetromino(Game* game,
                      EType type):
     Actor(game, order),
     mGameBoard(gameBoard),
-    mType(type)
+    mType(type),
+    mDownFrame(0)
 {
     createBlock(mType);
 }

@@ -23,4 +23,7 @@ private:
     enum EType mType;
     // ブロックを格納する配列
     std::vector<class Block*> mBlock;
+
+    // 最後に下に移動した時のFrame
+    int mDownFrame;
 };
