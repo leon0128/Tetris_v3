@@ -15,10 +15,10 @@ public:
     void update() override;
 
     // 平行移動と回転移動
-    // parallelMove(),vertilcalMove()は、引数の値分座標を移動
+    // parallelMove(),vertilcalMove()は、引数の値で移動の向き
     // rotationMove()は-1で半時計回り、+1で時計回り
-    void parallelMove(int displacement);
-    void verticalMove(int displacement);
+    void parallelMove(int direction);
+    void verticalMove(int direction);
     void rotationMove(int direction);
 
 private:

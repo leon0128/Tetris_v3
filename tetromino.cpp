@@ -22,9 +22,9 @@ void Tetromino::update()
     }
 }
 
-void Tetromino::parallelMove(int displacement)
+void Tetromino::parallelMove(int direction)
 {
-    if(displacement == 0)
+    if(direction == 0)
     {
         return;
     }
@@ -32,39 +32,28 @@ void Tetromino::parallelMove(int displacement)
     for(auto block : mBlock)
     {
         Vector2 temp = block->getCoordinate();
-        temp.x += displacement;
+        temp.x += direction;
         block->setCoordinate(temp);
     }
 }
 
-void Tetromino::verticalMove(int displacement)
+void Tetromino::verticalMove(int direction)
 {
-    if(displacement == 0 &&
+    if(direction == 0 &&
        mGame->getFrameCount() - mDownFrame  < DROP_COUNT)
     {
         return;
     }
 
-    if(displacement != 0)
+    // 1マス移動
+    for(auto block : mBlock)
     {
-        for(auto block : mBlock)
-        {
-            Vector2 temp = block->getCoordinate();
-            temp.y += displacement;
-            block->setCoordinate(temp);
-        }
+        Vector2 temp = block->getCoordinate();
+        temp.y -= 1;
+        block->setCoordinate(temp);
     }
 
-    if(displacement == 0 &&
-       mGame->getFrameCount() - mDownFrame >= DROP_COUNT)
-    {
-        for(auto block : mBlock)
-        {
-            Vector2 temp = block->getCoordinate();
-            temp.y += -1;
-            block->setCoordinate(temp);
-        }
-    }
+    // 下に下がった時のフレームの更新
     mDownFrame = mGame->getFrameCount();
 }
 
