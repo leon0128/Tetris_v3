@@ -22,6 +22,21 @@ void Tetromino::update(int currentFrame)
     }
 }
 
+void Tetromino::parallelMove(int displacement)
+{
+
+}
+
+void Tetromino::verticalMove(int displacement)
+{
+
+}
+
+void Tetromino::rotationMove(int direction)
+{
+
+}
+
 void Tetromino::createBlock(EType type)
 {
     std::array<Vector2*, 4> tempCoordinate;

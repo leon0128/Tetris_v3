@@ -11,7 +11,15 @@ public:
               class GameBoard* gameBoard,
               EType type);
 
+    // 各ブロックのmCoordinateを元にmPositionを更新
     void update(int currentFrame) override;
+
+    // 平行移動と回転移動
+    // parallelMove(),vertilcalMove()は、引数の値分座標を移動
+    // rotationMove()は-1で半時計回り、+1で時計回り
+    void parallelMove(int displacement);
+    void verticalMove(int displacement);
+    void rotationMove(int direction);
 
 private:
     // 引数のタイプに応じてブロックを作成
