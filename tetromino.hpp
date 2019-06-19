@@ -24,6 +24,8 @@ public:
 private:
     // mBlockの各ブロックが正しい位置にあるか
     bool isCoordinateCorrect();
+    // mBackupに値を格納
+    void storeCoordinate();
     // mBlockの座標をmBackupに変更
     void restoreCoordinate();
     

@@ -16,10 +16,8 @@ Tetromino::Tetromino(Game* game,
 
 void Tetromino::update()
 {
-    mBackup.clear();
     for(auto block : mBlock)
     {
-        mBackup.push_back(block->getCoordinate());
         block->updatePosition();
     }
 }
@@ -31,11 +29,18 @@ void Tetromino::parallelMove(int direction)
         return;
     }
 
+    storeCoordinate();
+
     for(auto block : mBlock)
     {
         Vector2 temp = block->getCoordinate();
         temp.x += direction;
         block->setCoordinate(temp);
+    }
+
+    if(!isCoordinateCorrect())
+    {
+        restoreCoordinate();
     }
 }
 
@@ -47,6 +52,8 @@ void Tetromino::verticalMove(int direction)
         return;
     }
 
+    storeCoordinate();
+
     // 1マス移動
     for(auto block : mBlock)
     {
@@ -55,8 +62,15 @@ void Tetromino::verticalMove(int direction)
         block->setCoordinate(temp);
     }
 
-    // 下に下がった時のフレームの更新
-    mDownFrame = mGame->getFrameCount();
+    if(!isCoordinateCorrect())
+    {
+        restoreCoordinate();
+    }
+    else
+    {
+        // 下に下がった時のフレームの更新
+        mDownFrame = mGame->getFrameCount();        
+    }
 }
 
 void Tetromino::rotationMove(int direction)
@@ -69,6 +83,8 @@ void Tetromino::rotationMove(int direction)
     // 優先度の高いブロックを中心として処理
     for(int i = 0; i < (int)mBlock.size(); i++)
     {
+        storeCoordinate();
+
         for(auto block : mBlock)
         {
             Vector2 target, distance;
@@ -85,7 +101,30 @@ void Tetromino::rotationMove(int direction)
             
             block->setCoordinate(target);
         }
-        break;
+        
+        if(isCoordinateCorrect())
+        {
+            break;
+        }
+        else
+        {
+            // 変更後の座標を1段下げて再計算
+            Vector2 temp;
+            for(auto block : mBlock)
+            {
+                temp = block->getCoordinate();
+                temp.y -= 1;
+                block->setCoordinate(temp);
+            }
+            if(isCoordinateCorrect())
+            {
+                break;
+            }
+            else
+            {
+                restoreCoordinate();
+            }
+        }
     }
 }
 
@@ -97,6 +136,14 @@ bool Tetromino::isCoordinateCorrect()
     for(auto block : mBlock)
     {
         coordinate = block->getCoordinate();
+        
+        if(coordinate.x < 0 || 
+           coordinate.x > GAMEBOARD_PARALLEL ||
+           coordinate.y < 0)
+        {
+            return false;
+        }
+
         if(gameState[coordinate.y][coordinate.x])
         {
             return false;
@@ -104,6 +151,15 @@ bool Tetromino::isCoordinateCorrect()
     }
 
     return true;
+}
+
+void Tetromino::storeCoordinate()
+{
+    mBackup.clear();
+    for(auto block : mBlock)
+    {
+        mBackup.push_back(block->getCoordinate());
+    }
 }
 
 void Tetromino::restoreCoordinate()
