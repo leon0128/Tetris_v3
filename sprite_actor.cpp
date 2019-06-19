@@ -33,6 +33,14 @@ void SpriteActor::draw(SDL_Renderer* renderer)
     }
 }
 
+void SpriteActor::updateRectangle()
+{
+    mRectangle.w = mTextureSize->x;
+    mRectangle.h = mTextureSize->y;
+    mRectangle.x = mPosition->x - mTextureSize->x / 2;
+    mRectangle.y = mPosition->y - mTextureSize->y / 2;    
+}
+
 void SpriteActor::setTexture(SDL_Texture* texture)
 {
     // mTextureの設定
@@ -52,19 +60,16 @@ void SpriteActor::setTexture(SDL_Texture* texture)
                      &height);
     
     mTextureSize->set(width, height);
-    mRectangle.w = mTextureSize->x;
-    mRectangle.h = mTextureSize->y;
-    mRectangle.x = mPosition->x - mTextureSize->x / 2;
-    mRectangle.y = mPosition->y - mTextureSize->y / 2;
+
+    updateRectangle();
 }
 
 void SpriteActor::setScale(float scale)
 {
     // 描画する際に使用するそれぞれの情報を変更
     *mTextureSize = (*mTextureSize) * (scale / mScale);
-    mRectangle.w = mTextureSize->x;
-    mRectangle.h = mTextureSize->y;
-    mRectangle.x = mPosition->x - mTextureSize->x / 2;
-    mRectangle.y = mPosition->y - mTextureSize->y / 2;
+
+    updateRectangle();
+
     mScale = scale;
 }

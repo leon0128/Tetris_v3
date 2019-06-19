@@ -11,6 +11,9 @@ public:
     // 描画のみ
     virtual void draw(SDL_Renderer* renderer);
 
+    // mRectangleの大きさを更新する
+    void updateRectangle();
+
     // 描画するテクスチャの設定
     // mRectangleの初期化
     void setTexture(SDL_Texture* texture);
