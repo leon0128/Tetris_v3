@@ -6,7 +6,7 @@ GameBoard::GameBoard(Game* game, int order):
     mActiveTetrominio(nullptr)
 {
     // 自身の位置とテクスチャの設定
-    mPosition = new Vector2(WINDOW_WIDTH * 3 / 8, WINDOW_HEIGHT / 2);
+    mPosition.set(WINDOW_WIDTH * 3 / 8, WINDOW_HEIGHT / 2);
     setTexture(mGame->getTexture("image/game_board.png"));
 
     // mGameStateの設定

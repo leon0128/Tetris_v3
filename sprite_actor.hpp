@@ -23,17 +23,17 @@ public:
     void setScale(float scale);
 
     // mPositionの取得
-    class Vector2* getPosition(){return mPosition;}
-    void setPosition(Vector2* position){mPosition = position;}
+    class Vector2 getPosition(){return mPosition;}
+    void setPosition(Vector2 position){mPosition = position;}
 
 protected:
     // SDL関連
     SDL_Texture* mTexture;
     SDL_Rect mRectangle;
     // Textureの大きさ
-    class Vector2* mTextureSize;
+    class Vector2 mTextureSize;
     // 中心位置
-    class Vector2* mPosition;
+    class Vector2 mPosition;
     // 透明度
     float mClear;
     // 拡大率

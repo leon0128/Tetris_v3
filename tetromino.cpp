@@ -24,7 +24,12 @@ void Tetromino::update(int currentFrame)
 
 void Tetromino::parallelMove(int displacement)
 {
-
+    for(auto block : mBlock)
+    {
+        Vector2 temp = block->getCoordinate();
+        temp.x += displacement;
+        block->setCoordinate(temp);
+    }
 }
 
 void Tetromino::verticalMove(int displacement)
@@ -39,69 +44,65 @@ void Tetromino::rotationMove(int direction)
 
 void Tetromino::createBlock(EType type)
 {
-    std::array<Vector2*, 4> tempCoordinate;
-    for(int i = 0; i < static_cast<int>(tempCoordinate.size()); i++)
-    {
-        tempCoordinate[i] = new Vector2();
-    }
+    std::array<Vector2, 4> tempCoordinate;
     SDL_Texture* texture;
 
     // 作成するブロックの各座標を設定
     switch(type)
     {
         case(I):
-            tempCoordinate[0]->set(4, 19);
-            tempCoordinate[1]->set(5, 19);
-            tempCoordinate[2]->set(3, 19);
-            tempCoordinate[3]->set(6, 19);
+            tempCoordinate[0].set(4, 19);
+            tempCoordinate[1].set(5, 19);
+            tempCoordinate[2].set(3, 19);
+            tempCoordinate[3].set(6, 19);
             texture = mGame->getTexture("image/blocks/i.png");
             break;
 
         case(O):
-            tempCoordinate[0]->set(4, 19);
-            tempCoordinate[1]->set(4, 18);
-            tempCoordinate[2]->set(5, 18);
-            tempCoordinate[3]->set(5, 19);
+            tempCoordinate[0].set(4, 19);
+            tempCoordinate[1].set(4, 18);
+            tempCoordinate[2].set(5, 18);
+            tempCoordinate[3].set(5, 19);
             texture = mGame->getTexture("image/blocks/o.png");
             break;
 
         case(T):
-            tempCoordinate[0]->set(4, 18);
-            tempCoordinate[1]->set(4, 19);
-            tempCoordinate[2]->set(3, 18);
-            tempCoordinate[3]->set(5, 18);
+            tempCoordinate[0].set(4, 18);
+            tempCoordinate[1].set(4, 19);
+            tempCoordinate[2].set(3, 18);
+            tempCoordinate[3].set(5, 18);
             texture = mGame->getTexture("image/blocks/t.png");
             break;    
 
         case(L):
-            tempCoordinate[0]->set(4, 18);
-            tempCoordinate[1]->set(5, 18);
-            tempCoordinate[2]->set(3, 18);
-            tempCoordinate[3]->set(5, 19);
+            tempCoordinate[0].set(4, 18);
+            tempCoordinate[1].set(5, 18);
+            tempCoordinate[2].set(3, 18);
+            tempCoordinate[3].set(5, 19);
             texture = mGame->getTexture("image/blocks/l.png");
             break;
 
         case(J):
-            tempCoordinate[0]->set(4, 18);
-            tempCoordinate[1]->set(3, 18);
-            tempCoordinate[2]->set(5, 18);
-            tempCoordinate[3]->set(3, 19);
+            tempCoordinate[0].set(4, 18);
+            tempCoordinate[1].set(3, 18);
+            tempCoordinate[2].set(5, 18);
+            tempCoordinate[3].set(3, 19);
             texture = mGame->getTexture("image/blocks/j.png");
             break; 
 
         case(S):
-            tempCoordinate[0]->set(4, 18);
-            tempCoordinate[1]->set(4, 19);
-            tempCoordinate[2]->set(3, 18);
-            tempCoordinate[3]->set(5, 19);
+            tempCoordinate[0].set(4, 18);
+            tempCoordinate[1].set(4, 19);
+            tempCoordinate[2].set(3, 18);
+            tempCoordinate[3].set(5, 19);
             texture = mGame->getTexture("image/blocks/s.png");
             break; 
 
         case(Z):
-            tempCoordinate[0]->set(4, 18);
-            tempCoordinate[1]->set(4, 19);
-            tempCoordinate[2]->set(5, 18);
-            tempCoordinate[3]->set(3, 19);
+            tempCoordinate[0].set(4, 18);
+            tempCoordinate[1].set(4, 19);
+            tempCoordinate[2].set(5, 18);
+            tempCoordinate[3].set(3, 19);
             texture = mGame->getTexture("image/blocks/z.png");
             break; 
     }

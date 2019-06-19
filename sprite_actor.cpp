@@ -6,8 +6,6 @@ SpriteActor::SpriteActor(Game* game, int order):
     mClear(1.0f),
     mScale(1.0f)
 {
-    mTextureSize = new Vector2();
-    mPosition = new Vector2();
     mGame->addSpriteActor(this);
 }
 
@@ -35,10 +33,10 @@ void SpriteActor::draw(SDL_Renderer* renderer)
 
 void SpriteActor::updateRectangle()
 {
-    mRectangle.w = mTextureSize->x;
-    mRectangle.h = mTextureSize->y;
-    mRectangle.x = mPosition->x - mTextureSize->x / 2;
-    mRectangle.y = mPosition->y - mTextureSize->y / 2;    
+    mRectangle.w = mTextureSize.x;
+    mRectangle.h = mTextureSize.y;
+    mRectangle.x = mPosition.x - mTextureSize.x / 2;
+    mRectangle.y = mPosition.y - mTextureSize.y / 2;    
 }
 
 void SpriteActor::setTexture(SDL_Texture* texture)
@@ -59,7 +57,7 @@ void SpriteActor::setTexture(SDL_Texture* texture)
                      &width,
                      &height);
     
-    mTextureSize->set(width, height);
+    mTextureSize.set(width, height);
 
     updateRectangle();
 }
@@ -67,7 +65,7 @@ void SpriteActor::setTexture(SDL_Texture* texture)
 void SpriteActor::setScale(float scale)
 {
     // 描画する際に使用するそれぞれの情報を変更
-    *mTextureSize = (*mTextureSize) * (scale / mScale);
+    mTextureSize = mTextureSize * (scale / mScale);
     updateRectangle();
     mScale = scale;
 }
