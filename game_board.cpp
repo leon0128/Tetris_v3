@@ -1,5 +1,6 @@
 #include "game_board.hpp"
 #include "tetromino.hpp"
+#include "block.hpp"
 
 GameBoard::GameBoard(Game* game, int order):
     SpriteActor(game, order),
@@ -21,6 +22,7 @@ void GameBoard::update()
 {
     pickTetromino();
     updateActiveTetromino();
+    updateGameState();
 }
 
 void GameBoard::pickTetromino()
@@ -59,4 +61,78 @@ void GameBoard::updateActiveTetromino()
     mActiveTetrominio->parallelMove(0);
     mActiveTetrominio->verticalMove(0);
     mActiveTetrominio->rotationMove(0);
+}
+
+void GameBoard::updateGameState()
+{
+    if(mGame->getFrameCount() - mActiveTetrominio->getMoveFrame() < FIX_COUNT)
+    {
+        return ;
+    }
+
+    // ブロックの固定
+    Vector2 temp;
+    for(auto block : mActiveTetrominio->getBlock())
+    {
+        temp = block->getCoordinate();
+        mGameState[temp.y][temp.x] = block;
+    }
+    // mActiveTetrominoの削除
+    mGame->deletedActor(mActiveTetrominio);
+    mActiveTetrominio = nullptr;
+
+    // ブロックで埋め尽くされた列の探索
+    std::vector<int> filledLine;
+    for(int y = 0; y < GAMEBOARD_VERTICAL; y++)
+    {
+        for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
+        {
+            if(!mGameState[y][x])
+            {
+                break;
+            }
+            else if(x == GAMEBOARD_PARALLEL - 1)
+            {
+                filledLine.push_back(y);
+            }
+        }
+    }
+
+    // 埋め尽くされた列の削除と新しい列の作成
+    while(!filledLine.empty())
+    {
+        // 埋め尽くされた列の中で一番下の列の削除
+        for(auto block : mGameState[*filledLine.begin()])
+        {
+            mGame->deletedActor(block);
+        }
+        mGameState.erase(mGameState.begin() + *(filledLine.begin()));
+
+        // 削除した列より上のブロックのy座標を1下げる
+        for(int y = *filledLine.begin();
+            y < (int)mGameState.size();
+            y++)
+        {
+            for(auto block : mGameState[y])
+            {
+                if(block)
+                {
+                    temp = block->getCoordinate();
+                    temp.y -= 1;
+                    block->setCoordinate(temp);
+                }
+            }
+        }
+
+        // 新しい列の追加
+        std::array<Block*, 10> line = {nullptr};
+        mGameState.push_back(line);
+
+        // filledLineの値を全て１ずつ減らし、使用した値の削除
+        for(int i = 0; i < (int)filledLine.size(); i++)
+        {
+            filledLine[i] -= 1;
+        }
+        filledLine.erase(filledLine.begin());
+    }
 }

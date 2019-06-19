@@ -23,6 +23,8 @@ private:
     void pickTetromino();
     // ミノの並行指導と回転移動を処理する
     void updateActiveTetromino();
+    // ミノの固定、mGameStateの更新
+    void updateGameState();
 
     // ブロックを格納する配列
     std::vector<std::array<class Block*, GAMEBOARD_PARALLEL>> mGameState;
