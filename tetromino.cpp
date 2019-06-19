@@ -53,7 +53,7 @@ void Tetromino::createBlock(EType type)
             tempCoordinate[0]->set(4, 18);
             tempCoordinate[1]->set(4, 19);
             tempCoordinate[2]->set(3, 18);
-            tempCoordinate[3]->set(5, 19);
+            tempCoordinate[3]->set(5, 18);
             texture = mGame->getTexture("image/blocks/t.png");
             break;    
 
