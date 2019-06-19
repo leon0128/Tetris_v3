@@ -13,6 +13,8 @@ Tetromino::Tetromino(Game* game,
     mMoveFrame(0)
 {
     createBlock(mType);
+    mDownFrame = mGame->getFrameCount();
+    mMoveFrame = mGame->getFrameCount();
 }
 
 void Tetromino::update()
