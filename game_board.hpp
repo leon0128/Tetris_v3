@@ -13,6 +13,8 @@ public:
 private:
     // mActiveTetrominoがnullptrの場合、新しいミノを作成
     void pickTetromino();
+    // ミノの並行指導と回転移動を処理する
+    void updateActiveTetromino();
 
     // ブロックを格納する配列
     std::vector<std::array<class Block*, GAMEBOARD_PARALLEL>> mGameState;

@@ -54,3 +54,7 @@ void GameBoard::pickTetromino()
                               type);
     mPendingTetromino.erase(iterator);
 }
+
+void GameBoard::updateActiveTetromino()
+{
+}
