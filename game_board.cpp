@@ -58,9 +58,21 @@ void GameBoard::pickTetromino()
 
 void GameBoard::updateActiveTetromino()
 {
-    mActiveTetrominio->parallelMove(0);
-    mActiveTetrominio->verticalMove(0);
-    mActiveTetrominio->rotationMove(0);
+    int parallel = 0, vertical = 0, rotation = 0;
+    // if(mGame->getKeepedFrame(SDL_SCANCODE_A) == 1)
+    //     parallel --;
+    // if(mGame->getKeepedFrame(SDL_SCANCODE_D) == 1)
+    //     parallel ++;
+    // if(mGame->getKeepedFrame(SDL_SCANCODE_S) == 1)
+    //     vertical --;
+    // if(mGame->getKeepedFrame(SDL_SCANCODE_J) == 1)
+    //     rotation --;
+    // if(mGame->getKeepedFrame(SDL_SCANCODE_K) == 1)
+    //     rotation ++;
+    
+    mActiveTetrominio->parallelMove(parallel);
+    mActiveTetrominio->verticalMove(vertical);
+    mActiveTetrominio->rotationMove(rotation);
 }
 
 void GameBoard::updateGameState()

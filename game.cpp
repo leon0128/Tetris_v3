@@ -128,6 +128,7 @@ void Game::removeSpriteActor(SpriteActor* actor)
 
 int Game::getKeepedFrame(SDL_Scancode scancode)
 {
+    SDL_Log("%d, %d", mKeepedFrame[scancode], scancode);
     return mKeepedFrame[scancode];
 }
 
@@ -157,6 +158,7 @@ void Game::inputProcess()
         }
         else
         {
+            SDL_Log("%d", i);
             mKeepedFrame += 1;
         }
     }
