@@ -141,7 +141,7 @@ bool Tetromino::isCoordinateCorrect()
         coordinate = block->getCoordinate();
         
         if(coordinate.x < 0 || 
-           coordinate.x > GAMEBOARD_PARALLEL ||
+           coordinate.x > GAMEBOARD_PARALLEL - 1 ||
            coordinate.y < 0)
         {
             return false;
