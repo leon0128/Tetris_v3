@@ -20,6 +20,9 @@ GameBoard::GameBoard(Game* game, int order):
 
 void GameBoard::update()
 {
+    // キーボードの状態の更新
+    mKeyboardState = mGame->getKeyboardState();
+    
     pickTetromino();
     updateActiveTetromino();
     updateGameState();
@@ -59,16 +62,16 @@ void GameBoard::pickTetromino()
 void GameBoard::updateActiveTetromino()
 {
     int parallel = 0, vertical = 0, rotation = 0;
-    // if(mGame->getKeepedFrame(SDL_SCANCODE_A) == 1)
-    //     parallel --;
-    // if(mGame->getKeepedFrame(SDL_SCANCODE_D) == 1)
-    //     parallel ++;
-    // if(mGame->getKeepedFrame(SDL_SCANCODE_S) == 1)
-    //     vertical --;
-    // if(mGame->getKeepedFrame(SDL_SCANCODE_J) == 1)
-    //     rotation --;
-    // if(mGame->getKeepedFrame(SDL_SCANCODE_K) == 1)
-    //     rotation ++;
+    if(mKeyboardState[SDL_SCANCODE_A] == 1)
+        parallel --;
+    if(mKeyboardState[SDL_SCANCODE_D] == 1)
+        parallel ++;
+    if(mKeyboardState[SDL_SCANCODE_S] == 1)
+        vertical --;
+    if(mKeyboardState[SDL_SCANCODE_J] == 1)
+        rotation --;
+    if(mKeyboardState[SDL_SCANCODE_K] == 1)
+        rotation ++;
     
     mActiveTetrominio->parallelMove(parallel);
     mActiveTetrominio->verticalMove(vertical);

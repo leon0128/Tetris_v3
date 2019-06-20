@@ -30,7 +30,9 @@ private:
     std::vector<std::array<class Block*, GAMEBOARD_PARALLEL>> mGameState;
     // 操作するTetromino
     class Tetromino* mActiveTetrominio;
-
     // 7種のミノのタイプを一時的に格納する配列
     std::vector<EType> mPendingTetromino;
+
+    // Game::mKeyboardStateを格納する配列
+    std::vector<int> mKeyboardState;
 };

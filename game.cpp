@@ -155,8 +155,7 @@ void Game::inputProcess()
         }
         else
         {
-            mKeyboardState[i] ++;            
-            SDL_Log("%d: %d", i, mKeyboardState[i]);
+            mKeyboardState[i] ++;
         }
     }
 }
