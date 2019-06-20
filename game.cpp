@@ -15,7 +15,6 @@ Game::Game():
     mRenderer(nullptr),
     mFont(nullptr)
 {
-    
 }
 
 bool Game::initialize()
@@ -283,6 +282,12 @@ void Game::finalizeSDL()
 
 void Game::initializeActor()
 {
+    // mKeyboardStateの初期化
+    int keyboardSize = 0;
+    SDL_GetKeyboardState(&keyboardSize);
+    mCurrentKeyboardState = new Uint8[keyboardSize];
+    mBeforeKeyboardState = new Uint8[keyboardSize];
+
     // 乱数の初期化
     srand((unsigned int)time(NULL));
     // 主要オブジェクト
