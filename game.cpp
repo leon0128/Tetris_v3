@@ -9,9 +9,6 @@ Game::Game():
     mIsContinuedGame(true),
     mTicksCount(0),
     mFrameCount(0),
-    mCurrentKeyboardState(nullptr),
-    mKeepedFrame(nullptr),
-    mKeyboardSize(0),
     mWindow(nullptr),
     mRenderer(nullptr),
     mFont(nullptr)
@@ -126,12 +123,6 @@ void Game::removeSpriteActor(SpriteActor* actor)
     }
 }
 
-int Game::getKeepedFrame(SDL_Scancode scancode)
-{
-    SDL_Log("%d, %d", mKeepedFrame[scancode], scancode);
-    return mKeepedFrame[scancode];
-}
-
 void Game::inputProcess()
 {
     // ウィンドウに対するイベント
@@ -147,26 +138,26 @@ void Game::inputProcess()
         }
     }
 
+    const Uint8* currentKeyboardState = SDL_GetKeyboardState(nullptr);
 
-    // mKeyboardStateの状態の変更
-    mCurrentKeyboardState = SDL_GetKeyboardState(NULL);
-    for(int i = 0; i < mKeyboardSize; i++)
+    // ESCAPEで終了    
+    if(currentKeyboardState[SDL_SCANCODE_ESCAPE])
     {
-        if(mCurrentKeyboardState[i] == 0)
+        mIsContinuedGame = false;
+    }    
+    
+    // mKeyboardStateの状態の変更
+    for(int i = 0; i < (int)mKeyboardState.size(); i++)
+    {
+        if(currentKeyboardState[i] == 0)
         {
-            mKeepedFrame[i] = 0;
+            mKeyboardState[i] = 0;
         }
         else
         {
-            SDL_Log("%d", i);
-            mKeepedFrame += 1;
+            mKeyboardState[i] ++;            
+            SDL_Log("%d: %d", i, mKeyboardState[i]);
         }
-    }
-
-    // ESCAPEで終了
-    if(mCurrentKeyboardState[SDL_SCANCODE_ESCAPE])
-    {
-        mIsContinuedGame = false;
     }
 }
 
@@ -303,9 +294,9 @@ void Game::finalizeSDL()
 void Game::initializeActor()
 {
     // mKeyboardStateの初期化
-    SDL_GetKeyboardState(&mKeyboardSize);
-    mCurrentKeyboardState = new Uint8[mKeyboardSize];
-    mKeepedFrame = new int[mKeyboardSize];
+    int size  = 0;
+    SDL_GetKeyboardState(&size);
+    mKeyboardState.resize(size);
 
     // 乱数の初期化
     srand((unsigned int)time(NULL));

@@ -48,8 +48,8 @@ public:
 
     // 現在のフレームを取得
     int getFrameCount(){return mFrameCount;}
-    // 引数のSDL_Scancodeが何フレーム押されているか
-    int getKeepedFrame(SDL_Scancode scancode);
+    // mKeyboardStateを返す
+    auto getKeyboardState(){return mKeyboardState;}
 
 private:
     // 入力処理
@@ -85,9 +85,8 @@ private:
     std::unordered_map<std::string, SDL_Texture*> mTextureMap;
 
     // キーボードの状態を格納
-    const Uint8* mCurrentKeyboardState;
-    int* mKeepedFrame;
-    int mKeyboardSize;
+    // キーボードが何フレーム押し続けられているか
+    std::vector<int> mKeyboardState;
 
     // SDL関連
     SDL_Window* mWindow;
