@@ -48,6 +48,8 @@ public:
 
     // 現在のフレームを取得
     int getFrameCount(){return mFrameCount;}
+    // 引数のSDL_Scancodeが何フレーム押されているか
+    int getKeepedFrame(SDL_Scancode scancode);
 
 private:
     // 入力処理
@@ -84,7 +86,7 @@ private:
 
     // キーボードの状態を格納
     const Uint8* mCurrentKeyboardState;
-    Uint8* mBeforeKeyboardState;
+    int* mKeepedFrame;
     int mKeyboardSize;
 
     // SDL関連

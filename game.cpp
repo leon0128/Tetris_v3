@@ -10,7 +10,7 @@ Game::Game():
     mTicksCount(0),
     mFrameCount(0),
     mCurrentKeyboardState(nullptr),
-    mBeforeKeyboardState(nullptr),
+    mKeepedFrame(nullptr),
     mKeyboardSize(0),
     mWindow(nullptr),
     mRenderer(nullptr),
@@ -126,6 +126,11 @@ void Game::removeSpriteActor(SpriteActor* actor)
     }
 }
 
+int Game::getKeepedFrame(SDL_Scancode scancode)
+{
+
+}
+
 void Game::inputProcess()
 {
     // ウィンドウに対するイベント
@@ -143,10 +148,18 @@ void Game::inputProcess()
 
 
     // mKeyboardStateの状態の変更
-    std::memcpy(mBeforeKeyboardState,
-                mCurrentKeyboardState,
-                sizeof(Uint8) * mKeyboardSize);
     mCurrentKeyboardState = SDL_GetKeyboardState(NULL);
+    for(int i = 0; i < mKeyboardSize; i++)
+    {
+        if(mCurrentKeyboardState[i] == 0)
+        {
+            mKeepedFrame[i] = 0;
+        }
+        else
+        {
+            mKeepedFrame += 1;
+        }
+    }
 
     // ESCAPEで終了
     if(mCurrentKeyboardState[SDL_SCANCODE_ESCAPE])
@@ -290,7 +303,7 @@ void Game::initializeActor()
     // mKeyboardStateの初期化
     SDL_GetKeyboardState(&mKeyboardSize);
     mCurrentKeyboardState = new Uint8[mKeyboardSize];
-    mBeforeKeyboardState = new Uint8[mKeyboardSize];
+    mKeepedFrame = new int[mKeyboardSize];
 
     // 乱数の初期化
     srand((unsigned int)time(NULL));
