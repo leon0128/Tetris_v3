@@ -62,11 +62,17 @@ void GameBoard::pickTetromino()
 void GameBoard::updateActiveTetromino()
 {
     int parallel = 0, vertical = 0, rotation = 0;
-    if(mKeyboardState[SDL_SCANCODE_A] == 1)
+    if((mKeyboardState[SDL_SCANCODE_A] == 1) ||
+       (mKeyboardState[SDL_SCANCODE_A] >= KEEPED_FRAME && 
+        mKeyboardState[SDL_SCANCODE_A] % MOVE_FRAME == 0))
         parallel --;
-    if(mKeyboardState[SDL_SCANCODE_D] == 1)
+    if((mKeyboardState[SDL_SCANCODE_D] == 1) ||
+       (mKeyboardState[SDL_SCANCODE_D] >= KEEPED_FRAME && 
+        mKeyboardState[SDL_SCANCODE_D] % MOVE_FRAME == 0))
         parallel ++;
-    if(mKeyboardState[SDL_SCANCODE_S] == 1)
+    if((mKeyboardState[SDL_SCANCODE_S] == 1) ||
+       (mKeyboardState[SDL_SCANCODE_S] >= KEEPED_FRAME && 
+        mKeyboardState[SDL_SCANCODE_S] % MOVE_FRAME == 0))
         vertical --;
     if(mKeyboardState[SDL_SCANCODE_J] == 1)
         rotation --;

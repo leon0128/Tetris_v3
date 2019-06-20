@@ -6,6 +6,9 @@
 // === FIX_COUNT >= DROP_COUNT ===
 const int FIX_COUNT = 60;
 const int DROP_COUNT = 60;
+// 長押し判定までのフレームと移動速度
+const int KEEPED_FRAME = 15;
+const int MOVE_FRAME = 5;
 
 class GameBoard : public SpriteActor
 {
