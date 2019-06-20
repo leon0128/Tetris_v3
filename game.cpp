@@ -8,7 +8,9 @@
 Game::Game():
     mIsContinuedGame(true),
     mTicksCount(0),
-    mFrameCount(0),    
+    mFrameCount(0),
+    mCurrentKeyboardState(nullptr),
+    mBeforeKeyboardState(nullptr),
     mWindow(nullptr),
     mRenderer(nullptr),
     mFont(nullptr)
@@ -140,10 +142,10 @@ void Game::inputProcess()
     }
 
     // キーボードの状態を取得
-    const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+    mCurrentKeyboardState = SDL_GetKeyboardState(NULL);
 
     // ESCAPEで終了
-    if(keyboardState[SDL_SCANCODE_ESCAPE])
+    if(mCurrentKeyboardState[SDL_SCANCODE_ESCAPE])
     {
         mIsContinuedGame = false;
     }

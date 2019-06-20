@@ -81,6 +81,10 @@ private:
     // テクスチャのファイルパスとポインタを格納するマップ
     std::unordered_map<std::string, SDL_Texture*> mTextureMap;
 
+    // キーボードの状態を格納
+    const Uint8* mCurrentKeyboardState;
+    const Uint8* mBeforeKeyboardState;
+
     // SDL関連
     SDL_Window* mWindow;
     SDL_Renderer* mRenderer;
