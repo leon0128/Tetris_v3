@@ -10,6 +10,7 @@
 #include <string>
 #include <unordered_map>
 #include <array>
+#include <cstring>
 #include <time.h>
 
 // ウィンドウの幅と高さ
@@ -83,7 +84,8 @@ private:
 
     // キーボードの状態を格納
     const Uint8* mCurrentKeyboardState;
-    const Uint8* mBeforeKeyboardState;
+    Uint8* mBeforeKeyboardState;
+    int mKeyboardSize;
 
     // SDL関連
     SDL_Window* mWindow;

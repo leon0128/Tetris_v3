@@ -11,6 +11,7 @@ Game::Game():
     mFrameCount(0),
     mCurrentKeyboardState(nullptr),
     mBeforeKeyboardState(nullptr),
+    mKeyboardSize(0),
     mWindow(nullptr),
     mRenderer(nullptr),
     mFont(nullptr)
@@ -140,7 +141,11 @@ void Game::inputProcess()
         }
     }
 
-    // キーボードの状態を取得
+
+    // mKeyboardStateの状態の変更
+    std::memcpy(mBeforeKeyboardState,
+                mCurrentKeyboardState,
+                sizeof(Uint8) * mKeyboardSize);
     mCurrentKeyboardState = SDL_GetKeyboardState(NULL);
 
     // ESCAPEで終了
@@ -283,10 +288,9 @@ void Game::finalizeSDL()
 void Game::initializeActor()
 {
     // mKeyboardStateの初期化
-    int keyboardSize = 0;
-    SDL_GetKeyboardState(&keyboardSize);
-    mCurrentKeyboardState = new Uint8[keyboardSize];
-    mBeforeKeyboardState = new Uint8[keyboardSize];
+    SDL_GetKeyboardState(&mKeyboardSize);
+    mCurrentKeyboardState = new Uint8[mKeyboardSize];
+    mBeforeKeyboardState = new Uint8[mKeyboardSize];
 
     // 乱数の初期化
     srand((unsigned int)time(NULL));
