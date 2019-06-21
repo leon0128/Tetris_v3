@@ -9,6 +9,8 @@ const int DROP_COUNT = 60;
 // 長押し判定までのフレームと移動速度
 const int KEEPED_FRAME = 15;
 const int MOVE_FRAME = 5;
+// NextBoardの数
+const int NEXT_SIZE = 5;
 
 class GameBoard : public SpriteActor
 {
@@ -35,6 +37,7 @@ private:
 
     // GameBoardが保持する各オブジェクトの初期化
     void initializeHoldBoard();
+    void initializeNextBoard();
 
     // ブロックを格納する配列
     std::vector<std::array<class Block*, GAMEBOARD_PARALLEL>> mGameState;
@@ -45,9 +48,11 @@ private:
 
     // Game::mKeyboardStateを格納する配列
     std::vector<int> mKeyboardState;
-    // holdを実行したかどうか
-    bool mIsHolded;
 
+    // next用のSideBoard配列
+    std::array<class SideBoard*, NEXT_SIZE> mNextBoard = {nullptr};
     // hold用のSideBoardの設定
     class SideBoard* mHoldBoard;
+    // holdを実行したかどうか
+    bool mIsHolded;
 };

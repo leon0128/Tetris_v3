@@ -6,8 +6,8 @@
 GameBoard::GameBoard(Game* game, int order):
     SpriteActor(game, order),
     mActiveTetrominio(nullptr),
-    mIsHolded(false),
-    mHoldBoard(nullptr)
+    mHoldBoard(nullptr),
+    mIsHolded(false)
 {
     // 自身の位置とテクスチャの設定
     mPosition.set(WINDOW_WIDTH * 3 / 10, WINDOW_HEIGHT / 2);
@@ -23,6 +23,8 @@ GameBoard::GameBoard(Game* game, int order):
 
     // HoldBoardの設定
     initializeHoldBoard();
+    // NextBoardの設定
+    initializeNextBoard();
 }
 
 void GameBoard::update()
@@ -230,4 +232,17 @@ void GameBoard::initializeHoldBoard()
     position.y -= mTextureSize.y / 2 - 100;
     mHoldBoard->setPosition(position);
     mHoldBoard->updateRectangle();   
+}
+
+void GameBoard::initializeNextBoard()
+{
+    Vector2 position(mPosition.x + mTextureSize.x / 2 + 65,
+                     mTextureSize.y / 2 - 375);
+    for(int i = 0; i < NEXT_SIZE; i++)
+    {
+        mNextBoard[i] = new SideBoard(mGame, 40, this);
+        position.y += 120;
+        mNextBoard[i]->setPosition(position);
+        mNextBoard[i]->updateRectangle();
+    }
 }
