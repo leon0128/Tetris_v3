@@ -8,6 +8,7 @@ SideBoard::SideBoard(Game* game, int order, GameBoard* gameBoard):
 {
     setTexture(mGame->getTexture("image/side_board.png"));
     setClear(0.65f);
+    setScale(0.7f);
 }
 
 void SideBoard::draw(SDL_Renderer* renderer)
@@ -20,7 +21,7 @@ void SideBoard::draw(SDL_Renderer* renderer)
         SDL_RenderCopy(renderer,
                        mTetrominoTexture,
                        nullptr,
-                       &mTetrominoRectangle); 
+                       &mTetrominoRectangle);
     }
 }
 
@@ -67,15 +68,18 @@ void SideBoard::setType(EType type)
     {
         int width, height;
         // mRectangle, mTextureSizeの初期化
-        SDL_QueryTexture(mTexture,
-                        nullptr,
-                        nullptr,
-                        &width,
-                        &height);
-        
-        mRectangle.w = width;
-        mRectangle.h = height;
-        mRectangle.x = mPosition.x - width / 2;
-        mRectangle.y = mPosition.y - height / 2;   
+        SDL_QueryTexture(mTetrominoTexture,
+                         nullptr,
+                         nullptr,
+                         &width,
+                         &height);
+
+        width *= 0.55f * mScale;
+        height *= 0.55f * mScale;
+
+        mTetrominoRectangle.w = width;
+        mTetrominoRectangle.h = height;
+        mTetrominoRectangle.x = mPosition.x - width / 2;
+        mTetrominoRectangle.y = mPosition.y - height / 2;   
     }
 }
