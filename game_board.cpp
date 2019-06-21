@@ -21,6 +21,18 @@ GameBoard::GameBoard(Game* game, int order):
         mGameState.push_back(line);
     }
 
+    // mPendingTetrominoの初期化
+    if(mPendingTetromino.empty())
+    {
+        mPendingTetromino.push_back(I);
+        mPendingTetromino.push_back(O);
+        mPendingTetromino.push_back(T);
+        mPendingTetromino.push_back(L);
+        mPendingTetromino.push_back(J);
+        mPendingTetromino.push_back(S);
+        mPendingTetromino.push_back(Z);
+    }
+
     // HoldBoardの設定
     initializeHoldBoard();
     // NextBoardの設定
@@ -58,11 +70,17 @@ void GameBoard::pickTetromino()
         mPendingTetromino.push_back(Z);
     }
 
-    // 乱数を利用し、mActiveTetrominoを作成
-    EType type = mPendingTetromino[rand() % mPendingTetromino.size()];
+    // mActiveTetrominoとmNextBoardの更新
+    EType type = mNextBoard[0]->getType();
     mActiveTetrominio = new Tetromino(mGame, 50, this, type);
 
-    // mPendingTetrominoから利用した要素の削除
+    for(int i = 0; i < NEXT_SIZE; i++)
+    {
+        mNextBoard[i]->setType(mNextBoard[i+1]->getType());
+    }
+    type = mPendingTetromino[rand() % mPendingTetromino.size()];
+    mNextBoard[NEXT_SIZE - 1]->setType(type);
+
     auto iterator = std::find(mPendingTetromino.begin(),
                               mPendingTetromino.end(),
                               type);
@@ -244,5 +262,17 @@ void GameBoard::initializeNextBoard()
         position.y += 120;
         mNextBoard[i]->setPosition(position);
         mNextBoard[i]->updateRectangle();
+    }
+
+    // nextの設定
+    for(int i = 0; i < NEXT_SIZE; i++)
+    {
+        EType type = mPendingTetromino[rand() % mPendingTetromino.size()];
+        mNextBoard[i]->setType(type);
+
+        auto iterator = std::find(mPendingTetromino.begin(),
+                                mPendingTetromino.end(),
+                                type);
+        mPendingTetromino.erase(iterator);
     }
 }

@@ -60,7 +60,6 @@ void SideBoard::setType(EType type)
             break;
         
         case(NONE):
-            SDL_Log("Can not set Tetromino texture: SideBoard::setType()");
             break;
     }
 
