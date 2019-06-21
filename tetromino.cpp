@@ -131,6 +131,22 @@ void Tetromino::rotationMove(int direction)
     }
 }
 
+void Tetromino::quickDrop(bool isQuickDrop)
+{
+    if(!isQuickDrop)
+    {
+        return;
+    }
+
+    // 移動が失敗するまで下方向に移動
+    bool isCorrectMove = true;
+    while(isCorrectMove)
+    {
+        verticalMove(-1);
+        isCorrectMove = isCoordinateCorrect();
+    }
+}
+
 bool Tetromino::isCoordinateCorrect()
 {
     auto gameState = mGameBoard->getGameState();

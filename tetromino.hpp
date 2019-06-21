@@ -20,6 +20,7 @@ public:
     void parallelMove(int direction);
     void verticalMove(int direction);
     void rotationMove(int direction);
+    void quickDrop(bool isQuickDrop);
 
     // mBlockの取得
     auto getBlock(){return mBlock;}
