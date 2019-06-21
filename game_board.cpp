@@ -156,4 +156,21 @@ void GameBoard::updateGameState()
         }
         filledLine.erase(filledLine.begin());
     }
+    
+    // mGameBoardに格納されているブロックの更新
+    updateBlockPosition();
+}
+
+void GameBoard::updateBlockPosition()
+{
+    for(int y = 0; y < (int)mGameState.size(); y++)
+    {
+        for(int x = 0; x < (int)mGameState[y].size(); x++)
+        {
+            if(mGameState[y][x])
+            {
+                mGameState[y][x]->updatePosition();
+            }
+        }
+    }
 }

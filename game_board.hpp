@@ -28,6 +28,8 @@ private:
     void updateActiveTetromino();
     // ミノの固定、mGameStateの更新
     void updateGameState();
+    // mGameStateに格納されているミノの位置を更新
+    void updateBlockPosition();
 
     // ブロックを格納する配列
     std::vector<std::array<class Block*, GAMEBOARD_PARALLEL>> mGameState;
