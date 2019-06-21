@@ -99,7 +99,7 @@ void GameBoard::updateGameState()
         mGameState[temp.y][temp.x] = block;
     }
     // mActiveTetrominoの削除
-    mGame->deletedActor(mActiveTetrominio);
+    delete mActiveTetrominio;
     mActiveTetrominio = nullptr;
 
     // ブロックで埋め尽くされた列の探索
@@ -125,7 +125,7 @@ void GameBoard::updateGameState()
         // 埋め尽くされた列の中で一番下の列の削除
         for(auto block : mGameState[*filledLine.begin()])
         {
-            mGame->deletedActor(block);
+            delete block;
         }
         mGameState.erase(mGameState.begin() + *(filledLine.begin()));
 

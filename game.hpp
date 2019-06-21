@@ -43,8 +43,6 @@ public:
     // mComponentSpriteActorに要素を出し入れ
     void addSpriteActor(class SpriteActor* actor);
     void removeSpriteActor(class SpriteActor* actor);
-    // 削除するActorを一時的に格納
-    void deletedActor(class Actor* actor){mRemoveActor.push_back(actor);}
 
     // 現在のフレームを取得
     int getFrameCount(){return mFrameCount;}
@@ -77,8 +75,6 @@ private:
 
     // Actorクラスは作成時にここに追加される
     std::vector<class Actor*> mComponentActor;
-    // 削除されるActorを一時的に格納
-    std::vector<class Actor*> mRemoveActor;
     // SpriteActorクラス用
     std::vector<class SpriteActor*> mComponentSpriteActor;
     // テクスチャのファイルパスとポインタを格納するマップ

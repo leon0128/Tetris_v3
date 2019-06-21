@@ -169,12 +169,10 @@ void Game::updateGame()
     mFrameCount ++;
 
     // アクターの更新
-    for(auto actor : mComponentActor)
+    for(int i = 0; i < (int)mComponentActor.size(); i++)
     {
-        actor->update();
+        mComponentSpriteActor[i]->update();
     }
-    // いらないActorの削除
-    mRemoveActor.clear();
 }
 
 void Game::outputProcess()
