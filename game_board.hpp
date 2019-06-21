@@ -24,6 +24,8 @@ public:
 private:
     // mActiveTetrominoがnullptrの場合、新しいミノを作成
     void pickTetromino();
+    // Hold操作
+    void hold();
     // ミノの並行指導と回転移動を処理する
     void updateActiveTetromino();
     // ミノの固定、mGameStateの更新
@@ -43,6 +45,8 @@ private:
 
     // Game::mKeyboardStateを格納する配列
     std::vector<int> mKeyboardState;
+    // holdを実行したかどうか
+    bool mIsHolded;
 
     // hold用のSideBoardの設定
     class SideBoard* mHoldBoard;

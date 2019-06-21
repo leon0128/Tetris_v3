@@ -6,6 +6,7 @@
 GameBoard::GameBoard(Game* game, int order):
     SpriteActor(game, order),
     mActiveTetrominio(nullptr),
+    mIsHolded(false),
     mHoldBoard(nullptr)
 {
     // 自身の位置とテクスチャの設定
@@ -30,6 +31,7 @@ void GameBoard::update()
     mKeyboardState = mGame->getKeyboardState();
     
     pickTetromino();
+    hold();
     updateActiveTetromino();
     updateGameState();
 }
@@ -63,6 +65,36 @@ void GameBoard::pickTetromino()
                               mPendingTetromino.end(),
                               type);
     mPendingTetromino.erase(iterator);
+}
+
+void GameBoard::hold()
+{
+    if(mKeyboardState[SDL_SCANCODE_H] != 1 ||
+       mIsHolded == true)
+    {
+        return ;
+    }
+
+    EType temp = mHoldBoard->getType();
+    mHoldBoard->setType(mActiveTetrominio->getType());
+    
+    for(int i = 0; i < (int)mActiveTetrominio->getBlock().size(); i++)
+    {
+        delete mActiveTetrominio->getBlock()[i];
+    }
+    delete mActiveTetrominio;
+    mActiveTetrominio = nullptr;
+
+    if(temp != NONE)
+    {
+        mActiveTetrominio = new Tetromino(mGame, 50, this, temp);
+    }
+    else
+    {
+        pickTetromino();
+    }
+    
+    mIsHolded = true;
 }
 
 void GameBoard::updateActiveTetromino()
@@ -170,6 +202,7 @@ void GameBoard::updateGameState()
         filledLine.erase(filledLine.begin());
     }
     
+    mIsHolded = false;
     // mGameBoardに格納されているブロックの更新
     updateBlockPosition();
 }

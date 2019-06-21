@@ -13,9 +13,11 @@ public:
     
     // 表示するテトロミノを設定
     void setType(EType type);
+    EType getType(){return mType;}
 
 private:
     class GameBoard* mGameBoard;
+    EType mType;
     
     // 表示するテトロミノ用
     SDL_Texture* mTetrominoTexture;

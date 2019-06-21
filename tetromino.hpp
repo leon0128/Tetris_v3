@@ -33,6 +33,8 @@ public:
     int getMoveFrame(){return mMoveFrame;}
     // mIsQuickDropの取得
     bool isQuickDrop(){return mIsQuickDrop;}
+    // mTypeの取得
+    EType getType(){return mType;}
 
 private:
     // mBlockの各ブロックが正しい位置にあるか
