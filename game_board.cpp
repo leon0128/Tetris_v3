@@ -284,9 +284,4 @@ void GameBoard::initializeNextBoard()
 void GameBoard::initializeScoreBoard()
 {
     mScoreBoard = new ScoreBoard(mGame, 120, this);
-    Vector2 position = mPosition;
-    position.x += 500;
-    position.y += 100;
-    mScoreBoard->setPosition(position);
-    mScoreBoard->updateRectangle();
 }

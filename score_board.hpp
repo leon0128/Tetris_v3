@@ -8,10 +8,24 @@ public:
     ScoreBoard(class Game* game,
                int order,
                class GameBoard* gameBoard);
+
+    void draw(SDL_Renderer* renderer) override;
+
 private:
-    // Description用のテクスチャを作成し、
+    // 文字列テクスチャと描画用SDL_Rectを紐付けておく
+    struct TextureAndRectangle
+    {
+        SDL_Texture* texture;
+        SDL_Rect rectangle;
+    };
+    
+    // Description用のテクスチャを作成しmDescriptionTextureに格納
+    void createDescriptionTexture();
+    std::vector<struct TextureAndRectangle> mDescriptionTexture;
+    // 実際にScoreを表示するTexture
+    std::vector<struct TextureAndRectangle> mScoreTexture;
 
-
-    std::vector<SDL_Texture*> mDescriptionTexture;
+    // 描画するフォントの色
+    SDL_Color mColor;
     class GameBoard* mGameBoard;
 };

@@ -48,6 +48,9 @@ public:
     int getFrameCount(){return mFrameCount;}
     // mKeyboardStateを返す
     auto getKeyboardState(){return mKeyboardState;}
+    // フォントとレンダラーの取得
+    SDL_Renderer* getRenderer(){return mRenderer;}
+    TTF_Font* getFont(){return mFont;}
 
     // ゲーム終了の呼び出し
     void gameover(){mIsContinuedGame = false;}
