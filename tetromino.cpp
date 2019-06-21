@@ -305,7 +305,11 @@ void Tetromino::createBlock(EType type)
             tempCoordinate[2].set(5, 18);
             tempCoordinate[3].set(3, 19);
             texture = mGame->getTexture("image/blocks/z.png");
-            break; 
+            break;
+        
+        case(NONE):
+            SDL_Log("Can not crate Tetromino: Tetromino::createBlock()");
+            break;
     }
 
     for(auto coordinate : tempCoordinate)

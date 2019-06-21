@@ -14,7 +14,7 @@ public:
     // tetrominoの種類を示す列挙体
     enum EType
     {
-        I, O, T, L, J, S, Z
+        NONE, I, O, T, L, J, S, Z
     };
 
     virtual void update(){}
