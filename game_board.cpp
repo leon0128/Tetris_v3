@@ -88,6 +88,7 @@ void GameBoard::updateActiveTetromino()
     mActiveTetrominio->verticalMove(vertical);
     mActiveTetrominio->rotationMove(rotation);
     mActiveTetrominio->quickDrop(isQuickDrop);
+    mActiveTetrominio->updateShadow();
 }
 
 void GameBoard::updateGameState()

@@ -11,6 +11,9 @@ public:
               class GameBoard* gameBoard,
               EType type);
 
+    // 影に使用したブロックの削除
+    virtual ~Tetromino();
+
     // 各ブロックのmCoordinateを元にmPositionを更新
     void update() override;
 
@@ -22,6 +25,7 @@ public:
     bool verticalMove(int direction);
     bool rotationMove(int direction);
     void quickDrop(bool isQuickDrop);
+    void updateShadow();
 
     // mBlockの取得
     auto getBlock(){return mBlock;}
@@ -47,6 +51,8 @@ private:
     enum EType mType;
     // ブロックを格納する配列
     std::vector<class Block*> mBlock;
+    // shadowを格納する配列
+    std::vector<class Block*> mShadowBlock;
     // 移動前のブロックの座標を格納
     std::vector<class Vector2> mBackup;
 

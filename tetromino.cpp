@@ -18,9 +18,21 @@ Tetromino::Tetromino(Game* game,
     mMoveFrame = mGame->getFrameCount();
 }
 
+Tetromino::~Tetromino()
+{
+    for(int i = 0; i < (int)mShadowBlock.size(); i++)
+    {
+        delete mShadowBlock[i];
+    }
+}
+
 void Tetromino::update()
 {
     for(auto block : mBlock)
+    {
+        block->updatePosition();
+    }
+    for(auto block : mShadowBlock)
     {
         block->updatePosition();
     }
@@ -156,6 +168,15 @@ void Tetromino::quickDrop(bool isQuickDrop)
     mIsQuickDrop = true;
 }
 
+void Tetromino::updateShadow()
+{
+    if(mMoveFrame != mGame->getFrameCount())
+    {
+        return ;
+    }
+    
+}
+
 bool Tetromino::isCoordinateCorrect()
 {
     auto gameState = mGameBoard->getGameState();
@@ -267,9 +288,14 @@ void Tetromino::createBlock(EType type)
     for(auto coordinate : tempCoordinate)
     {
         Block* block = new Block(mGame, 100, mGameBoard, coordinate);
+        Block* shadowBlock = new Block(mGame, 90, mGameBoard, coordinate);
         block->setTexture(texture);
+        shadowBlock->setTexture(texture);
         block->setScale(static_cast<float>(BLOCK_SIZE) / 60.0f);
+        shadowBlock->setScale(static_cast<float>(BLOCK_SIZE) / 60.0f);
+        shadowBlock->setClear(0.25f);
         mBlock.push_back(block);
+        mShadowBlock.push_back(shadowBlock);
         mBackup.push_back(coordinate);
     }
 }
