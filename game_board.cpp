@@ -9,6 +9,7 @@ GameBoard::GameBoard(Game* game, int order):
     // 自身の位置とテクスチャの設定
     mPosition.set(WINDOW_WIDTH * 3 / 8, WINDOW_HEIGHT / 2);
     setTexture(mGame->getTexture("image/game_board.png"));
+    setClear(0.65f);
 
     // mGameStateの設定
     for(int i = 0; i < GAMEBOARD_VERTICAL; i++)
