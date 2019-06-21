@@ -31,6 +31,9 @@ private:
     // mGameStateに格納されているミノの位置を更新
     void updateBlockPosition();
 
+    // GameBoardが保持する各オブジェクトの初期化
+    void initializeHoldBoard();
+
     // ブロックを格納する配列
     std::vector<std::array<class Block*, GAMEBOARD_PARALLEL>> mGameState;
     // 操作するTetromino
@@ -40,4 +43,7 @@ private:
 
     // Game::mKeyboardStateを格納する配列
     std::vector<int> mKeyboardState;
+
+    // hold用のSideBoardの設定
+    class SideBoard* mHoldBoard;
 };

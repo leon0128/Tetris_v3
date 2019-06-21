@@ -1,10 +1,12 @@
 #include "game_board.hpp"
 #include "tetromino.hpp"
 #include "block.hpp"
+#include "side_board.hpp"
 
 GameBoard::GameBoard(Game* game, int order):
     SpriteActor(game, order),
-    mActiveTetrominio(nullptr)
+    mActiveTetrominio(nullptr),
+    mHoldBoard(nullptr)
 {
     // 自身の位置とテクスチャの設定
     mPosition.set(WINDOW_WIDTH * 3 / 8, WINDOW_HEIGHT / 2);
@@ -17,6 +19,9 @@ GameBoard::GameBoard(Game* game, int order):
         std::array<class Block*, GAMEBOARD_PARALLEL> line = {nullptr};
         mGameState.push_back(line);
     }
+
+    // HoldBoardの設定
+    initializeHoldBoard();
 }
 
 void GameBoard::update()
@@ -181,4 +186,15 @@ void GameBoard::updateBlockPosition()
             }
         }
     }
+}
+
+void GameBoard::initializeHoldBoard()
+{
+    // HoldBoardの設定
+    mHoldBoard = new SideBoard(mGame, 40, this);
+    Vector2 position = getPosition();
+    position.x -= mTextureSize.x / 2 + 100;
+    position.y -= mTextureSize.y / 2 - 100;
+    mHoldBoard->setPosition(position);
+    mHoldBoard->updateRectangle();   
 }
