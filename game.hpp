@@ -49,6 +49,9 @@ public:
     // mKeyboardStateを返す
     auto getKeyboardState(){return mKeyboardState;}
 
+    // ゲーム終了の呼び出し
+    void gameover(){mIsContinuedGame = false;}
+
 private:
     // 入力処理
     void inputProcess();

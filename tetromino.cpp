@@ -325,4 +325,9 @@ void Tetromino::createBlock(EType type)
         mShadowBlock.push_back(shadowBlock);
         mBackup.push_back(coordinate);
     }
+
+    if(!isCoordinateCorrect(mBlock))
+    {
+        mGame->gameover();
+    }
 }
