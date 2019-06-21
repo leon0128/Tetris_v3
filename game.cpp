@@ -171,7 +171,7 @@ void Game::updateGame()
     // アクターの更新
     for(int i = 0; i < (int)mComponentActor.size(); i++)
     {
-        mComponentSpriteActor[i]->update();
+        mComponentActor[i]->update();
     }
 }
 
