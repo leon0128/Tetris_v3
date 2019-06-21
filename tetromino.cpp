@@ -10,7 +10,8 @@ Tetromino::Tetromino(Game* game,
     mGameBoard(gameBoard),
     mType(type),
     mDownFrame(0),
-    mMoveFrame(0)
+    mMoveFrame(0),
+    mIsQuickDrop(false)
 {
     createBlock(mType);
     mDownFrame = mGame->getFrameCount();
@@ -25,11 +26,11 @@ void Tetromino::update()
     }
 }
 
-void Tetromino::parallelMove(int direction)
+bool Tetromino::parallelMove(int direction)
 {
     if(direction == 0)
     {
-        return;
+        return true;
     }
 
     storeCoordinate();
@@ -44,15 +45,18 @@ void Tetromino::parallelMove(int direction)
     if(!isCoordinateCorrect())
     {
         restoreCoordinate();
+        return false;
     }
+    
+    return true;
 }
 
-void Tetromino::verticalMove(int direction)
+bool Tetromino::verticalMove(int direction)
 {
     if(direction == 0 &&
        mGame->getFrameCount() - mDownFrame  < DROP_COUNT)
     {
-        return;
+        return true;
     }
 
     storeCoordinate();
@@ -68,19 +72,21 @@ void Tetromino::verticalMove(int direction)
     if(!isCoordinateCorrect())
     {
         restoreCoordinate();
+        return false;
     }
     else
     {
         // 下に下がった時のフレームの更新
         mDownFrame = mGame->getFrameCount();
+        return true;
     }
 }
 
-void Tetromino::rotationMove(int direction)
+bool Tetromino::rotationMove(int direction)
 {
     if(direction == 0)
     {
-        return;
+        return true;
     }
 
     // 優先度の高いブロックを中心として処理
@@ -107,7 +113,7 @@ void Tetromino::rotationMove(int direction)
         
         if(isCoordinateCorrect())
         {
-            break;
+            return true;
         }
         else
         {
@@ -121,7 +127,7 @@ void Tetromino::rotationMove(int direction)
             }
             if(isCoordinateCorrect())
             {
-                break;
+                return true;
             }
             else
             {
@@ -129,12 +135,15 @@ void Tetromino::rotationMove(int direction)
             }
         }
     }
+
+    return false;
 }
 
 void Tetromino::quickDrop(bool isQuickDrop)
 {
     if(!isQuickDrop)
     {
+        mIsQuickDrop = false;
         return;
     }
 
@@ -142,9 +151,9 @@ void Tetromino::quickDrop(bool isQuickDrop)
     bool isCorrectMove = true;
     while(isCorrectMove)
     {
-        verticalMove(-1);
-        isCorrectMove = isCoordinateCorrect();
+        isCorrectMove = verticalMove((int)-1);
     }
+    mIsQuickDrop = true;
 }
 
 bool Tetromino::isCoordinateCorrect()

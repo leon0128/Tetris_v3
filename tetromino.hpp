@@ -17,15 +17,18 @@ public:
     // 平行移動と回転移動
     // parallelMove(),vertilcalMove()は、引数の値で移動の向き
     // rotationMove()は-1で半時計回り、+1で時計回り
-    void parallelMove(int direction);
-    void verticalMove(int direction);
-    void rotationMove(int direction);
+    // 戻り値は移動が成功したか
+    bool parallelMove(int direction);
+    bool verticalMove(int direction);
+    bool rotationMove(int direction);
     void quickDrop(bool isQuickDrop);
 
     // mBlockの取得
     auto getBlock(){return mBlock;}
     // mMoveFrameの取得
     int getMoveFrame(){return mMoveFrame;}
+    // mIsQuickDropの取得
+    bool isQuickDrop(){return mIsQuickDrop;}
 
 private:
     // mBlockの各ブロックが正しい位置にあるか
@@ -51,4 +54,6 @@ private:
     int mDownFrame;
     // 最後に座標を移動した時のFrame
     int mMoveFrame;
+    // クイックドロップしたかどうか
+    bool mIsQuickDrop;
 };

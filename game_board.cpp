@@ -91,7 +91,8 @@ void GameBoard::updateActiveTetromino()
 
 void GameBoard::updateGameState()
 {
-    if(mGame->getFrameCount() - mActiveTetrominio->getMoveFrame() < FIX_COUNT)
+    if(mGame->getFrameCount() - mActiveTetrominio->getMoveFrame() < FIX_COUNT && 
+       !mActiveTetrominio->isQuickDrop())
     {
         return ;
     }
