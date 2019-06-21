@@ -2,12 +2,14 @@
 #include "tetromino.hpp"
 #include "block.hpp"
 #include "side_board.hpp"
+#include "score_board.hpp"
 
 GameBoard::GameBoard(Game* game, int order):
     SpriteActor(game, order),
     mActiveTetrominio(nullptr),
     mHoldBoard(nullptr),
-    mIsHolded(false)
+    mIsHolded(false),
+    mScoreBoard(nullptr)
 {
     // 自身の位置とテクスチャの設定
     mPosition.set(WINDOW_WIDTH * 3 / 10, WINDOW_HEIGHT / 2);
@@ -37,6 +39,8 @@ GameBoard::GameBoard(Game* game, int order):
     initializeHoldBoard();
     // NextBoardの設定
     initializeNextBoard();
+    // ScoreBoardnの設定
+    initializeScoreBoard();
 }
 
 void GameBoard::update()
@@ -275,4 +279,14 @@ void GameBoard::initializeNextBoard()
                                 type);
         mPendingTetromino.erase(iterator);
     }
+}
+
+void GameBoard::initializeScoreBoard()
+{
+    mScoreBoard = new ScoreBoard(mGame, 120, this);
+    Vector2 position = mPosition;
+    position.x += 500;
+    position.y += 100;
+    mScoreBoard->setPosition(position);
+    mScoreBoard->updateRectangle();
 }

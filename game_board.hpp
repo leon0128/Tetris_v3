@@ -38,6 +38,7 @@ private:
     // GameBoardが保持する各オブジェクトの初期化
     void initializeHoldBoard();
     void initializeNextBoard();
+    void initializeScoreBoard();
 
     // ブロックを格納する配列
     std::vector<std::array<class Block*, GAMEBOARD_PARALLEL>> mGameState;
@@ -55,4 +56,6 @@ private:
     class SideBoard* mHoldBoard;
     // holdを実行したかどうか
     bool mIsHolded;
+    // ScoreBoard
+    class ScoreBoard* mScoreBoard;
 };
