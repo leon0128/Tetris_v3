@@ -45,7 +45,7 @@ bool Tetromino::parallelMove(int direction)
         return true;
     }
 
-    storeCoordinate();
+    storeCoordinate(mBlock);
 
     for(auto block : mBlock)
     {
@@ -54,9 +54,9 @@ bool Tetromino::parallelMove(int direction)
         block->setCoordinate(temp);
     }
 
-    if(!isCoordinateCorrect())
+    if(!isCoordinateCorrect(mBlock))
     {
-        restoreCoordinate();
+        restoreCoordinate(mBlock);
         return false;
     }
     
@@ -71,7 +71,7 @@ bool Tetromino::verticalMove(int direction)
         return true;
     }
 
-    storeCoordinate();
+    storeCoordinate(mBlock);
 
     // 1マス移動
     for(auto block : mBlock)
@@ -81,9 +81,9 @@ bool Tetromino::verticalMove(int direction)
         block->setCoordinate(temp);
     }
 
-    if(!isCoordinateCorrect())
+    if(!isCoordinateCorrect(mBlock))
     {
-        restoreCoordinate();
+        restoreCoordinate(mBlock);
         return false;
     }
     else
@@ -104,7 +104,7 @@ bool Tetromino::rotationMove(int direction)
     // 優先度の高いブロックを中心として処理
     for(int i = 0; i < (int)mBlock.size(); i++)
     {
-        storeCoordinate();
+        storeCoordinate(mBlock);
 
         for(auto block : mBlock)
         {
@@ -123,7 +123,7 @@ bool Tetromino::rotationMove(int direction)
             block->setCoordinate(target);
         }
         
-        if(isCoordinateCorrect())
+        if(isCoordinateCorrect(mBlock))
         {
             return true;
         }
@@ -137,13 +137,13 @@ bool Tetromino::rotationMove(int direction)
                 temp.y -= 1;
                 block->setCoordinate(temp);
             }
-            if(isCoordinateCorrect())
+            if(isCoordinateCorrect(mBlock))
             {
                 return true;
             }
             else
             {
-                restoreCoordinate();
+                restoreCoordinate(mBlock);
             }
         }
     }
@@ -174,15 +174,38 @@ void Tetromino::updateShadow()
     {
         return ;
     }
-    
+
+    // mBlockの座標をmShadowBlockにコピー
+    for(int i = 0; i < (int)mBlock.size(); i++)
+    {
+        mShadowBlock[i]->setCoordinate(mBlock[i]->getCoordinate());
+    }
+
+    // 移動が失敗するまで下に移動
+    bool isCorrectMove = true;
+    while(isCorrectMove)
+    {
+        storeCoordinate(mShadowBlock);
+        for(auto block : mShadowBlock)
+        {
+            Vector2 temp = block->getCoordinate();
+            temp.y -= 1;
+            block->setCoordinate(temp);
+        }
+        if(!isCoordinateCorrect(mShadowBlock))
+        {
+            restoreCoordinate(mShadowBlock);
+            isCorrectMove = false;
+        }
+    }
 }
 
-bool Tetromino::isCoordinateCorrect()
+bool Tetromino::isCoordinateCorrect(std::vector<Block*> blocks)
 {
     auto gameState = mGameBoard->getGameState();
     Vector2 coordinate;
 
-    for(auto block : mBlock)
+    for(auto block : blocks)
     {
         coordinate = block->getCoordinate();
         
@@ -203,20 +226,20 @@ bool Tetromino::isCoordinateCorrect()
     return true;
 }
 
-void Tetromino::storeCoordinate()
+void Tetromino::storeCoordinate(std::vector<Block*> blocks)
 {
     mBackup.clear();
-    for(auto block : mBlock)
+    for(auto block : blocks)
     {
         mBackup.push_back(block->getCoordinate());
     }
 }
 
-void Tetromino::restoreCoordinate()
+void Tetromino::restoreCoordinate(std::vector<Block*> blocks)
 {
-    for(int i = 0; i < (int)mBlock.size(); i++)
+    for(int i = 0; i < (int)blocks.size(); i++)
     {
-        mBlock[i]->setCoordinate(mBackup[i]);
+        blocks[i]->setCoordinate(mBackup[i]);
     }
 }
 
@@ -293,7 +316,7 @@ void Tetromino::createBlock(EType type)
         shadowBlock->setTexture(texture);
         block->setScale(static_cast<float>(BLOCK_SIZE) / 60.0f);
         shadowBlock->setScale(static_cast<float>(BLOCK_SIZE) / 60.0f);
-        shadowBlock->setClear(0.25f);
+        shadowBlock->setClear(0.35f);
         mBlock.push_back(block);
         mShadowBlock.push_back(shadowBlock);
         mBackup.push_back(coordinate);

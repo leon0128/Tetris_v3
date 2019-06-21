@@ -36,11 +36,11 @@ public:
 
 private:
     // mBlockの各ブロックが正しい位置にあるか
-    bool isCoordinateCorrect();
+    bool isCoordinateCorrect(std::vector<class Block*>);
     // mBackupに値を格納
-    void storeCoordinate();
+    void storeCoordinate(std::vector<class Block*>);
     // mBlockの座標をmBackupに変更
-    void restoreCoordinate();
+    void restoreCoordinate(std::vector<class Block*>);
     
     // 引数のタイプに応じてブロックを作成
     void createBlock(EType type);
