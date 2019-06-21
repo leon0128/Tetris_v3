@@ -10,7 +10,7 @@ GameBoard::GameBoard(Game* game, int order):
     mHoldBoard(nullptr)
 {
     // 自身の位置とテクスチャの設定
-    mPosition.set(WINDOW_WIDTH * 3 / 8, WINDOW_HEIGHT / 2);
+    mPosition.set(WINDOW_WIDTH * 3 / 10, WINDOW_HEIGHT / 2);
     setTexture(mGame->getTexture("image/game_board.png"));
     setClear(0.65f);
 
@@ -226,7 +226,7 @@ void GameBoard::initializeHoldBoard()
     // HoldBoardの設定
     mHoldBoard = new SideBoard(mGame, 40, this);
     Vector2 position = getPosition();
-    position.x -= mTextureSize.x / 2 + 100;
+    position.x -= mTextureSize.x / 2 + 65;
     position.y -= mTextureSize.y / 2 - 100;
     mHoldBoard->setPosition(position);
     mHoldBoard->updateRectangle();   
