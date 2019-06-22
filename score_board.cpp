@@ -20,6 +20,43 @@ ScoreBoard::ScoreBoard(Game* game, int order, GameBoard* gameBaord):
     createDescriptionTexture();
 }
 
+void ScoreBoard::update()
+{
+    std::vector<std::string> message;
+
+    int hour, minute, second, millisecond, remainder;
+    int frameCount = mGame->getFrameCount();
+    hour = frameCount / (60 * 60 * 60);
+    minute = (frameCount - hour * (60 * 60 * 60)) / (60 * 60);
+    second = (frameCount - hour * (60 * 60 * 60) - minute * (60 * 60)) / 60;
+    remainder = (frameCount - hour * (60 * 60 * 60) - minute * (60 * 60)) % 60;
+    millisecond =  5.0f / 3.0f * remainder;
+    std::string igt = std::to_string(hour) + ":" +
+                      std::to_string(minute) + ":";
+    // 桁数固定用
+    if(second < 10)
+    {
+        std::string s = "0" + std::to_string(second) + ".";
+        igt += s;
+    }
+    else
+    {
+        std::string s = std::to_string(second) + ".";
+        igt += s;
+    }
+    if(millisecond < 10)
+    {
+        std::string ms = "0" + std::to_string(millisecond);
+        igt += ms;
+    }
+    else
+    {
+        igt += std::to_string(millisecond);
+    }
+
+    message.push_back(igt);
+}
+
 void ScoreBoard::draw(SDL_Renderer* renderer)
 {
     SpriteActor::draw(renderer);
@@ -71,5 +108,9 @@ void ScoreBoard::createDescriptionTexture()
 
         TextureAndRectangle tar = {texture, rectangle};
         mDescriptionTexture.push_back(tar);
+        
+        SDL_Rect rect;
+        TextureAndRectangle temp = {nullptr, rect};
+        mScoreTexture.push_back(temp);
     }
 }

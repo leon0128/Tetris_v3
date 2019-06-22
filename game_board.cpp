@@ -52,6 +52,7 @@ void GameBoard::update()
     hold();
     updateActiveTetromino();
     updateGameState();
+    updateScore();
 }
 
 void GameBoard::pickTetromino()
@@ -188,6 +189,42 @@ void GameBoard::updateGameState()
         }
     }
 
+    // mScoresの更新
+    int score = atoi(mScores[1].c_str());
+    int deletedLine = atoi(mScores[2].c_str());
+    int usedMino = atoi(mScores[3].c_str()) + 1;
+    int number;
+    switch (filledLine.size())
+    {
+        case(1):
+            deletedLine += 1;
+            score += 200;
+            number = atoi(mScores[7].c_str()) + 1;
+            mScores[7] = std::to_string(number);
+            break;
+        case(2):
+            deletedLine += 2;
+            score += 400;
+            number = atoi(mScores[6].c_str()) + 1;
+            mScores[6] = std::to_string(number);
+            break;
+        case(3):
+            deletedLine += 3;
+            score += 800;
+            number = atoi(mScores[5].c_str()) + 1;
+            mScores[5] = std::to_string(number);
+        case(4):
+            deletedLine += 4;
+            score += 1600;
+            number = atoi(mScores[4].c_str()) + 1;
+            mScores[4] = std::to_string(number);
+        default:
+            break;
+    }
+    mScores[1] = std::to_string(score);
+    mScores[2] = std::to_string(deletedLine);
+    mScores[3] = std::to_string(usedMino);
+
     // 埋め尽くされた列の削除と新しい列の作成
     while(!filledLine.empty())
     {
@@ -245,6 +282,42 @@ void GameBoard::updateBlockPosition()
     }
 }
 
+void GameBoard::updateScore()
+{
+    // それぞれの計算
+    // IGT
+    int hour, minute, second, millisecond, remainder;
+    int frameCount = mGame->getFrameCount();
+    hour = frameCount / (60 * 60 * 60);
+    minute = (frameCount - hour * (60 * 60 * 60)) / (60 * 60);
+    second = (frameCount - hour * (60 * 60 * 60) - minute * (60 * 60)) / 60;
+    remainder = (frameCount - hour * (60 * 60 * 60) - minute * (60 * 60)) % 60;
+    millisecond =  5.0f / 3.0f * remainder;
+    std::string igt = std::to_string(hour) + ":" +
+                      std::to_string(minute) + ":";
+    // 桁数固定用
+    if(second < 10)
+    {
+        std::string s = "0" + std::to_string(second) + ".";
+        igt += s;
+    }
+    else
+    {
+        std::string s = std::to_string(second) + ".";
+        igt += s;
+    }
+    if(millisecond < 10)
+    {
+        std::string ms = "0" + std::to_string(millisecond);
+        igt += ms;
+    }
+    else
+    {
+        igt += std::to_string(millisecond);
+    }
+    mScores[0] = igt;
+}
+
 void GameBoard::initializeHoldBoard()
 {
     // HoldBoardの設定
@@ -284,4 +357,8 @@ void GameBoard::initializeNextBoard()
 void GameBoard::initializeScoreBoard()
 {
     mScoreBoard = new ScoreBoard(mGame, 120, this);
+    for(int i = 0; i < (int)mScores.size(); i++)
+    {
+        mScores[i] = "0";
+    }
 }

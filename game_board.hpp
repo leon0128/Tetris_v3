@@ -22,6 +22,8 @@ public:
 
     // mGameStateの取得
     auto getGameState(){return mGameState;}
+    // Scoreの取得
+    auto getScore(){return mScores;}
 
 private:
     // mActiveTetrominoがnullptrの場合、新しいミノを作成
@@ -34,6 +36,8 @@ private:
     void updateGameState();
     // mGameStateに格納されているミノの位置を更新
     void updateBlockPosition();
+    // Scoreの更新
+    void updateScore();
 
     // GameBoardが保持する各オブジェクトの初期化
     void initializeHoldBoard();
@@ -58,4 +62,6 @@ private:
     bool mIsHolded;
     // ScoreBoard
     class ScoreBoard* mScoreBoard;
+    // 各スコアを格納する配列
+    std::array<std::string, 8> mScores;
 };
