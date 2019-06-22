@@ -31,7 +31,7 @@ ScoreBoard::~ScoreBoard()
 
 void ScoreBoard::update()
 {
-    createScoreTexture();
+    // createScoreTexture();
 }
 
 void ScoreBoard::draw(SDL_Renderer* renderer)
@@ -71,7 +71,8 @@ void ScoreBoard::createDescriptionTexture()
         SDL_Surface* surface = TTF_RenderUTF8_Blended(mGame->getFont(),
                                                       message[i].c_str(),
                                                       mColor);
-        
+        mSurfaces.push_back(surface);
+
         SDL_Texture* texture = SDL_CreateTextureFromSurface(mGame->getRenderer(),
                                                             surface);
         SDL_FreeSurface(surface);
@@ -105,13 +106,13 @@ void ScoreBoard::createScoreTexture()
 
     for(int i = 0; i < (int)scores.size(); i++)
     {
-        SDL_Surface* surface = TTF_RenderUTF8_Blended(mGame->getFont(),
+        mSurfaces[i] = TTF_RenderUTF8_Blended(mGame->getFont(),
                                                       scores[i].c_str(),
                                                       mColor);
         
         mScoreTexture[i].texture = SDL_CreateTextureFromSurface(mGame->getRenderer(),
-                                                                surface);
-        SDL_FreeSurface(surface);
+                                                                mSurfaces[i]);
+        SDL_FreeSurface(mSurfaces[i]);
 
         SDL_QueryTexture(mScoreTexture[i].texture,
                          nullptr,

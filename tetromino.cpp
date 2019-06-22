@@ -247,7 +247,6 @@ void Tetromino::createBlock(EType type)
 {
     std::array<Vector2, 4> tempCoordinate;
     SDL_Texture* texture;
-
     // 作成するブロックの各座標を設定
     switch(type)
     {
@@ -312,20 +311,22 @@ void Tetromino::createBlock(EType type)
             break;
     }
 
+    Block* block = nullptr;
     for(auto coordinate : tempCoordinate)
     {
-        Block* block = new Block(mGame, 100, mGameBoard, coordinate);
-        Block* shadowBlock = new Block(mGame, 90, mGameBoard, coordinate);
+        // mBlock
+        block = new Block(mGame, 100, mGameBoard, coordinate);
         block->setTexture(texture);
-        shadowBlock->setTexture(texture);
         block->setScale(static_cast<float>(BLOCK_SIZE) / 60.0f);
-        shadowBlock->setScale(static_cast<float>(BLOCK_SIZE) / 60.0f);
-        shadowBlock->setClear(0.35f);
         mBlock.push_back(block);
-        mShadowBlock.push_back(shadowBlock);
+        // mShadowBlock
+        block = new Block(mGame, 90, mGameBoard, coordinate);
+        block->setTexture(texture);
+        block->setScale(static_cast<float>(BLOCK_SIZE) / 60.0f);
+        block->setClear(0.35f);
+        mShadowBlock.push_back(block);
         mBackup.push_back(coordinate);
     }
-
     if(!isCoordinateCorrect(mBlock))
     {
         mGame->gameover();

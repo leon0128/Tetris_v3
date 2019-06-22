@@ -12,6 +12,7 @@
 #include <array>
 #include <cstring>
 #include <time.h>
+#include <mcheck.h>
 
 // ウィンドウの幅と高さ
 const int WINDOW_WIDTH = 1024;

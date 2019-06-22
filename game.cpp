@@ -202,7 +202,6 @@ bool Game::initializeSDL()
         SDL_Log("Could not initialize SDL: %s", SDL_GetError());
         return false;
     }
-
     // ウィンドウ作成
     mWindow = SDL_CreateWindow("TETRIS",
                                 100,
@@ -261,7 +260,6 @@ bool Game::initializeSDL()
     createTexture("image/tetromino/s_mino.png");
     createTexture("image/tetromino/t_mino.png");
     createTexture("image/tetromino/z_mino.png");
-
     return true;
 }
 

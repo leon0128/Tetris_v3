@@ -4,7 +4,7 @@
 
 // 固定されるまでの時間と落下時間
 // === FIX_COUNT >= DROP_COUNT ===
-const int FIX_COUNT = 60;
+const int FIX_COUNT = 100000;
 const int DROP_COUNT = 60;
 // 長押し判定までのフレームと移動速度
 const int KEEPED_FRAME = 15;

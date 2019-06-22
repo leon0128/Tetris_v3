@@ -1,5 +1,4 @@
 #include "game.hpp"
-
 int main(int argc, char** argv)
 {
     Game game;
@@ -8,6 +7,5 @@ int main(int argc, char** argv)
         game.runLoop();
     }
     game.finalize();
-
     return 0;
 }

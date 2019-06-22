@@ -27,6 +27,8 @@ private:
     // 実際にScoreを表示するTexture
     void createScoreTexture();
     std::vector<struct TextureAndRectangle> mScoreTexture;
+    // surfaceのポインタを格納しておく
+    std::vector<SDL_Surface*> mSurfaces;
 
     // 描画するフォントの色
     SDL_Color mColor;
