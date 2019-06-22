@@ -304,7 +304,10 @@ void Game::initializeActor()
 
 void Game::finalizeActor()
 {
-    mComponentActor.clear();
+    while(!mComponentActor.empty())
+    {
+        delete mComponentActor[0];
+    }
 }
 
 void Game::createTexture(const std::string& filename)

@@ -20,7 +20,7 @@ Tetromino::Tetromino(Game* game,
 
 Tetromino::~Tetromino()
 {
-    for(int i = 0; i < (int)mShadowBlock.size(); i++)
+    for(int i = 0; i < (int)mBlock.size(); i++)
     {
         delete mShadowBlock[i];
     }

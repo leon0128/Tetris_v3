@@ -20,6 +20,15 @@ ScoreBoard::ScoreBoard(Game* game, int order, GameBoard* gameBaord):
     createDescriptionTexture();
 }
 
+ScoreBoard::~ScoreBoard()
+{  
+    for(int i = 0; i < (int)mScoreTexture.size(); i++)
+    {
+        SDL_DestroyTexture(mDescriptionTexture[i].texture);
+        SDL_DestroyTexture(mScoreTexture[i].texture);
+    }
+}
+
 void ScoreBoard::update()
 {
     createScoreTexture();

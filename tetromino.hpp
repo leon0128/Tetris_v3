@@ -10,9 +10,7 @@ public:
               int order,
               class GameBoard* gameBoard,
               EType type);
-
-    // 影に使用したブロックの削除
-    virtual ~Tetromino();
+    ~Tetromino();
 
     // 各ブロックのmCoordinateを元にmPositionを更新
     void update() override;

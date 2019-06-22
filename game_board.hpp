@@ -16,6 +16,7 @@ class GameBoard : public SpriteActor
 {
 public:
     GameBoard(class Game* game, int order);
+    ~GameBoard();
 
     // いくつかの関数の実行
     void update() override;

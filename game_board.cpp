@@ -43,6 +43,16 @@ GameBoard::GameBoard(Game* game, int order):
     initializeScoreBoard();
 }
 
+GameBoard::~GameBoard()
+{
+    delete mScoreBoard;
+    delete mHoldBoard;
+    for(int i = 0; i < NEXT_SIZE; i++)
+    {
+        delete mNextBoard[i];
+    }
+}
+
 void GameBoard::update()
 {
     // キーボードの状態の更新
@@ -102,11 +112,11 @@ void GameBoard::hold()
 
     EType temp = mHoldBoard->getType();
     mHoldBoard->setType(mActiveTetrominio->getType());
-    
     for(int i = 0; i < (int)mActiveTetrominio->getBlock().size(); i++)
     {
         delete mActiveTetrominio->getBlock()[i];
     }
+
     delete mActiveTetrominio;
     mActiveTetrominio = nullptr;
 
