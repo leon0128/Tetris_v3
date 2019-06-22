@@ -24,6 +24,7 @@ private:
     void createDescriptionTexture();
     std::vector<struct TextureAndRectangle> mDescriptionTexture;
     // 実際にScoreを表示するTexture
+    void createScoreTexture();
     std::vector<struct TextureAndRectangle> mScoreTexture;
 
     // 描画するフォントの色

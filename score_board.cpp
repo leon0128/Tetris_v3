@@ -22,39 +22,7 @@ ScoreBoard::ScoreBoard(Game* game, int order, GameBoard* gameBaord):
 
 void ScoreBoard::update()
 {
-    std::vector<std::string> message;
-
-    int hour, minute, second, millisecond, remainder;
-    int frameCount = mGame->getFrameCount();
-    hour = frameCount / (60 * 60 * 60);
-    minute = (frameCount - hour * (60 * 60 * 60)) / (60 * 60);
-    second = (frameCount - hour * (60 * 60 * 60) - minute * (60 * 60)) / 60;
-    remainder = (frameCount - hour * (60 * 60 * 60) - minute * (60 * 60)) % 60;
-    millisecond =  5.0f / 3.0f * remainder;
-    std::string igt = std::to_string(hour) + ":" +
-                      std::to_string(minute) + ":";
-    // 桁数固定用
-    if(second < 10)
-    {
-        std::string s = "0" + std::to_string(second) + ".";
-        igt += s;
-    }
-    else
-    {
-        std::string s = std::to_string(second) + ".";
-        igt += s;
-    }
-    if(millisecond < 10)
-    {
-        std::string ms = "0" + std::to_string(millisecond);
-        igt += ms;
-    }
-    else
-    {
-        igt += std::to_string(millisecond);
-    }
-
-    message.push_back(igt);
+    createScoreTexture();
 }
 
 void ScoreBoard::draw(SDL_Renderer* renderer)
@@ -67,6 +35,13 @@ void ScoreBoard::draw(SDL_Renderer* renderer)
                        mDescriptionTexture[i].texture,
                        nullptr,
                        &mDescriptionTexture[i].rectangle);
+    }
+    for(int i = 0; i < (int)mScoreTexture.size(); i++)
+    {
+        SDL_RenderCopy(renderer,
+                       mScoreTexture[i].texture,
+                       nullptr,
+                       &mScoreTexture[i].rectangle);
     }
 }
 
@@ -112,5 +87,34 @@ void ScoreBoard::createDescriptionTexture()
         SDL_Rect rect;
         TextureAndRectangle temp = {nullptr, rect};
         mScoreTexture.push_back(temp);
+    }
+}
+
+void ScoreBoard::createScoreTexture()
+{
+    auto scores = mGameBoard->getScore();
+
+    for(int i = 0; i < (int)scores.size(); i++)
+    {
+        SDL_Surface* surface = TTF_RenderUTF8_Blended(mGame->getFont(),
+                                                      scores[i].c_str(),
+                                                      mColor);
+        
+        mScoreTexture[i].texture = SDL_CreateTextureFromSurface(mGame->getRenderer(),
+                                                                surface);
+        SDL_FreeSurface(surface);
+
+        SDL_QueryTexture(mScoreTexture[i].texture,
+                         nullptr,
+                         nullptr,
+                         &mScoreTexture[i].rectangle.w,
+                         &mScoreTexture[i].rectangle.h);
+        mScoreTexture[i].rectangle.x = static_cast<int>(mPosition.x +
+                                       mTextureSize.x / 2 -
+                                       mScoreTexture[i].rectangle.w - 10);
+                      
+        mScoreTexture[i].rectangle.y = static_cast<int>(mPosition.y -
+                                       (mTextureSize.y - 30) / 2 +
+                                       mTextureSize.y / mScoreTexture.size() * i);
     }
 }
