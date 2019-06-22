@@ -213,11 +213,13 @@ void GameBoard::updateGameState()
             score += 800;
             number = atoi(mScores[5].c_str()) + 1;
             mScores[5] = std::to_string(number);
+            break;
         case(4):
             deletedLine += 4;
             score += 1600;
             number = atoi(mScores[4].c_str()) + 1;
             mScores[4] = std::to_string(number);
+            break;
         default:
             break;
     }
