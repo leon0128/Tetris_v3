@@ -23,6 +23,7 @@ ScoreBoard::ScoreBoard(Game* game, int order, GameBoard* gameBaord):
 
 ScoreBoard::~ScoreBoard()
 {  
+    printScore();
     for(int i = 0; i < (int)mScoreTexture.size(); i++)
     {
         SDL_DestroyTexture(mDescriptionTexture[i].texture);
@@ -46,6 +47,27 @@ void ScoreBoard::draw(SDL_Renderer* renderer)
                        &mDescriptionTexture[i].rectangle);
     }
     drawScore(renderer);
+}
+
+void ScoreBoard::printScore()
+{
+    std::vector<std::string> message;
+    auto scores = mGameBoard->getScore();
+    message.push_back("    IGT     :");  
+    message.push_back("   SCORE    :");
+    message.push_back("DELETED LINE:");
+    message.push_back("  USED MINO :");
+    message.push_back("   TETRIS   :");
+    message.push_back("   3 LINES  :");
+    message.push_back("   2 LINES  :");
+    message.push_back("   1 LINE   :");
+
+    SDL_Log("=====RESULT=====");
+    for(int i = 0; i < (int)message.size(); i++)
+    {
+        SDL_Log("%s %s", message[i].c_str(), scores[i].c_str());
+    }
+    SDL_Log("================");
 }
 
 void ScoreBoard::createDescriptionTexture()

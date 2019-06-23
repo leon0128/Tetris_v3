@@ -9,7 +9,7 @@ public:
                int order,
                class GameBoard* gameBoard);
     ~ScoreBoard();
-    
+
     void draw(SDL_Renderer* renderer) override;
 
 private:
@@ -20,6 +20,9 @@ private:
         SDL_Rect rectangle;
     };
     
+    // 終了時にScoreをコンソールに出力
+    void printScore();
+
     // Description用のテクスチャを作成しmDescriptionTextureに格納
     void createDescriptionTexture();
     std::vector<struct TextureAndRectangle> mDescriptionTexture;
