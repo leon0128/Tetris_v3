@@ -9,8 +9,7 @@ public:
                int order,
                class GameBoard* gameBoard);
     ~ScoreBoard();
-
-    void update() override;
+    
     void draw(SDL_Renderer* renderer) override;
 
 private:

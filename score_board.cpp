@@ -27,10 +27,11 @@ ScoreBoard::~ScoreBoard()
     {
         SDL_DestroyTexture(mDescriptionTexture[i].texture);
     }
-}
-
-void ScoreBoard::update()
-{
+    for(auto texture: mScoreTexture)
+    {
+        SDL_DestroyTexture(texture.second);
+    }
+    mScoreTexture.clear();
 }
 
 void ScoreBoard::draw(SDL_Renderer* renderer)
