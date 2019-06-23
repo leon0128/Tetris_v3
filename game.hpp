@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <array>
 #include <cstring>
+#include <thread>
 #include <time.h>
 
 // ウィンドウの幅と高さ
