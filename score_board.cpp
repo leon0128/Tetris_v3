@@ -44,6 +44,7 @@ void ScoreBoard::draw(SDL_Renderer* renderer)
                        nullptr,
                        &mDescriptionTexture[i].rectangle);
     }
+    drawScore(renderer);
 }
 
 void ScoreBoard::createDescriptionTexture()
@@ -120,4 +121,31 @@ void ScoreBoard::createMap()
 
 void ScoreBoard::drawScore(SDL_Renderer* renderer)
 {
+    // 文字１つ分の大きさを取得
+    SDL_Rect rectangle;
+    SDL_QueryTexture(mScoreTexture[':'],
+                     nullptr,
+                     nullptr,
+                     &rectangle.w,
+                     &rectangle.h);
+
+    // 描画
+    auto scores = mGameBoard->getScore();
+    for(int i = 0; i < (int)scores.size(); i++)
+    {   
+        rectangle.y = static_cast<int>(mPosition.y -
+                                       (mTextureSize.y - 30) / 2 +
+                                       mTextureSize.y / scores.size() * i);   
+        for(int j = 0; j < (int)std::strlen(scores[i].c_str()); j++)
+        {
+            rectangle.x = static_cast<int>(mPosition.x +
+                                           mTextureSize.x / 2 - 10 -
+                                           rectangle.w * (std::strlen(scores[i].c_str()) - j));
+            
+            SDL_RenderCopy(renderer,
+                           mScoreTexture[scores[i].c_str()[j]],
+                           nullptr,
+                           &rectangle);
+        }
+    }
 }
