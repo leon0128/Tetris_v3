@@ -24,10 +24,14 @@ ScoreBoard::ScoreBoard(Game* game, int order, GameBoard* gameBaord):
 ScoreBoard::~ScoreBoard()
 {  
     printScore();
-    for(int i = 0; i < (int)mScoreTexture.size(); i++)
+    for(int i = 0; i < (int)mDescriptionTexture.size(); i++)
     {
-        SDL_DestroyTexture(mDescriptionTexture[i].texture);
+        if(!mDescriptionTexture[i].texture)
+        {
+            SDL_DestroyTexture(mDescriptionTexture[i].texture);
+        }
     }
+    mDescriptionTexture.clear();ww
     for(auto texture: mScoreTexture)
     {
         SDL_DestroyTexture(texture.second);
