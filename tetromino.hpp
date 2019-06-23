@@ -1,6 +1,7 @@
 #pragma once
 
 #include "actor.hpp"
+#include "block.hpp"
 
 class Tetromino : public Actor
 {
