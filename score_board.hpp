@@ -24,11 +24,10 @@ private:
     // Description用のテクスチャを作成しmDescriptionTextureに格納
     void createDescriptionTexture();
     std::vector<struct TextureAndRectangle> mDescriptionTexture;
-    // 実際にScoreを表示するTexture
-    void createScoreTexture();
-    std::vector<struct TextureAndRectangle> mScoreTexture;
-    // surfaceのポインタを格納しておく
-    std::vector<SDL_Surface*> mSurfaces;
+    // scoreを描画する
+    void createMap();
+    void drawScore(SDL_Renderer* renderer);
+    std::unordered_map<char, SDL_Texture*> mScoreTexture;
 
     // 描画するフォントの色
     SDL_Color mColor;
