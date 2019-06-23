@@ -17,6 +17,12 @@ public:
         NONE, I, O, T, L, J, S, Z
     };
 
+    // テトロミノの向き
+    enum EDirection
+    {
+        UP, RIGHT, DOWN, LEFT
+    };
+
     virtual void update(){}
 
     // メンバ変数の設定、取得
