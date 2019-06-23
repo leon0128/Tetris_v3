@@ -9,8 +9,8 @@ public:
        int order,
        class GameBoard* gameBoard);
 
-private:
+protected:
     //  所属するGameBoardクラス
     class GameBoard* mGameBoard;
-    
+
 };
