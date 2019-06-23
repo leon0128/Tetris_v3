@@ -31,7 +31,7 @@ ScoreBoard::~ScoreBoard()
             SDL_DestroyTexture(mDescriptionTexture[i].texture);
         }
     }
-    mDescriptionTexture.clear();ww
+    mDescriptionTexture.clear();
     for(auto texture: mScoreTexture)
     {
         SDL_DestroyTexture(texture.second);
