@@ -305,9 +305,18 @@ void GameBoard::updateScore()
     second = (frameCount - hour * (60 * 60 * 60) - minute * (60 * 60)) / 60;
     remainder = (frameCount - hour * (60 * 60 * 60) - minute * (60 * 60)) % 60;
     millisecond =  5.0f / 3.0f * remainder;
-    std::string igt = std::to_string(hour) + ":" +
-                      std::to_string(minute) + ":";
+    std::string igt = std::to_string(hour) + ":";
     // 桁数固定用
+    if(minute < 10)
+    {
+        std::string m = "0" + std::to_string(minute) + ":";
+        igt += m;
+    }
+    else
+    {
+        std::string m = std::to_string(minute) + ":";
+        igt += m;
+    }
     if(second < 10)
     {
         std::string s = "0" + std::to_string(second) + ".";
