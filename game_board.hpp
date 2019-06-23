@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sprite_actor.hpp"
+#include "ai.hpp"
 
 // 固定されるまでの時間と落下時間
 // === FIX_COUNT >= DROP_COUNT ===
@@ -27,6 +28,10 @@ public:
     auto getScore(){return mScores;}
 
 private:
+    // 入力処理
+    void inputKeyboardAndAI();
+    // AIが出した計算結果を処理
+    void inputAI();
     // mActiveTetrominoがnullptrの場合、新しいミノを作成
     void pickTetromino();
     // Hold操作
@@ -65,4 +70,11 @@ private:
     class ScoreBoard* mScoreBoard;
     // 各スコアを格納する配列
     std::array<std::string, 8> mScores;
+
+    // AI
+    class AI* mAI;
+    // AIの計算結果を格納
+    struct AI::Result mAIResult;
+    // 結果を初期化したか
+    bool mIsInitializeResult;
 };

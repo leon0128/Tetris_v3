@@ -34,7 +34,7 @@ public:
     bool isQuickDrop(){return mIsQuickDrop;}
     // mTypeの取得
     EType getType(){return mType;}
-    // mBlock[0]の座標を取得
+    // mBlock[0]の座標の取得
     class Vector2 getCenter(){return mBlock[0]->getCoordinate();}
 
 private:

@@ -3,20 +3,40 @@
 AI::AI(Game* game, int order, GameBoard* gameBoard):
     Actor(game, order),
     mGameBoard(gameBoard),
-    mIsCalculating(true)
+    mIsCalculating(false)
 {
 }
 
-void AI::startCalculation()
+void AI::startCalculation(EType active, 
+                          EType hold, 
+                          std::vector<EType> next,
+                          std::vector<std::array<Block*, GAMEBOARD_PARALLEL>> gameState)
 {
-    // mResultの初期化
     mIsCalculating = true;
-    mResult.direction = UP;
-    mResult.coordinate = 4;
-    mResult.isHoled = false;
-}
 
-void AI::endCalculation()
-{
-    mIsCalculating = false;
+    mActiveTetromino = active;
+    mHoldTetromino = hold;
+    mNextTetromino = next;
+
+    mVirtualGameState.clear();
+    // mVirtualGameStateの設定
+    for(int y = 0; y < (int)gameState.size(); y++)
+    {
+        std::array<bool, GAMEBOARD_PARALLEL> line;
+        mVirtualGameState.push_back(line);
+        for(int x = 0; x < (int)gameState[y].size(); x++)
+        {
+            if(gameState[y][x])
+            {
+                mVirtualGameState[y][x] = true;
+            }
+            else
+            {
+                mVirtualGameState[y][x] = false;
+            }
+        }
+    }
+    
+    // 別スレッドで計算実行
+    calculate();
 }

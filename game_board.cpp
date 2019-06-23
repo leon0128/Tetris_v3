@@ -3,13 +3,17 @@
 #include "block.hpp"
 #include "side_board.hpp"
 #include "score_board.hpp"
+#include "ai.hpp"
+#include "leon_ai.hpp"
 
 GameBoard::GameBoard(Game* game, int order):
     SpriteActor(game, order),
     mActiveTetrominio(nullptr),
     mHoldBoard(nullptr),
     mIsHolded(false),
-    mScoreBoard(nullptr)
+    mScoreBoard(nullptr),
+    mAI(nullptr),
+    mIsInitializeResult(false)
 {
     // 自身の位置とテクスチャの設定
     mPosition.set(WINDOW_WIDTH * 3 / 10, WINDOW_HEIGHT / 2);
@@ -41,10 +45,12 @@ GameBoard::GameBoard(Game* game, int order):
     initializeNextBoard();
     // ScoreBoardnの設定
     initializeScoreBoard();
+    mAI = new LeonAI(mGame, 150, this);
 }
 
 GameBoard::~GameBoard()
 {
+    delete mAI;
     delete mScoreBoard;
     delete mHoldBoard;
     for(int i = 0; i < NEXT_SIZE; i++)
@@ -55,14 +61,91 @@ GameBoard::~GameBoard()
 
 void GameBoard::update()
 {
-    // キーボードの状態の更新
-    mKeyboardState = mGame->getKeyboardState();
+    /* // キーボードの状態の更新
+    *  mKeyboardState = mGame->getKeyboardState();
     
+    *  pickTetromino();
+    *  hold();
+    *  updateActiveTetromino();
+    *  updateGameState();
+    *  updateScore();
+    */
+
+    inputKeyboardAndAI();
     pickTetromino();
     hold();
     updateActiveTetromino();
     updateGameState();
     updateScore();
+}
+
+void GameBoard::inputKeyboardAndAI()
+{
+    // keyboardの状態の更新
+    mKeyboardState = mGame->getKeyboardState();
+    // AIが存在するなら更新に関わるkeyの上書き
+    if(mAI)
+    {
+        inputAI();  
+    }
+}
+
+void GameBoard::inputAI()
+{
+    // mActiveTetrominoの挙動に関わる操作を無効化
+    mKeyboardState[SDL_SCANCODE_A] = 0;
+    mKeyboardState[SDL_SCANCODE_D] = 0;
+    mKeyboardState[SDL_SCANCODE_W] = 0;
+    mKeyboardState[SDL_SCANCODE_S] = 0;
+    mKeyboardState[SDL_SCANCODE_H] = 0;
+    mKeyboardState[SDL_SCANCODE_J] = 0;
+    mKeyboardState[SDL_SCANCODE_K] = 0; 
+
+    // AIの演算が終わっていない場合とmActiveTetrominoが存在しない場合何もしない
+    if(mAI->isCalculating() || !mActiveTetrominio)
+    {
+        return;   
+    }
+    
+    // mAIResultの初期化
+    if(!mIsInitializeResult)
+    {
+        mAIResult = mAI->getResult();
+        mIsInitializeResult = true;
+    }
+
+    // ホールドの処理
+    if(mAIResult.isHoled)
+    {
+        mKeyboardState[SDL_SCANCODE_H] = 1;
+        mAIResult.isHoled = false;
+        return;
+    }
+    // 回転移動処理
+    if(!mAIResult.direction % 4 == 0)
+    {
+        mKeyboardState[SDL_SCANCODE_K] = 1;
+        mAIResult.direction -= 1;
+        return;
+    }
+    // 並行移動処理
+    if(mActiveTetrominio->getMoveFrame() >= mGame->getFrameCount() - 1)
+    {
+        if(mAIResult.coordinate < mActiveTetrominio->getCenter().x)
+        {
+            mKeyboardState[SDL_SCANCODE_A] = 1;
+            return;
+        }
+        else if(mAIResult.coordinate > mActiveTetrominio->getCenter().x)
+        {
+            mKeyboardState[SDL_SCANCODE_D] = 1;
+            return;
+        }
+    }
+
+    // クイックドロップ
+    mKeyboardState[SDL_SCANCODE_W] = 1;
+    mIsInitializeResult = false;
 }
 
 void GameBoard::pickTetromino()
@@ -100,6 +183,23 @@ void GameBoard::pickTetromino()
                               mPendingTetromino.end(),
                               type);
     mPendingTetromino.erase(iterator);
+
+    // AIが存在し、計算をしていないなら計算開始
+    if(mAI)
+    {
+        if(!mAI->isCalculating())
+        {
+            std::vector<EType> next;
+            for(auto board : mNextBoard)
+            {
+                next.push_back(board->getType());
+            }
+            mAI->startCalculation(mActiveTetrominio->getType(),
+                                  mHoldBoard->getType(),
+                                  next,
+                                  mGameState);
+        }
+    }
 }
 
 void GameBoard::hold()

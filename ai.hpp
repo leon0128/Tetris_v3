@@ -12,18 +12,33 @@ public:
     // 結果を格納する構造体
     struct Result
     {
-        enum EDirection direction; // 向き
-        int coordinate;            // 中心のx座標
-        bool isHoled;              // ホールドするかどうか
+        unsigned int direction;  // 向き
+        int coordinate;          // 中心のx座標
+        bool isHoled;            // ホールドするかどうか
     };
 
+    // 計算処理
+    // 各々で実装
+    virtual void calculate(){}
+
+    void startCalculation(EType active,
+                          EType hold,
+                          std::vector<EType> next,
+                          std::vector<std::array<class Block*, GAMEBOARD_PARALLEL>> gameState);
+
+    // メンバ変数の取得
+    bool isCalculating(){return mIsCalculating;}
+    struct Result getResult(){return mResult;}
+
 protected:
-    // 計算開始処理と計算終了処理
-    void startCalculation();
-    void endCalculation();
 
     //  所属するGameBoardクラス
     class GameBoard* mGameBoard;
+    // 引数で入手したmGameBoardの状態
+    std::vector<std::array<bool, GAMEBOARD_PARALLEL>> mVirtualGameState;
+    EType mActiveTetromino;
+    EType mHoldTetromino;
+    std::vector<EType> mNextTetromino;
 
     // 計算が終わったかどうか
     bool mIsCalculating;
