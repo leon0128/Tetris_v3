@@ -55,8 +55,95 @@ void AI::calculate()
         // 計算処理
         // 埋めない場所の設定
         Vector2 leastCoordinate = getLeastHeight(mVirtualGameState);
+        // 計算結果を格納する配列
+        // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight
+        std::vector<std::array<int, 5>> results;
 
-        
+        std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState;
+        for(int d = 0; d < 4; d++)
+        {
+            for(int c = 0; c < 10; c++)
+            {
+                gameState = updateGameState(mVirtualGameState,
+                                            mActiveTetromino,
+                                            d,
+                                            c);
+                printVirtualGameState(gameState);
+                if(!isFilledX(gameState,
+                              leastCoordinate.x,
+                              leastCoordinate.y));
+                {
+                    std::array<int, 5> result = {0,
+                                                 d, 
+                                                 c, 
+                                                 getEmptyNumber(gameState),
+                                                 getMostHeight(gameState)};
+                    results.push_back(result);
+                }
+            }
+        }
+        if(mHoldTetromino == NONE)
+        {
+            mHoldTetromino = mNextTetromino[0];
+        }
+        for(int d = 0; d < 4; d++)
+        {
+            for(int c = 0; c < 10; c++)
+            {
+                gameState = updateGameState(mVirtualGameState,
+                                            mHoldTetromino,
+                                            d,
+                                            c);
+                printVirtualGameState(gameState);
+                if(!isFilledX(gameState,
+                              leastCoordinate.x,
+                              leastCoordinate.y));
+                {
+                    std::array<int, 5> result = {1,
+                                                 d, 
+                                                 c, 
+                                                 getEmptyNumber(gameState),
+                                                 getMostHeight(gameState)};
+                    results.push_back(result);
+                }
+            }
+        }
+        int emptyNumber = results[0][3];
+        int maxHeight = 100;
+        std::vector<int> resultIndex;
+        for(auto result : results)
+        {
+            if(result[3] < emptyNumber)
+            {
+                emptyNumber = result[3];
+            }
+        }
+
+        for(auto result : results)
+        {
+            if(result[4] < maxHeight &&
+               result[3] == emptyNumber)
+            {
+                maxHeight = result[4];
+            }
+        }
+
+        for(int i = 0; i < (int)results.size(); i++)
+        {
+            if(results[i][3] == emptyNumber &&
+               results[i][4] == maxHeight)
+            {
+                resultIndex.push_back(i);
+            }
+        }
+
+        std::array<int, 5> result = results[resultIndex[rand() % resultIndex.size()]];
+
+        mResult.isHoled = result[0];
+        mResult.direction = result[1];
+        mResult.coordinate = result[2];
+
+        SDL_Log("hold: %d, direction: %d, coordinate: %d, empty: %d, height: %d", result[0], result[1], result[2], result[3], result[4]);
         mIsCalculating = false;
     }
 }
@@ -114,7 +201,6 @@ std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::updateGameState(std::vecto
     auto tetromino = getInitializeTetrominoCoordinate(type);
     tetromino = getRotationTetrominoCoordinate(tetromino, direction);
     tetromino = getParallelTetrominoCoordinate(tetromino, coordinate);
-
     std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gs = getQuickDropedGameState(gameState, tetromino);
     return gs;
 }
@@ -204,7 +290,7 @@ std::array<Vector2, 4> AI::getParallelTetrominoCoordinate(std::array<Vector2, 4>
                                                       int coordinateX)
 {
     bool isCorrect = true;
-    while(tetromino[0].x == coordinateX || !isCorrect)
+    while(tetromino[0].x != coordinateX && isCorrect)
     {
         
         if(coordinateX < tetromino[0].x)
@@ -350,4 +436,24 @@ int AI::getEmptyNumber(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameSta
         }
     }
     return number;
+}
+
+void AI::printVirtualGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+{
+    for(int y = (int)gameState.size() - 1; y >= 0; y--)
+    {
+        for(int x = 0; x < (int)gameState[y].size(); x++)
+        {
+            if(gameState[y][x])
+            {
+                printf("||");
+            }
+            else
+            {
+                printf("--");
+            }
+        }
+        printf(" :%d\n", y);
+    }
+    printf("0 1 2 3 4 5 6 7 8 9 \n");
 }
