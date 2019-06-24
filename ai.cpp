@@ -96,7 +96,7 @@ void AI::calculate()
                                             c);
                 // printVirtualGameState(gameState);
                 // if(!isFilledX(gameState,
-                //               leastCoordinate.x,
+                //               leastCoordinate.x,Ga
                 //               leastCoordinate.y));
                 {
                     std::array<int, 5> result = {1,
@@ -202,6 +202,7 @@ std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::updateGameState(std::vecto
     tetromino = getRotationTetrominoCoordinate(tetromino, direction);
     tetromino = getParallelTetrominoCoordinate(tetromino, coordinate);
     std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gs = getQuickDropedGameState(gameState, tetromino);
+    gs = deleteLine(gs);
     return gs;
 }
 
@@ -365,6 +366,39 @@ std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::getQuickDropedGameState(st
         gameState[tetromino[i].y][tetromino[i].x] = true;
     }
     
+    return gameState;
+}
+
+std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::deleteLine(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+{
+    std::vector<int> filledLine;
+    for(int y = 0; y < GAMEBOARD_VERTICAL; y++)
+    {
+        for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
+        {
+            if(!gameState[y][x])
+            {
+                break;
+            }
+            else if(x == GAMEBOARD_PARALLEL - 1)
+            {
+                filledLine.push_back(y);
+            }
+        }
+    }
+
+    while(!filledLine.empty())
+    {
+        gameState.erase(gameState.begin() + *(filledLine.begin()));
+        std::array<bool, GAMEBOARD_PARALLEL> line = {false};
+        gameState.push_back(line);
+        for(int i = 0; i < (int)filledLine.size(); i++)
+        {
+            filledLine[i] -= 1;
+        }
+        filledLine.erase(filledLine.begin());
+    }
+
     return gameState;
 }
 
