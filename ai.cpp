@@ -55,8 +55,52 @@ void AI::calculate()
         // 計算処理
         mResult.isHoled = rand() % 2;
         mResult.direction = rand() % 4;
-        mResult.coordinate = rand() % 10;
+        mResult.coordinate = getLeastHeight();
 
         mIsCalculating = false;
     }
+}
+
+int AI::getLeastHeight()
+{
+    int heights[GAMEBOARD_PARALLEL] = {-1};
+    bool isEmpty = true;
+
+    // 各x座標の最高点を取得
+    for(int y = 0; y < (int)mVirtualGameState.size(); y++)
+    {
+        isEmpty = true;
+        for(int x = 0; x < (int)mVirtualGameState[y].size(); x++)
+        {
+            if(mVirtualGameState[y][x])
+            {
+                heights[x] = y;
+                isEmpty = false;
+            }
+        }
+        if(isEmpty)
+        {
+            break;
+        }
+    }
+
+    // 最高点が最も低いものの中から無作為に選択肢戻す
+    int min = GAMEBOARD_VERTICAL;
+    for(auto height : heights)
+    {
+        if(min > height)
+        {
+            min = height;
+        }
+    }
+    std::vector<int> mins;
+    for(int i = 0; i < (int)mVirtualGameState[0].size(); i++)
+    {
+        if(min == heights[i])
+        {
+            mins.push_back(i);
+        }
+    }
+    
+    return mins[rand() % mins.size()];
 }
