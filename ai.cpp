@@ -177,5 +177,19 @@ std::array<Vector2, 4> AI::getInitializeTetrominoCoordinate(EType type)
 std::array<Vector2, 4> AI::getRotationTetrominoCoordinate(std::array<Vector2, 4> tetromino,
                                                           int direction)
 {
-    
+    Vector2 target, distance;
+    for(int i = 0; i < direction % 4; i++)
+    {
+        for(int j = 0; j < (int)tetromino.size(); j++)
+        {
+            target = tetromino[j];
+            distance = target - tetromino[0];
+
+            target.x += distance.y - distance.x;
+            target.y += (int)(-1) * distance.x - distance.y;
+
+            tetromino[j] = target;
+        }
+    }
+    return tetromino;
 }
