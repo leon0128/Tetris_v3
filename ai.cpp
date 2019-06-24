@@ -103,3 +103,79 @@ int AI::getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameSta
     
     return mins[rand() % mins.size()];
 }
+
+auto AI::updateGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
+                         EType type,
+                         int direction,
+                         int coordinate)
+{
+
+    return gameState;
+}
+
+std::array<Vector2, 4> AI::getInitializeTetrominoCoordinate(EType type)
+{
+    std::array<Vector2, 4> tetromino;
+
+    switch(type)
+    {
+        case(I):
+            tetromino[0].set(4, 19);
+            tetromino[1].set(5, 19);
+            tetromino[2].set(3, 19);
+            tetromino[3].set(6, 19);
+            break;
+        
+        case(O):
+            tetromino[0].set(4, 19);
+            tetromino[1].set(4, 18);
+            tetromino[2].set(5, 18);
+            tetromino[3].set(5, 19);
+            break;
+
+        case(T):
+            tetromino[0].set(4, 18);
+            tetromino[1].set(4, 19);
+            tetromino[2].set(3, 18);
+            tetromino[3].set(5, 18);
+            break;
+
+        case(L):
+            tetromino[0].set(4, 18);
+            tetromino[1].set(5, 18);
+            tetromino[2].set(3, 18);
+            tetromino[3].set(5, 19);
+            break;
+
+        case(J):
+            tetromino[0].set(4, 18);
+            tetromino[1].set(3, 18);
+            tetromino[2].set(5, 18);
+            tetromino[3].set(3, 19);
+            break;
+
+        case(S):
+            tetromino[0].set(4, 18);
+            tetromino[1].set(4, 19);
+            tetromino[2].set(3, 18);
+            tetromino[3].set(5, 19);
+            break;
+
+        case(Z):
+            tetromino[0].set(4, 18);
+            tetromino[1].set(4, 19);
+            tetromino[2].set(5, 18);
+            tetromino[3].set(3, 19);
+            break;
+        
+        default:
+            break;
+    }
+    return tetromino;
+}
+
+std::array<Vector2, 4> AI::getRotationTetrominoCoordinate(std::array<Vector2, 4> tetromino,
+                                                          int direction)
+{
+    
+}

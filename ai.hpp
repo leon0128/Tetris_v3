@@ -30,8 +30,16 @@ protected:
     // 計算で使用する関数
     // 最高点が一番低い位置の取得
     static int getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>>);
-    // 引数のResult構造体を元に
-    // static void update
+    // GameStateを引数の値を元に更新
+    static auto updateGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> argGameState,
+                                EType type,
+                                int direction,
+                                int coordinate);
+    // 初期値のテトロミノの座標を格納した配列を返す
+    std::array<Vector2, 4> getInitializeTetrominoCoordinate(EType type);
+    // テトロミノの回転後の座標を返す
+    std::array<Vector2, 4> getRotationTetrominoCoordinate(std::array<Vector2, 4> tetromino,
+                                                          int direction);
 
     // 引数で入手したmGameBoardの状態
     static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> mVirtualGameState;
