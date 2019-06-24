@@ -52,6 +52,8 @@ protected:
                           int leastHeight);
     // gameStateの最も高い位置に存在するブロックのy座標を返す
     static int getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState);
+    // 空白の数を返す
+    static int getEmptyNumber(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState);
 
     // 引数で入手したmGameBoardの状態
     static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> mVirtualGameState;

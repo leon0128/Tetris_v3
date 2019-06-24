@@ -296,7 +296,7 @@ bool AI::isFilledX(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
     return false;
 }
 
-void AI::getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+int AI::getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
 {
     bool isEmpty = false;
     int height = 0;
@@ -305,7 +305,7 @@ void AI::getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameSta
         for(int x = 0; x < (int)gameState[y].size(); x++)
         {
             if(gameState[y][x] && 
-               x == gameState[y].size() -1)
+               x == (int)gameState[y].size() -1)
             {
                 height = y;
                 isEmpty = true;
@@ -318,4 +318,36 @@ void AI::getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameSta
     }
 
     return height;
+}
+
+int AI::getEmptyNumber(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+{
+    bool isEmpty[GAMEBOARD_PARALLEL] = {false};
+    bool isEmptyLine = true;
+
+    int number = 0;
+    for(int y = 0; y < (int)gameState.size(); y++)
+    {
+        isEmptyLine = true;
+        for(int x = 0; x < (int)gameState[y].size(); x++)
+        {
+            if(gameState[y][x])
+            {
+                isEmptyLine = false;
+            }
+            if(!gameState[y][x])
+            {
+                isEmpty[x] = true;
+            }
+            else if(isEmpty[x])
+            {
+                number ++;
+            }
+        }
+        if(isEmptyLine)
+        {
+            break;
+        }
+    }
+    return number;
 }
