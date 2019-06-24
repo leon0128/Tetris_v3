@@ -36,13 +36,16 @@ protected:
                                 int direction,
                                 int coordinate);
     // 初期値のテトロミノの座標を格納した配列を返す
-    std::array<Vector2, 4> getInitializeTetrominoCoordinate(EType type);
+    static std::array<Vector2, 4> getInitializeTetrominoCoordinate(EType type);
     // テトロミノの回転後の座標を返す
-    std::array<Vector2, 4> getRotationTetrominoCoordinate(std::array<Vector2, 4> tetromino,
+    static std::array<Vector2, 4> getRotationTetrominoCoordinate(std::array<Vector2, 4> tetromino,
                                                           int direction);
     // テトロミノを平行移動させる
-    std::array<Vector2, 4> getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
-                                                          int coordinateX);
+    static std::array<Vector2, 4> getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
+                                                                 int coordinateX);
+    // クイックドロップ後のゲームの状態を返す
+    static auto getQuickDropedGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> argGameState,
+                                        std::array<Vector2, 4> tetromino);
 
     // 引数で入手したmGameBoardの状態
     static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> mVirtualGameState;

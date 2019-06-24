@@ -194,7 +194,7 @@ std::array<Vector2, 4> AI::getRotationTetrominoCoordinate(std::array<Vector2, 4>
     return tetromino;
 }
 
-std::array<Vector2, 4> getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
+std::array<Vector2, 4> AI::getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
                                                       int coordinateX)
 {
     bool isCorrect = true;
@@ -241,4 +241,37 @@ std::array<Vector2, 4> getParallelTetrominoCoordinate(std::array<Vector2, 4> tet
     }
 
     return tetromino;
+}
+
+auto AI::getQuickDropedGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
+                                 std::array<Vector2, 4> tetromino)
+{
+    bool isCorrect = true;
+    while(!isCorrect)
+    {
+        for(int i = 0; i < (int)tetromino.size(); i++)
+        {
+            tetromino[i].y -= 1;
+            if(tetromino[i].y < 0 ||
+               gameState[tetromino[i].y][tetromino[i].x])
+            {
+                isCorrect = false;
+            }
+        }
+        if(!isCorrect)
+        {
+            for(int i = 0; i < (int)tetromino.size(); i++)
+            {
+                tetromino[i].y += 1;
+            }
+        }
+    }
+
+    // テトロミノの固定
+    for(int i = 0; i < (int)tetromino.size(); i++)
+    {
+        gameState[tetromino[i].y][tetromino[i].x] = true;
+    }
+    
+    return gameState;
 }
