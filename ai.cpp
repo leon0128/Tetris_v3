@@ -1,11 +1,11 @@
 #include "ai.hpp"
 
-AI::AI(Game* game, int order, GameBoard* gameBoard):
-    Actor(game, order),
-    mGameBoard(gameBoard),
-    mIsCalculating(false)
-{
-}
+std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::mVirtualGameState;
+Actor::EType AI::mActiveTetromino = NONE;
+Actor::EType AI::mHoldTetromino = NONE;
+std::vector<Actor::EType> AI::mNextTetromino;
+bool AI::mIsCalculating = false;
+struct AI::Result AI::mResult;
 
 void AI::startCalculation(EType active, 
                           EType hold, 
@@ -38,5 +38,4 @@ void AI::startCalculation(EType active,
     }
     
     // 別スレッドで計算実行
-    calculate();
 }

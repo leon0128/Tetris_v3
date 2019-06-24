@@ -72,7 +72,6 @@ private:
     std::array<std::string, 8> mScores;
 
     // AI
-    class AI* mAI;
     // AIの計算結果を格納
     struct AI::Result mAIResult;
     // 結果を初期化したか
