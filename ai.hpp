@@ -31,7 +31,7 @@ protected:
     // 最高点が一番低い位置の取得
     static int getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>>);
     // GameStateを引数の値を元に更新
-    static auto updateGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> argGameState,
+    static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> updateGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> argGameState,
                                 EType type,
                                 int direction,
                                 int coordinate);
@@ -44,7 +44,7 @@ protected:
     static std::array<Vector2, 4> getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
                                                                  int coordinateX);
     // クイックドロップ後のゲームの状態を返す
-    static auto getQuickDropedGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> argGameState,
+    static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> getQuickDropedGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> argGameState,
                                         std::array<Vector2, 4> tetromino);
 
     // 引数で入手したmGameBoardの状態

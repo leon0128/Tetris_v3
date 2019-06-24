@@ -104,13 +104,17 @@ int AI::getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameSta
     return mins[rand() % mins.size()];
 }
 
-auto AI::updateGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
+std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::updateGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
                          EType type,
                          int direction,
                          int coordinate)
 {
+    auto tetromino = getInitializeTetrominoCoordinate(type);
+    tetromino = getRotationTetrominoCoordinate(tetromino, direction);
+    tetromino = getParallelTetrominoCoordinate(tetromino, coordinate);
 
-    return gameState;
+    std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gs = getQuickDropedGameState(gameState, tetromino);
+    return gs;
 }
 
 std::array<Vector2, 4> AI::getInitializeTetrominoCoordinate(EType type)
@@ -243,7 +247,7 @@ std::array<Vector2, 4> AI::getParallelTetrominoCoordinate(std::array<Vector2, 4>
     return tetromino;
 }
 
-auto AI::getQuickDropedGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
+std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::getQuickDropedGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
                                  std::array<Vector2, 4> tetromino)
 {
     bool isCorrect = true;
