@@ -29,7 +29,7 @@ public:
 protected:
     // 計算で使用する関数
     // 最高点が一番低い位置の取得
-    static int getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>>);
+    static Vector2 getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>>);
     // GameStateを引数の値を元に更新
     static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> updateGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> argGameState,
                                 EType type,
@@ -46,6 +46,10 @@ protected:
     // クイックドロップ後のゲームの状態を返す
     static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> getQuickDropedGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> argGameState,
                                         std::array<Vector2, 4> tetromino);
+    // 引数のx座標に被っていたらtrueを返す
+    static bool isFilledX(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
+                          int x,
+                          int leastHeight);
 
     // 引数で入手したmGameBoardの状態
     static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> mVirtualGameState;

@@ -53,14 +53,15 @@ void AI::calculate()
         mIsStarted = false;
 
         // 計算処理
-        mResult.isHoled = rand() % 2;
-        mResult.direction = rand() % 4;
-        mResult.coordinate = getLeastHeight(mVirtualGameState);
+        // 埋めない場所の設定
+        Vector2 leastCoordinate = getLeastHeight(mVirtualGameState);
+
+        
         mIsCalculating = false;
     }
 }
 
-int AI::getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+Vector2 AI::getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
 {
     int heights[GAMEBOARD_PARALLEL] = {-1};
     bool isEmpty = true;
@@ -101,7 +102,8 @@ int AI::getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameSta
         }
     }
     
-    return mins[rand() % mins.size()];
+    Vector2 coordinate(mins[rand() % mins.size()], mins[0]);
+    return coordinate;
 }
 
 std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::updateGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
@@ -278,4 +280,18 @@ std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::getQuickDropedGameState(st
     }
     
     return gameState;
+}
+
+bool AI::isFilledX(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
+                   int x,
+                   int leastHeight)
+{
+    for(int y = leastHeight + 1; y < (int)gameState.size(); y++)
+    {
+        if(gameState[y][x])
+        {
+            return true;
+        }
+    }
+    return false;
 }
