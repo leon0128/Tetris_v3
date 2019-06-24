@@ -50,6 +50,8 @@ protected:
     static bool isFilledX(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
                           int x,
                           int leastHeight);
+    // gameStateの最も高い位置に存在するブロックのy座標を返す
+    static int getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState);
 
     // 引数で入手したmGameBoardの状態
     static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> mVirtualGameState;

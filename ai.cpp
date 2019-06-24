@@ -295,3 +295,27 @@ bool AI::isFilledX(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
     }
     return false;
 }
+
+void AI::getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+{
+    bool isEmpty = false;
+    int height = 0;
+    for(int y = 0; y < (int)gameState.size(); y++)
+    {
+        for(int x = 0; x < (int)gameState[y].size(); x++)
+        {
+            if(gameState[y][x] && 
+               x == gameState[y].size() -1)
+            {
+                height = y;
+                isEmpty = true;
+            }
+        }
+        if(isEmpty)
+        {
+            break;
+        }
+    }
+
+    return height;
+}
