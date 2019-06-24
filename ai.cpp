@@ -54,7 +54,7 @@ void AI::calculate()
 
         // 計算処理
         // 埋めない場所の設定
-        Vector2 leastCoordinate = getLeastHeight(mVirtualGameState);
+        // Vector2 leastCoordinate = getLeastHeight(mVirtualGameState);
         // 計算結果を格納する配列
         // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight
         std::vector<std::array<int, 5>> results;
@@ -68,10 +68,10 @@ void AI::calculate()
                                             mActiveTetromino,
                                             d,
                                             c);
-                printVirtualGameState(gameState);
-                if(!isFilledX(gameState,
-                              leastCoordinate.x,
-                              leastCoordinate.y));
+                // printVirtualGameState(gameState);
+                // if(!isFilledX(gameState,
+                //               leastCoordinate.x,
+                //               leastCoordinate.y));
                 {
                     std::array<int, 5> result = {0,
                                                  d, 
@@ -94,10 +94,10 @@ void AI::calculate()
                                             mHoldTetromino,
                                             d,
                                             c);
-                printVirtualGameState(gameState);
-                if(!isFilledX(gameState,
-                              leastCoordinate.x,
-                              leastCoordinate.y));
+                // printVirtualGameState(gameState);
+                // if(!isFilledX(gameState,
+                //               leastCoordinate.x,
+                //               leastCoordinate.y));
                 {
                     std::array<int, 5> result = {1,
                                                  d, 
@@ -339,7 +339,7 @@ std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::getQuickDropedGameState(st
                                  std::array<Vector2, 4> tetromino)
 {
     bool isCorrect = true;
-    while(!isCorrect)
+    while(isCorrect)
     {
         for(int i = 0; i < (int)tetromino.size(); i++)
         {
