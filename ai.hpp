@@ -29,7 +29,9 @@ public:
 protected:
     // 計算で使用する関数
     // 最高点が一番低い位置の取得
-    static int getLeastHeight();
+    static int getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>>);
+    // 引数のResult構造体を元に
+    // static void update
 
     // 引数で入手したmGameBoardの状態
     static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> mVirtualGameState;
