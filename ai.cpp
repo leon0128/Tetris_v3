@@ -302,13 +302,13 @@ int AI::getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameStat
     int height = 0;
     for(int y = 0; y < (int)gameState.size(); y++)
     {
+        isEmpty = true;
         for(int x = 0; x < (int)gameState[y].size(); x++)
         {
-            if(gameState[y][x] && 
-               x == (int)gameState[y].size() -1)
+            if(gameState[y][x])
             {
                 height = y;
-                isEmpty = true;
+                isEmpty = false;
             }
         }
         if(isEmpty)
