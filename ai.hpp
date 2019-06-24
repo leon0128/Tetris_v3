@@ -40,6 +40,9 @@ protected:
     // テトロミノの回転後の座標を返す
     std::array<Vector2, 4> getRotationTetrominoCoordinate(std::array<Vector2, 4> tetromino,
                                                           int direction);
+    // テトロミノを平行移動させる
+    std::array<Vector2, 4> getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
+                                                          int coordinateX);
 
     // 引数で入手したmGameBoardの状態
     static std::vector<std::array<bool, GAMEBOARD_PARALLEL>> mVirtualGameState;

@@ -193,3 +193,52 @@ std::array<Vector2, 4> AI::getRotationTetrominoCoordinate(std::array<Vector2, 4>
     }
     return tetromino;
 }
+
+std::array<Vector2, 4> getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
+                                                      int coordinateX)
+{
+    bool isCorrect = true;
+    while(tetromino[0].x == coordinateX || !isCorrect)
+    {
+        
+        if(coordinateX < tetromino[0].x)
+        {
+            for(int i = 0; i < (int)tetromino.size(); i++)
+            {
+                tetromino[i].x -= 1;
+                if(tetromino[i].x < 0)
+                {
+                    isCorrect = false;
+                }
+            }
+            if(!isCorrect)
+            {
+                for(int i = 0; i < (int)tetromino.size(); i++)
+                {
+                    tetromino[i].x += 1;
+                }
+            }
+        }
+
+        if(coordinateX > tetromino[0].x)
+        {
+            for(int i = 0; i < (int)tetromino.size(); i++)
+            {
+                tetromino[i].x += 1;
+                if(tetromino[i].x > 9)
+                {
+                    isCorrect = false;
+                }
+            }
+            if(!isCorrect)
+            {
+                for(int i = 0; i < (int)tetromino.size(); i++)
+                {
+                    tetromino[i].x -= 1;
+                }
+            }
+        }
+    }
+
+    return tetromino;
+}
