@@ -42,10 +42,12 @@ GameBoard::GameBoard(Game* game, int order):
     initializeNextBoard();
     // ScoreBoardnの設定
     initializeScoreBoard();
+    aiThread = std::thread(AI::calculate);
 }
 
 GameBoard::~GameBoard()
 {
+    aiThread.detach();
     delete mScoreBoard;
     delete mHoldBoard;
     for(int i = 0; i < NEXT_SIZE; i++)

@@ -76,4 +76,6 @@ private:
     struct AI::Result mAIResult;
     // 結果を初期化したか
     bool mIsInitializeResult;
+    // AIの演算を処理するスレッド
+    std::thread aiThread;
 };

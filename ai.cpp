@@ -4,6 +4,7 @@ std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::mVirtualGameState;
 Actor::EType AI::mActiveTetromino = NONE;
 Actor::EType AI::mHoldTetromino = NONE;
 std::vector<Actor::EType> AI::mNextTetromino;
+bool AI::mIsStarted = false;
 bool AI::mIsCalculating = false;
 struct AI::Result AI::mResult;
 
@@ -36,6 +37,26 @@ void AI::startCalculation(EType active,
             }
         }
     }
-    
-    // 別スレッドで計算実行
+    // 計算開始
+    mIsStarted = true;
+}
+
+void AI::calculate()
+{
+    // 無限ループ
+    while(1)
+    {
+        // 新しいデータを受け取るまで待機
+        while(!mIsStarted)
+        {
+        }
+        mIsStarted = false;
+
+        // 計算処理
+        mResult.isHoled = rand() % 2;
+        mResult.direction = rand() % 4;
+        mResult.coordinate = rand() % 10;
+
+        mIsCalculating = false;
+    }
 }

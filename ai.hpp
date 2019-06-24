@@ -13,14 +13,14 @@ public:
         bool isHoled;            // ホールドするかどうか
     };
 
-    // 計算処理
-    // 各々で実装
-    static void calculate();
-
+    // 計算に必要な要素の設定
     static void startCalculation(EType active,
                                  EType hold,
                                  std::vector<EType> next,
                                  std::vector<std::array<class Block*, GAMEBOARD_PARALLEL>> gameState);
+
+    // 実際に計算する処理
+    static void calculate();
 
     // メンバ変数の取得
     static bool isCalculating(){return mIsCalculating;}
@@ -35,6 +35,8 @@ protected:
 
     // 計算中かどうか
     static bool mIsCalculating;
+    // 計算を開始するかどうか
+    static bool mIsStarted;
     // 結果を格納する構造体
     static struct Result mResult;
 };
