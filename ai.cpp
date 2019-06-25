@@ -1,6 +1,6 @@
 #include "ai.hpp"
 
-std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::mVirtualGameState;
+AI::VirtualGameState AI::mVirtualGameState;
 Actor::EType AI::mActiveTetromino = NONE;
 Actor::EType AI::mHoldTetromino = NONE;
 std::vector<Actor::EType> AI::mNextTetromino;
@@ -59,7 +59,7 @@ void AI::calculate()
         // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight, [5]: minHeight
         std::vector<std::array<int, 6>> results;
 
-        std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState;
+        VirtualGameState gameState;
         for(int d = 0; d < 4; d++)
         {
             for(int c = 0; c < 10; c++)
@@ -160,13 +160,13 @@ void AI::calculate()
         mResult.isHoled = result[0];
         mResult.direction = result[1];
         mResult.coordinate = result[2];
-        SDL_Log("results: %u, narrow0: %u, narrow1: %u", results.size(), resultIndex.size(), newResultIndex.size());
+        SDL_Log("results: %d, narrow0: %d, narrow1: %d", (int)results.size(), (int)resultIndex.size(), (int)newResultIndex.size());
         SDL_Log("hold: %d, direction: %d, coordinate: %d, empty: %d, maxHeight: %d, minHeight: %d", result[0], result[1], result[2], result[3], result[4], result[5]);
         mIsCalculating = false;
     }
 }
 
-Vector2 AI::getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+Vector2 AI::getLeastHeight(VirtualGameState gameState)
 {
     int heights[GAMEBOARD_PARALLEL] = {-1};
     bool isEmpty = true;
@@ -211,7 +211,7 @@ Vector2 AI::getLeastHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gam
     return coordinate;
 }
 
-std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::updateGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
+AI::VirtualGameState AI::updateGameState(VirtualGameState gameState,
                          EType type,
                          int direction,
                          int coordinate)
@@ -354,7 +354,7 @@ std::array<Vector2, 4> AI::getParallelTetrominoCoordinate(std::array<Vector2, 4>
     return tetromino;
 }
 
-std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::getQuickDropedGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
+AI::VirtualGameState AI::getQuickDropedGameState(VirtualGameState gameState,
                                  std::array<Vector2, 4> tetromino)
 {
     bool isCorrect = true;
@@ -387,7 +387,7 @@ std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::getQuickDropedGameState(st
     return gameState;
 }
 
-std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::deleteLine(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+AI::VirtualGameState AI::deleteLine(VirtualGameState gameState)
 {
     std::vector<int> filledLine;
     for(int y = 0; y < GAMEBOARD_VERTICAL; y++)
@@ -420,7 +420,7 @@ std::vector<std::array<bool, GAMEBOARD_PARALLEL>> AI::deleteLine(std::vector<std
     return gameState;
 }
 
-bool AI::isFilledX(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
+bool AI::isFilledX(VirtualGameState gameState,
                    int x,
                    int leastHeight)
 {
@@ -434,7 +434,7 @@ bool AI::isFilledX(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState,
     return false;
 }
 
-int AI::getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+int AI::getMostHeight(VirtualGameState gameState)
 {
     bool isEmpty = false;
     int height = 0;
@@ -458,7 +458,7 @@ int AI::getMostHeight(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameStat
     return height;
 }
 
-int AI::getEmptyNumber(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+int AI::getEmptyNumber(VirtualGameState gameState)
 {
     bool isEmpty[GAMEBOARD_PARALLEL] = {false};
     bool isEmptyLine = true;
@@ -490,7 +490,7 @@ int AI::getEmptyNumber(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameSta
     return number;
 }
 
-void AI::printVirtualGameState(std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState)
+void AI::printVirtualGameState(VirtualGameState gameState)
 {
     for(int y = (int)gameState.size() - 1; y >= 0; y--)
     {
