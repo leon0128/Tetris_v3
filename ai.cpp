@@ -56,8 +56,8 @@ void AI::calculate()
         // 埋めない場所の設定
         // Vector2 leastCoordinate = getLeastHeight(mVirtualGameState);
         // 計算結果を格納する配列
-        // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight
-        std::vector<std::array<int, 5>> results;
+        // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight, [5]: minHeight
+        std::vector<std::array<int, 6>> results;
 
         std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gameState;
         for(int d = 0; d < 4; d++)
@@ -73,11 +73,12 @@ void AI::calculate()
                 //               leastCoordinate.x,
                 //               leastCoordinate.y));
                 {
-                    std::array<int, 5> result = {0,
+                    std::array<int, 6> result = {0,
                                                  d, 
                                                  c, 
                                                  getEmptyNumber(gameState),
-                                                 getMostHeight(gameState)};
+                                                 getMostHeight(gameState),
+                                                 getLeastHeight(gameState).y};
                     results.push_back(result);
                 }
             }
@@ -99,18 +100,21 @@ void AI::calculate()
                 //               leastCoordinate.x,Ga
                 //               leastCoordinate.y));
                 {
-                    std::array<int, 5> result = {1,
+                    std::array<int, 6> result = {1,
                                                  d, 
                                                  c, 
                                                  getEmptyNumber(gameState),
-                                                 getMostHeight(gameState)};
+                                                 getMostHeight(gameState),
+                                                 getLeastHeight(gameState).y};
                     results.push_back(result);
                 }
             }
         }
         int emptyNumber = results[0][3];
         int maxHeight = 100;
+        int minHeight = -1;
         std::vector<int> resultIndex;
+        std::vector<int> newResultIndex;
         for(auto result : results)
         {
             if(result[3] < emptyNumber)
@@ -128,22 +132,38 @@ void AI::calculate()
             }
         }
 
-        for(int i = 0; i < (int)results.size(); i++)
+        // for(int i = 0; i < (int)results.size(); i++)
+        // {
+        //     if(results[i][3] == emptyNumber &&
+        //        results[i][5] == minHeight)
+        //     {
+        //         resultIndex.push_back(i);
+        //     }
+        // }
+
+        for(auto index : resultIndex)
         {
-            if(results[i][3] == emptyNumber &&
-               results[i][4] == maxHeight)
+            if(results[index][5] > minHeight)
             {
-                resultIndex.push_back(i);
+                minHeight = results[index][5];
             }
         }
 
-        std::array<int, 5> result = results[resultIndex[rand() % resultIndex.size()]];
-
+        for(int i = 0; i < (int)resultIndex.size(); i++)
+        {
+            if(results[resultIndex[i]][5] == minHeight)
+            {
+                newResultIndex.push_back(resultIndex[i]);
+            }
+        }
+        SDL_Log("---"); 
+        std::array<int, 6> result = results[newResultIndex[rand() % newResultIndex.size()]];
+        SDL_Log("===");
         mResult.isHoled = result[0];
         mResult.direction = result[1];
         mResult.coordinate = result[2];
-
-        SDL_Log("hold: %d, direction: %d, coordinate: %d, empty: %d, height: %d", result[0], result[1], result[2], result[3], result[4]);
+        SDL_Log("|||");
+        SDL_Log("hold: %d, direction: %d, coordinate: %d, empty: %d, maxHeight: %d, minHeight: %d", result[0], result[1], result[2], result[3], result[4], result[5]);
         mIsCalculating = false;
     }
 }
