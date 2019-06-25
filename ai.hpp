@@ -31,9 +31,6 @@ public:
     static struct Result getResult(){return mResult;}
 
 protected:
-    // 計算で使用する関数
-    // 最高点が一番低い位置の取得
-    static Vector2 getMinHeight(VirtualGameState gameState);
     // GameStateを引数の値を元に更新
     static VirtualGameState updateGameState(VirtualGameState argGameState,
                                             EType type,
@@ -56,8 +53,10 @@ protected:
     static bool isFilledX(VirtualGameState gameState,
                           int x,
                           int leastHeight);
-    // gameStateの最も高い位置に存在するブロックのy座標を返す
+    // gameStateの最も高い位置に存在するブロックの座標を返す
     static int getMaxHeight(VirtualGameState gameState);
+    // gameStateの最も低い位置に存在するブロックの座標を返す
+    static Vector2 getMinHeight(VirtualGameState gameState);
     // 空白の数を返す
     static int getEmptyNumber(VirtualGameState gameState);
     // 引数のGameStateno状態をコンソールに出力する

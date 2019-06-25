@@ -1,5 +1,8 @@
 #include "ai.hpp"
 
+// ヘッダーで定義すると多重定義エラー
+// かといって初期化しないと怒られる
+// どこで定義すればいいかわかったら教えてください
 AI::VirtualGameState AI::mVirtualGameState;
 Actor::EType AI::mActiveTetromino = NONE;
 Actor::EType AI::mHoldTetromino = NONE;
@@ -66,10 +69,6 @@ void AI::calculate()
                                             mActiveTetromino,
                                             d,
                                             c);
-                // printVirtualGameState(gameState);
-                // if(!isFilledX(gameState,
-                //               leastCoordinate.x,
-                //               leastCoordinate.y));
                 {
                     std::array<int, 6> result = {0,
                                                  d, 
@@ -93,10 +92,6 @@ void AI::calculate()
                                             mHoldTetromino,
                                             d,
                                             c);
-                // printVirtualGameState(gameState);
-                // if(!isFilledX(gameState,
-                //               leastCoordinate.x,Ga
-                //               leastCoordinate.y));
                 {
                     std::array<int, 6> result = {1,
                                                  d, 
