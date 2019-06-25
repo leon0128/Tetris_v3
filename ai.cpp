@@ -132,14 +132,14 @@ void AI::calculate()
             }
         }
 
-        // for(int i = 0; i < (int)results.size(); i++)
-        // {
-        //     if(results[i][3] == emptyNumber &&
-        //        results[i][5] == minHeight)
-        //     {
-        //         resultIndex.push_back(i);
-        //     }
-        // }
+        for(int i = 0; i < (int)results.size(); i++)
+        {
+            if(results[i][3] == emptyNumber &&
+               results[i][4] == maxHeight)
+            {
+                resultIndex.push_back(i);
+            }
+        }
 
         for(auto index : resultIndex)
         {
@@ -156,13 +156,11 @@ void AI::calculate()
                 newResultIndex.push_back(resultIndex[i]);
             }
         }
-        SDL_Log("---"); 
         std::array<int, 6> result = results[newResultIndex[rand() % newResultIndex.size()]];
-        SDL_Log("===");
         mResult.isHoled = result[0];
         mResult.direction = result[1];
         mResult.coordinate = result[2];
-        SDL_Log("|||");
+        SDL_Log("results: %u, narrow0: %u, narrow1: %u", results.size(), resultIndex.size(), newResultIndex.size());
         SDL_Log("hold: %d, direction: %d, coordinate: %d, empty: %d, maxHeight: %d, minHeight: %d", result[0], result[1], result[2], result[3], result[4], result[5]);
         mIsCalculating = false;
     }
