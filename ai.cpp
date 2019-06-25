@@ -53,8 +53,6 @@ void AI::calculate()
         mIsStarted = false;
 
         // 計算処理
-        // 埋めない場所の設定
-        // Vector2 leastCoordinate = getLeastHeight(mVirtualGameState);
         // 計算結果を格納する配列
         // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight, [5]: minHeight
         std::vector<std::array<int, 6>> results;
@@ -77,8 +75,8 @@ void AI::calculate()
                                                  d, 
                                                  c, 
                                                  getEmptyNumber(gameState),
-                                                 getMostHeight(gameState),
-                                                 getLeastHeight(gameState).y};
+                                                 getMaxHeight(gameState),
+                                                 getMinHeight(gameState).y};
                     results.push_back(result);
                 }
             }
@@ -104,8 +102,8 @@ void AI::calculate()
                                                  d, 
                                                  c, 
                                                  getEmptyNumber(gameState),
-                                                 getMostHeight(gameState),
-                                                 getLeastHeight(gameState).y};
+                                                 getMaxHeight(gameState),
+                                                 getMinHeight(gameState).y};
                     results.push_back(result);
                 }
             }
@@ -166,7 +164,7 @@ void AI::calculate()
     }
 }
 
-Vector2 AI::getLeastHeight(VirtualGameState gameState)
+Vector2 AI::getMinHeight(VirtualGameState gameState)
 {
     int heights[GAMEBOARD_PARALLEL] = {-1};
     bool isEmpty = true;
@@ -434,7 +432,7 @@ bool AI::isFilledX(VirtualGameState gameState,
     return false;
 }
 
-int AI::getMostHeight(VirtualGameState gameState)
+int AI::getMaxHeight(VirtualGameState gameState)
 {
     bool isEmpty = false;
     int height = 0;

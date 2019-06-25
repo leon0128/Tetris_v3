@@ -33,7 +33,7 @@ public:
 protected:
     // 計算で使用する関数
     // 最高点が一番低い位置の取得
-    static Vector2 getLeastHeight(VirtualGameState);
+    static Vector2 getMinHeight(VirtualGameState gameState);
     // GameStateを引数の値を元に更新
     static VirtualGameState updateGameState(VirtualGameState argGameState,
                                             EType type,
@@ -43,13 +43,13 @@ protected:
     static std::array<Vector2, 4> getInitializeTetrominoCoordinate(EType type);
     // テトロミノの回転後の座標を返す
     static std::array<Vector2, 4> getRotationTetrominoCoordinate(std::array<Vector2, 4> tetromino,
-                                                          int direction);
+                                                                 int direction);
     // テトロミノを平行移動させる
     static std::array<Vector2, 4> getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
                                                                  int coordinateX);
     // クイックドロップ後のゲームの状態を返す
     static VirtualGameState getQuickDropedGameState(VirtualGameState argGameState,
-                                        std::array<Vector2, 4> tetromino);
+                                                    std::array<Vector2, 4> tetromino);
     // ブロックで満たされている列の削除
     static VirtualGameState deleteLine(VirtualGameState gameState);
     // 引数のx座標に被っていたらtrueを返す
@@ -57,10 +57,10 @@ protected:
                           int x,
                           int leastHeight);
     // gameStateの最も高い位置に存在するブロックのy座標を返す
-    static int getMostHeight(VirtualGameState gameState);
+    static int getMaxHeight(VirtualGameState gameState);
     // 空白の数を返す
     static int getEmptyNumber(VirtualGameState gameState);
-    // 結果を出力する
+    // 引数のGameStateno状態をコンソールに出力する
     static void printVirtualGameState(VirtualGameState gameState);
 
     // 引数で入手したmGameBoardの状態
