@@ -50,106 +50,204 @@ void NPC::startCalculation(EType active,
 
 void NPC::calculate()
 {
-    // 計算処理
-    // 計算結果を格納する配列
-    // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight, [5]: minHeight
-    std::vector<std::array<int, 6>> results;
+    // // 計算処理
+    // // 計算結果を格納する配列
+    // // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight, [5]: minHeight
+    // std::vector<std::array<int, 6>> results;
 
-    VirtualGameState gameState;
-    for(int d = 0; d < 4; d++)
-    {
-        for(int c = 0; c < 10; c++)
-        {
-            gameState = updateGameState(mVirtualGameState,
-                                        mActiveTetromino,
-                                        d,
-                                        c);
-            {
-                std::array<int, 6> result = {0,
-                                                d, 
-                                                c, 
-                                                getEmptyNumber(gameState),
-                                                getMaxHeight(gameState),
-                                                getMinHeight(gameState).y};
-                results.push_back(result);
-            }
-        }
-    }
-    if(mHoldTetromino == NONE)
-    {
-        mHoldTetromino = mNextTetromino[0];
-    }
-    for(int d = 0; d < 4; d++)
-    {
-        for(int c = 0; c < 10; c++)
-        {
-            gameState = updateGameState(mVirtualGameState,
-                                        mHoldTetromino,
-                                        d,
-                                        c);
-            {
-                std::array<int, 6> result = {1,
-                                                d, 
-                                                c, 
-                                                getEmptyNumber(gameState),
-                                                getMaxHeight(gameState),
-                                                getMinHeight(gameState).y};
-                results.push_back(result);
-            }
-        }
-    }
-    int emptyNumber = results[0][3];
-    int maxHeight = 100;
-    int minHeight = -1;
+    // VirtualGameState gameState;
+    // for(int d = 0; d < 4; d++)
+    // {
+    //     for(int c = 0; c < 10; c++)
+    //     {
+    //         gameState = updateGameState(mVirtualGameState,
+    //                                     mActiveTetromino,
+    //                                     d,
+    //                                     c);
+    //         {
+    //             std::array<int, 6> result = {0,
+    //                                             d, 
+    //                                             c, 
+    //                                             getEmptyNumber(gameState),
+    //                                             getMaxHeight(gameState),
+    //                                             getMinHeight(gameState).y};
+    //             results.push_back(result);
+    //         }
+    //     }
+    // }
+    // if(mHoldTetromino == NONE)
+    // {
+    //     mHoldTetromino = mNextTetromino[0];
+    // }
+    // for(int d = 0; d < 4; d++)
+    // {
+    //     for(int c = 0; c < 10; c++)
+    //     {
+    //         gameState = updateGameState(mVirtualGameState,
+    //                                     mHoldTetromino,
+    //                                     d,
+    //                                     c);
+    //         {
+    //             std::array<int, 6> result = {1,
+    //                                             d, 
+    //                                             c, 
+    //                                             getEmptyNumber(gameState),
+    //                                             getMaxHeight(gameState),
+    //                                             getMinHeight(gameState).y};
+    //             results.push_back(result);
+    //         }
+    //     }
+    // }
+    // int emptyNumber = results[0][3];
+    // int maxHeight = 100;
+    // int minHeight = -1;
+    // std::vector<int> resultIndex;
+    // std::vector<int> newResultIndex;
+    // for(auto result : results)
+    // {
+    //     if(result[3] < emptyNumber)
+    //     {
+    //         emptyNumber = result[3];
+    //     }
+    // }
+
+    // for(auto result : results)
+    // {
+    //     if(result[4] < maxHeight &&
+    //         result[3] == emptyNumber)
+    //     {
+    //         maxHeight = result[4];
+    //     }
+    // }
+
+    // for(int i = 0; i < (int)results.size(); i++)
+    // {
+    //     if(results[i][3] == emptyNumber &&
+    //         results[i][4] == maxHeight)
+    //     {
+    //         resultIndex.push_back(i);
+    //     }
+    // }
+
+    // for(auto index : resultIndex)
+    // {
+    //     if(results[index][5] > minHeight)
+    //     {
+    //         minHeight = results[index][5];
+    //     }
+    // }
+
+    // for(int i = 0; i < (int)resultIndex.size(); i++)
+    // {
+    //     if(results[resultIndex[i]][5] == minHeight)
+    //     {
+    //         newResultIndex.push_back(resultIndex[i]);
+    //     }
+    // }
+    // std::array<int, 6> result = results[newResultIndex[rand() % newResultIndex.size()]];
+    // SDL_Log("results: %d, narrow0: %d, narrow1: %d", (int)results.size(), (int)resultIndex.size(), (int)newResultIndex.size());
+    // SDL_Log("hold: %d, direction: %d, coordinate: %d, empty: %d, maxHeight: %d, minHeight: %d", result[0], result[1], result[2], result[3], result[4], result[5]);
+    // mResult.isHoled = result[0];
+    // mResult.direction = result[1];
+    // mResult.coordinate = result[2];
+
+    // 深さ
+    int depth = 2, index = 0;
+    // 結果を格納する配列
+    std::vector<std::array<int, 6>> resultVector;
     std::vector<int> resultIndex;
-    std::vector<int> newResultIndex;
-    for(auto result : results)
+    
+    // resultVectorに初期値の代入
+    for(int isHold = 0; isHold < 2; isHold++)
     {
-        if(result[3] < emptyNumber)
+        for(int direction = 0; direction < 4; direction++)
         {
-            emptyNumber = result[3];
+            for(int coordinate = 0; coordinate < 10; coordinate++)
+            {
+                std::array<int, 6> temp = {isHold,
+                                           direction,
+                                           coordinate,
+                                           0,
+                                           0,
+                                           0};
+                resultVector.push_back(temp);
+                resultIndex.push_back(index);
+                index ++;
+            }
         }
     }
 
-    for(auto result : results)
+    // 何手先まで評価するか
+    std::vector<VirtualGameState> gameStateVector = {mVirtualGameState};
+    for(int d = 0; d < depth - 1; d++)
     {
-        if(result[4] < maxHeight &&
-            result[3] == emptyNumber)
+        // resultVectorの中のみ評価
+        for(auto index : resultIndex)
         {
-            maxHeight = result[4];
-        }
-    }
+            // typeの設定
+            EType type = mActiveTetromino;
+            if(resultVector[index][0] == 1)
+            {
+                type = mNextTetromino[0];
+            }
 
-    for(int i = 0; i < (int)results.size(); i++)
-    {
-        if(results[i][3] == emptyNumber &&
-            results[i][4] == maxHeight)
-        {
-            resultIndex.push_back(i);
+            // 評価した結果を格納 
+            gameStateVector[index] = updateGameState(gameStateVector[index],
+                                                     type,
+                                                     resultVector[index][1],
+                                                     resultVector[index][2]);
+            resultVector[index][3] = getEmptyNumber(gameStateVector[index]);
+            resultVector[index][4] = getMaxHeight(gameStateVector[index]);
+            resultVector[index][5] = getMinHeight(gameStateVector[index]);
         }
-    }
+        
+        // emptyの最小値の調査
+        int empty = 100;
+        for(auto index : resultIndex)
+        {
+            if(empty > resultVector[index][3])
+            {
+                empty = resultVector[index][3];
+            }
+        }
+        // emptyの最小値以外のindexを削除
+        auto iterator = resultIndex.begin();
+        while(iterator != resultIndex.end())
+        {
+            if(*iterator != empty)
+            {
+                iterator = resultIndex.erase(iterator);
+            }
+            else
+            {
+                iterator++;
+            }
+        }
 
-    for(auto index : resultIndex)
-    {
-        if(results[index][5] > minHeight)
+        // 最も高い位置にあるブロックのy座標を取得
+        int max = -1;
+        for(auto index : resultIndex)
         {
-            minHeight = results[index][5];
+            if(max < resultVector[index][4])
+            {
+                max = resultVector[index][4];
+            }
         }
-    }
+        // 最大値以外のインデックスを削除
+        iterator = resultIndex.begin();
+        while(iterator != resultIndex.end())
+        {
+            if(*iterator != max)
+            {
+                iterator = resultIndex.erase(iterator);
+            }
+            else
+            {
+                iterator++;
+            }
+        }
 
-    for(int i = 0; i < (int)resultIndex.size(); i++)
-    {
-        if(results[resultIndex[i]][5] == minHeight)
-        {
-            newResultIndex.push_back(resultIndex[i]);
-        }
     }
-    std::array<int, 6> result = results[newResultIndex[rand() % newResultIndex.size()]];
-    SDL_Log("results: %d, narrow0: %d, narrow1: %d", (int)results.size(), (int)resultIndex.size(), (int)newResultIndex.size());
-    SDL_Log("hold: %d, direction: %d, coordinate: %d, empty: %d, maxHeight: %d, minHeight: %d", result[0], result[1], result[2], result[3], result[4], result[5]);
-    mResult.isHoled = result[0];
-    mResult.direction = result[1];
-    mResult.coordinate = result[2];
 }
 
 Vector2 NPC::getMinHeight(VirtualGameState gameState)
