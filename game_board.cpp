@@ -42,7 +42,9 @@ GameBoard::GameBoard(Game* game, int order):
     initializeNextBoard();
     // ScoreBoardnの設定
     initializeScoreBoard();
-    mNPCThread = std::thread(NPC::calculate);
+
+    // mNPCThreadに無名関数の設定
+    mNPCThread = std::thread([]{});
 }
 
 GameBoard::~GameBoard()
@@ -186,10 +188,13 @@ void GameBoard::pickTetromino()
         {
             next.push_back(board->getType());
         }
-        NPC::startCalculation(mActiveTetrominio->getType(),
-                                mHoldBoard->getType(),
-                                next,
-                                mGameState);
+
+        mNPCThread.detach();
+        mNPCThread = std::thread(NPC::startCalculation,
+                                 mActiveTetrominio->getType(),
+                                 mHoldBoard->getType(),
+                                 next,
+                                 mGameState);
     }
 }
 
