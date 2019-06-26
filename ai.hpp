@@ -4,11 +4,10 @@
 
 class AI : public Actor
 {
-private: 
+public:
     // GameBoardの状態を簡略化したもののエイリアス宣言
     using VirtualGameState = std::vector<std::array<bool, GAMEBOARD_PARALLEL>>;
 
-public:
     // 結果を格納する構造体
     struct Result
     {
@@ -30,7 +29,7 @@ public:
     static bool isCalculating(){return mIsCalculating;}
     static struct Result getResult(){return mResult;}
 
-protected:
+private:
     // GameStateを引数の値を元に更新
     static VirtualGameState updateGameState(VirtualGameState argGameState,
                                             EType type,

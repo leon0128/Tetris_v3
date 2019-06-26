@@ -1,8 +1,6 @@
 #include "ai.hpp"
 
-// ヘッダーで定義すると多重定義エラー
-// かといって初期化しないと怒られる
-// どこで定義すればいいかわかったら教えてください
+// メンバ変数の初期化
 AI::VirtualGameState AI::mVirtualGameState;
 Actor::EType AI::mActiveTetromino = NONE;
 Actor::EType AI::mHoldTetromino = NONE;
