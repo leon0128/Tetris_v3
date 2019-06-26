@@ -2,7 +2,7 @@
 
 #include "actor.hpp"
 
-class AI : public Actor
+class NPC : public Actor
 {
 public:
     // GameBoardの状態を簡略化したもののエイリアス宣言

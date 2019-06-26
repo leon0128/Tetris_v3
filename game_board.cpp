@@ -42,12 +42,12 @@ GameBoard::GameBoard(Game* game, int order):
     initializeNextBoard();
     // ScoreBoardnの設定
     initializeScoreBoard();
-    aiThread = std::thread(AI::calculate);
+    mNPCThread = std::thread(NPC::calculate);
 }
 
 GameBoard::~GameBoard()
 {
-    aiThread.detach();
+    mNPCThread.detach();
     delete mScoreBoard;
     delete mHoldBoard;
     for(int i = 0; i < NEXT_SIZE; i++)
@@ -68,7 +68,7 @@ void GameBoard::update()
     *  updateScore();
     */
 
-    inputKeyboardAndAI();
+    inputKeyboardAndNPC();
     pickTetromino();
     hold();
     updateActiveTetromino();
@@ -76,15 +76,15 @@ void GameBoard::update()
     updateScore();
 }
 
-void GameBoard::inputKeyboardAndAI()
+void GameBoard::inputKeyboardAndNPC()
 {
     // keyboardの状態の更新
     mKeyboardState = mGame->getKeyboardState();
-    // AIが存在するなら更新に関わるkeyの上書き
-    inputAI();
+    // NPCが存在するなら更新に関わるkeyの上書き
+    inputNPC();
 }
 
-void GameBoard::inputAI()
+void GameBoard::inputNPC()
 {
     // mActiveTetrominoの挙動に関わる操作を無効化
     mKeyboardState[SDL_SCANCODE_A] = 0;
@@ -95,42 +95,42 @@ void GameBoard::inputAI()
     mKeyboardState[SDL_SCANCODE_J] = 0;
     mKeyboardState[SDL_SCANCODE_K] = 0; 
 
-    // AIの演算が終わっていない場合とmActiveTetrominoが存在しない場合何もしない
-    if(AI::isCalculating() || !mActiveTetrominio)
+    // NPCの演算が終わっていない場合とmActiveTetrominoが存在しない場合何もしない
+    if(NPC::isCalculating() || !mActiveTetrominio)
     {
         return;   
     }
     
-    // mAIResultの初期化
+    // mNPCResultの初期化
     if(!mIsInitializeResult)
     {
-        mAIResult = AI::getResult();
+        mNPCResult = NPC::getResult();
         mIsInitializeResult = true;
     }
 
     // ホールドの処理
-    if(mAIResult.isHoled)
+    if(mNPCResult.isHoled)
     {
         mKeyboardState[SDL_SCANCODE_H] = 1;
-        mAIResult.isHoled = false;
+        mNPCResult.isHoled = false;
         return;
     }
     // 回転移動処理
-    if(!mAIResult.direction % 4 == 0)
+    if(!mNPCResult.direction % 4 == 0)
     {
         mKeyboardState[SDL_SCANCODE_K] = 1;
-        mAIResult.direction -= 1;
+        mNPCResult.direction -= 1;
         return;
     }
     // 並行移動処理
     if(mActiveTetrominio->getMoveFrame() >= mGame->getFrameCount() - 1)
     {
-        if(mAIResult.coordinate < mActiveTetrominio->getCenter().x)
+        if(mNPCResult.coordinate < mActiveTetrominio->getCenter().x)
         {
             mKeyboardState[SDL_SCANCODE_A] = 1;
             return;
         }
-        else if(mAIResult.coordinate > mActiveTetrominio->getCenter().x)
+        else if(mNPCResult.coordinate > mActiveTetrominio->getCenter().x)
         {
             mKeyboardState[SDL_SCANCODE_D] = 1;
             return;
@@ -178,15 +178,15 @@ void GameBoard::pickTetromino()
                               type);
     mPendingTetromino.erase(iterator);
 
-    // AIが存在し、計算をしていないなら計算開始
-    if(!AI::isCalculating())
+    // NPCが存在し、計算をしていないなら計算開始
+    if(!NPC::isCalculating())
     {
         std::vector<EType> next;
         for(auto board : mNextBoard)
         {
             next.push_back(board->getType());
         }
-        AI::startCalculation(mActiveTetrominio->getType(),
+        NPC::startCalculation(mActiveTetrominio->getType(),
                                 mHoldBoard->getType(),
                                 next,
                                 mGameState);

@@ -1,15 +1,15 @@
-#include "ai.hpp"
+#include "npc.hpp"
 
 // メンバ変数の初期化
-AI::VirtualGameState AI::mVirtualGameState;
-Actor::EType AI::mActiveTetromino = NONE;
-Actor::EType AI::mHoldTetromino = NONE;
-std::vector<Actor::EType> AI::mNextTetromino;
-bool AI::mIsStarted = false;
-bool AI::mIsCalculating = false;
-struct AI::Result AI::mResult;
+NPC::VirtualGameState NPC::mVirtualGameState;
+Actor::EType NPC::mActiveTetromino = NONE;
+Actor::EType NPC::mHoldTetromino = NONE;
+std::vector<Actor::EType> NPC::mNextTetromino;
+bool NPC::mIsStarted = false;
+bool NPC::mIsCalculating = false;
+struct NPC::Result NPC::mResult;
 
-void AI::startCalculation(EType active, 
+void NPC::startCalculation(EType active, 
                           EType hold, 
                           std::vector<EType> next,
                           std::vector<std::array<Block*, GAMEBOARD_PARALLEL>> gameState)
@@ -42,7 +42,7 @@ void AI::startCalculation(EType active,
     mIsStarted = true;
 }
 
-void AI::calculate()
+void NPC::calculate()
 {
     // 無限ループ
     while(1)
@@ -157,7 +157,7 @@ void AI::calculate()
     }
 }
 
-Vector2 AI::getMinHeight(VirtualGameState gameState)
+Vector2 NPC::getMinHeight(VirtualGameState gameState)
 {
     int heights[GAMEBOARD_PARALLEL] = {-1};
     bool isEmpty = true;
@@ -202,7 +202,7 @@ Vector2 AI::getMinHeight(VirtualGameState gameState)
     return coordinate;
 }
 
-AI::VirtualGameState AI::updateGameState(VirtualGameState gameState,
+NPC::VirtualGameState NPC::updateGameState(VirtualGameState gameState,
                          EType type,
                          int direction,
                          int coordinate)
@@ -215,7 +215,7 @@ AI::VirtualGameState AI::updateGameState(VirtualGameState gameState,
     return gs;
 }
 
-std::array<Vector2, 4> AI::getInitializeTetrominoCoordinate(EType type)
+std::array<Vector2, 4> NPC::getInitializeTetrominoCoordinate(EType type)
 {
     std::array<Vector2, 4> tetromino;
 
@@ -276,7 +276,7 @@ std::array<Vector2, 4> AI::getInitializeTetrominoCoordinate(EType type)
     return tetromino;
 }
 
-std::array<Vector2, 4> AI::getRotationTetrominoCoordinate(std::array<Vector2, 4> tetromino,
+std::array<Vector2, 4> NPC::getRotationTetrominoCoordinate(std::array<Vector2, 4> tetromino,
                                                           int direction)
 {
     Vector2 target, distance;
@@ -296,7 +296,7 @@ std::array<Vector2, 4> AI::getRotationTetrominoCoordinate(std::array<Vector2, 4>
     return tetromino;
 }
 
-std::array<Vector2, 4> AI::getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
+std::array<Vector2, 4> NPC::getParallelTetrominoCoordinate(std::array<Vector2, 4> tetromino,
                                                       int coordinateX)
 {
     bool isCorrect = true;
@@ -345,7 +345,7 @@ std::array<Vector2, 4> AI::getParallelTetrominoCoordinate(std::array<Vector2, 4>
     return tetromino;
 }
 
-AI::VirtualGameState AI::getQuickDropedGameState(VirtualGameState gameState,
+NPC::VirtualGameState NPC::getQuickDropedGameState(VirtualGameState gameState,
                                  std::array<Vector2, 4> tetromino)
 {
     bool isCorrect = true;
@@ -378,7 +378,7 @@ AI::VirtualGameState AI::getQuickDropedGameState(VirtualGameState gameState,
     return gameState;
 }
 
-AI::VirtualGameState AI::deleteLine(VirtualGameState gameState)
+NPC::VirtualGameState NPC::deleteLine(VirtualGameState gameState)
 {
     std::vector<int> filledLine;
     for(int y = 0; y < GAMEBOARD_VERTICAL; y++)
@@ -411,7 +411,7 @@ AI::VirtualGameState AI::deleteLine(VirtualGameState gameState)
     return gameState;
 }
 
-bool AI::isFilledX(VirtualGameState gameState,
+bool NPC::isFilledX(VirtualGameState gameState,
                    int x,
                    int leastHeight)
 {
@@ -425,7 +425,7 @@ bool AI::isFilledX(VirtualGameState gameState,
     return false;
 }
 
-int AI::getMaxHeight(VirtualGameState gameState)
+int NPC::getMaxHeight(VirtualGameState gameState)
 {
     bool isEmpty = false;
     int height = 0;
@@ -449,7 +449,7 @@ int AI::getMaxHeight(VirtualGameState gameState)
     return height;
 }
 
-int AI::getEmptyNumber(VirtualGameState gameState)
+int NPC::getEmptyNumber(VirtualGameState gameState)
 {
     bool isEmpty[GAMEBOARD_PARALLEL] = {false};
     bool isEmptyLine = true;
@@ -481,7 +481,7 @@ int AI::getEmptyNumber(VirtualGameState gameState)
     return number;
 }
 
-void AI::printVirtualGameState(VirtualGameState gameState)
+void NPC::printVirtualGameState(VirtualGameState gameState)
 {
     for(int y = (int)gameState.size() - 1; y >= 0; y--)
     {

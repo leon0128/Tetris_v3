@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sprite_actor.hpp"
-#include "ai.hpp"
+#include "npc.hpp"
 
 // 固定されるまでの時間と落下時間
 // === FIX_COUNT >= DROP_COUNT ===
@@ -29,9 +29,9 @@ public:
 
 private:
     // 入力処理
-    void inputKeyboardAndAI();
-    // AIが出した計算結果を処理
-    void inputAI();
+    void inputKeyboardAndNPC();
+    // NPCが出した計算結果を処理
+    void inputNPC();
     // mActiveTetrominoがnullptrの場合、新しいミノを作成
     void pickTetromino();
     // Hold操作
@@ -71,11 +71,11 @@ private:
     // 各スコアを格納する配列
     std::array<std::string, 8> mScores;
 
-    // AI
-    // AIの計算結果を格納
-    struct AI::Result mAIResult;
+    // NPC関連
+    // NPCの計算結果を格納
+    struct NPC::Result mNPCResult;
     // 結果を初期化したか
     bool mIsInitializeResult;
-    // AIの演算を処理するスレッド
-    std::thread aiThread;
+    // NPCの演算を処理するスレッド
+    std::thread mNPCThread;
 };
