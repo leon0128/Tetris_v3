@@ -1,11 +1,10 @@
 #include "npc.hpp"
 
-// メンバ変数の初期化
+// 静的メンバ変数の初期化
 NPC::VirtualGameState NPC::mVirtualGameState;
 Actor::EType NPC::mActiveTetromino = NONE;
 Actor::EType NPC::mHoldTetromino = NONE;
 std::vector<Actor::EType> NPC::mNextTetromino;
-bool NPC::mIsStarted = false;
 bool NPC::mIsCalculating = false;
 struct NPC::Result NPC::mResult;
 
@@ -14,13 +13,14 @@ void NPC::startCalculation(EType active,
                           std::vector<EType> next,
                           std::vector<std::array<Block*, GAMEBOARD_PARALLEL>> gameState)
 {
+    // 計算開始フラグ
     mIsCalculating = true;
 
+    // 各メンバ変数の設定
     mActiveTetromino = active;
     mHoldTetromino = hold;
     mNextTetromino = next;
 
-    mVirtualGameState.clear();
     // mVirtualGameStateの設定
     for(int y = 0; y < (int)gameState.size(); y++)
     {
@@ -38,123 +38,118 @@ void NPC::startCalculation(EType active,
             }
         }
     }
-    // 計算開始
-    mIsStarted = true;
+
+    // 計算結果をmResultに格納
+    calculate();
+    // mVirticalGameStateの削除
+    mVirtualGameState.clear();
+
+    // 計算終了フラグ
+    mIsCalculating = false;
 }
 
 void NPC::calculate()
 {
-    // 無限ループ
-    while(1)
+    // 計算処理
+    // 計算結果を格納する配列
+    // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight, [5]: minHeight
+    std::vector<std::array<int, 6>> results;
+
+    VirtualGameState gameState;
+    for(int d = 0; d < 4; d++)
     {
-        // 新しいデータを受け取るまで待機
-        while(!mIsStarted)
+        for(int c = 0; c < 10; c++)
         {
-        }
-        mIsStarted = false;
-
-        // 計算処理
-        // 計算結果を格納する配列
-        // [0]: hold, [1]: direction, [2]: coordinate, [3]: emptyNum, [4]: maxHeight, [5]: minHeight
-        std::vector<std::array<int, 6>> results;
-
-        VirtualGameState gameState;
-        for(int d = 0; d < 4; d++)
-        {
-            for(int c = 0; c < 10; c++)
+            gameState = updateGameState(mVirtualGameState,
+                                        mActiveTetromino,
+                                        d,
+                                        c);
             {
-                gameState = updateGameState(mVirtualGameState,
-                                            mActiveTetromino,
-                                            d,
-                                            c);
-                {
-                    std::array<int, 6> result = {0,
-                                                 d, 
-                                                 c, 
-                                                 getEmptyNumber(gameState),
-                                                 getMaxHeight(gameState),
-                                                 getMinHeight(gameState).y};
-                    results.push_back(result);
-                }
+                std::array<int, 6> result = {0,
+                                                d, 
+                                                c, 
+                                                getEmptyNumber(gameState),
+                                                getMaxHeight(gameState),
+                                                getMinHeight(gameState).y};
+                results.push_back(result);
             }
         }
-        if(mHoldTetromino == NONE)
-        {
-            mHoldTetromino = mNextTetromino[0];
-        }
-        for(int d = 0; d < 4; d++)
-        {
-            for(int c = 0; c < 10; c++)
-            {
-                gameState = updateGameState(mVirtualGameState,
-                                            mHoldTetromino,
-                                            d,
-                                            c);
-                {
-                    std::array<int, 6> result = {1,
-                                                 d, 
-                                                 c, 
-                                                 getEmptyNumber(gameState),
-                                                 getMaxHeight(gameState),
-                                                 getMinHeight(gameState).y};
-                    results.push_back(result);
-                }
-            }
-        }
-        int emptyNumber = results[0][3];
-        int maxHeight = 100;
-        int minHeight = -1;
-        std::vector<int> resultIndex;
-        std::vector<int> newResultIndex;
-        for(auto result : results)
-        {
-            if(result[3] < emptyNumber)
-            {
-                emptyNumber = result[3];
-            }
-        }
-
-        for(auto result : results)
-        {
-            if(result[4] < maxHeight &&
-               result[3] == emptyNumber)
-            {
-                maxHeight = result[4];
-            }
-        }
-
-        for(int i = 0; i < (int)results.size(); i++)
-        {
-            if(results[i][3] == emptyNumber &&
-               results[i][4] == maxHeight)
-            {
-                resultIndex.push_back(i);
-            }
-        }
-
-        for(auto index : resultIndex)
-        {
-            if(results[index][5] > minHeight)
-            {
-                minHeight = results[index][5];
-            }
-        }
-
-        for(int i = 0; i < (int)resultIndex.size(); i++)
-        {
-            if(results[resultIndex[i]][5] == minHeight)
-            {
-                newResultIndex.push_back(resultIndex[i]);
-            }
-        }
-        std::array<int, 6> result = results[newResultIndex[rand() % newResultIndex.size()]];
-        mResult.isHoled = result[0];
-        mResult.direction = result[1];
-        mResult.coordinate = result[2];
-        SDL_Log("results: %d, narrow0: %d, narrow1: %d", (int)results.size(), (int)resultIndex.size(), (int)newResultIndex.size());
-        SDL_Log("hold: %d, direction: %d, coordinate: %d, empty: %d, maxHeight: %d, minHeight: %d", result[0], result[1], result[2], result[3], result[4], result[5]);
-        mIsCalculating = false;
     }
+    if(mHoldTetromino == NONE)
+    {
+        mHoldTetromino = mNextTetromino[0];
+    }
+    for(int d = 0; d < 4; d++)
+    {
+        for(int c = 0; c < 10; c++)
+        {
+            gameState = updateGameState(mVirtualGameState,
+                                        mHoldTetromino,
+                                        d,
+                                        c);
+            {
+                std::array<int, 6> result = {1,
+                                                d, 
+                                                c, 
+                                                getEmptyNumber(gameState),
+                                                getMaxHeight(gameState),
+                                                getMinHeight(gameState).y};
+                results.push_back(result);
+            }
+        }
+    }
+    int emptyNumber = results[0][3];
+    int maxHeight = 100;
+    int minHeight = -1;
+    std::vector<int> resultIndex;
+    std::vector<int> newResultIndex;
+    for(auto result : results)
+    {
+        if(result[3] < emptyNumber)
+        {
+            emptyNumber = result[3];
+        }
+    }
+
+    for(auto result : results)
+    {
+        if(result[4] < maxHeight &&
+            result[3] == emptyNumber)
+        {
+            maxHeight = result[4];
+        }
+    }
+
+    for(int i = 0; i < (int)results.size(); i++)
+    {
+        if(results[i][3] == emptyNumber &&
+            results[i][4] == maxHeight)
+        {
+            resultIndex.push_back(i);
+        }
+    }
+
+    for(auto index : resultIndex)
+    {
+        if(results[index][5] > minHeight)
+        {
+            minHeight = results[index][5];
+        }
+    }
+
+    for(int i = 0; i < (int)resultIndex.size(); i++)
+    {
+        if(results[resultIndex[i]][5] == minHeight)
+        {
+            newResultIndex.push_back(resultIndex[i]);
+        }
+    }
+    std::array<int, 6> result = results[newResultIndex[rand() % newResultIndex.size()]];
+    SDL_Log("results: %d, narrow0: %d, narrow1: %d", (int)results.size(), (int)resultIndex.size(), (int)newResultIndex.size());
+    SDL_Log("hold: %d, direction: %d, coordinate: %d, empty: %d, maxHeight: %d, minHeight: %d", result[0], result[1], result[2], result[3], result[4], result[5]);
+    mResult.isHoled = result[0];
+    mResult.direction = result[1];
+    mResult.coordinate = result[2];
 }
 
 Vector2 NPC::getMinHeight(VirtualGameState gameState)
