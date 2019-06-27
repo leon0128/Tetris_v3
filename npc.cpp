@@ -55,15 +55,9 @@ void NPC::startCalculation(EType active,
 
 void NPC::calculate()
 {
-    int x = 0;
-    while(x == 10000000)
-    {
-        x++;
-        if(x % 10000000 == 0)
-        {
-            SDL_Log("%d", x);
-        }
-    }
+    int empty = getEmptyNumber(mVirtualGameState);
+    SDL_Log("empty : %d", empty);
+    sleep(15);
 }
 
 Vector2 NPC::getMinHeight(VirtualGameState gameState)
@@ -359,35 +353,40 @@ int NPC::getMaxHeight(VirtualGameState gameState)
 }
 
 int NPC::getEmptyNumber(VirtualGameState gameState)
-{
-    bool isEmpty[GAMEBOARD_PARALLEL] = {false};
-    bool isEmptyLine = true;
-
-    int number = 0;
-    for(int y = 0; y < (int)gameState.size(); y++)
+{   
+    // 各x軸で一番高い位置にあるブロックのy座標を格納
+    // ブロックが存在しない場合は、-1となる
+    std::array<int, GAMEBOARD_PARALLEL> maxHeights;
+    for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
     {
-        isEmptyLine = true;
-        for(int x = 0; x < (int)gameState[y].size(); x++)
+        for(int y = GAMEBOARD_VERTICAL -1; y >= 0; y--)
         {
-            if(gameState[y][x])
+            if(gameState.at(y).at(x))
             {
-                isEmptyLine = false;
+                maxHeights.at(x) = y;
+                break;
             }
-            if(!gameState[y][x])
+            else if(y == 0)
             {
-                isEmpty[x] = true;
+                maxHeights.at(x) = -1;
             }
-            else if(isEmpty[x])
-            {
-                number ++;
-            }
-        }
-        if(isEmptyLine)
-        {
-            break;
         }
     }
-    return number;
+    
+    // 各x座標の最大値より下のブロックの空白の数を調査
+    int emptyNumber = 0;
+    for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
+    {
+        for(int y = 0; y < maxHeights.at(x); y++)
+        {
+            if(!gameState.at(y).at(x))
+            {
+                emptyNumber++;
+            }
+        }
+    }
+    
+    return emptyNumber;
 }
 
 void NPC::printVirtualGameState(VirtualGameState gameState)

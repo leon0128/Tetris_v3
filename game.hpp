@@ -13,6 +13,7 @@
 #include <cstring>
 #include <thread>
 #include <time.h>
+#include <unistd.h>
 
 // ウィンドウの幅と高さ
 const int WINDOW_WIDTH = 1024;
