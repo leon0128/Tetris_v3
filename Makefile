@@ -1,11 +1,12 @@
-CC = g++
-CFLAGS = -g3 -Wall `sdl2-config --cflags --libs` -lSDL2_ttf -lSDL2_image -lpthread
+CC            = g++
+CFLAGS        = -g3 -Wall 
+LIBS          = `sdl2-config --cflags --libs` -lSDL2_ttf -lSDL2_image -lpthread
+OBJS          = main.o game.o actor.o sprite_actor.o back_ground.o game_board.o tetromino.o block.o side_board.o score_board.o npc.o
+PROGRAM       = main
 
-MAIN = main.cpp game.cpp
-ACTOR = actor.cpp sprite_actor.cpp back_ground.cpp game_board.cpp tetromino.cpp block.cpp side_board.cpp score_board.cpp npc.cpp
+all:            $(PROGRAM)
 
-main:
-	$(CC) $(MAIN) $(ACTOR) $(CFLAGS) -o main
+$(PROGRAM):	$(OBJS)
+	$(CC) $(OBJS) $(LIBS) -o $(PROGRAM)
 
-clean:
-	rm -f main
+clean:;         rm -f *.o *~ $(PROGRAM)
