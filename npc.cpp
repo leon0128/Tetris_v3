@@ -151,103 +151,150 @@ void NPC::calculate()
     // mResult.direction = result[1];
     // mResult.coordinate = result[2];
 
-    // 深さ
-    int depth = 2, index = 0;
-    // 結果を格納する配列
-    std::vector<std::array<int, 6>> resultVector;
-    std::vector<int> resultIndex;
+    // // 深さ
+    // int depth = 2, index = 0;
+    // // 結果を格納する配列
+    // std::vector<std::array<int, 6>> resultVector;
+    // std::vector<int> resultIndex;
     
-    // resultVectorに初期値の代入
-    for(int isHold = 0; isHold < 2; isHold++)
-    {
-        for(int direction = 0; direction < 4; direction++)
-        {
-            for(int coordinate = 0; coordinate < 10; coordinate++)
-            {
-                std::array<int, 6> temp = {isHold,
-                                           direction,
-                                           coordinate,
-                                           0,
-                                           0,
-                                           0};
-                resultVector.push_back(temp);
-                resultIndex.push_back(index);
-                index ++;
-            }
-        }
-    }
+    // // resultVectorに初期値の代入
+    // for(int isHold = 0; isHold < 2; isHold++)
+    // {
+    //     for(int direction = 0; direction < 4; direction++)
+    //     {
+    //         for(int coordinate = 0; coordinate < 10; coordinate++)
+    //         {
+    //             std::array<int, 6> temp = {isHold,
+    //                                        direction,
+    //                                        coordinate,
+    //                                        0,
+    //                                        0,
+    //                                        0};
+    //             resultVector.push_back(temp);
+    //             resultIndex.push_back(index);
+    //             index ++;
+    //         }
+    //     }
+    // }
 
-    // 何手先まで評価するか
-    std::vector<VirtualGameState> gameStateVector = {mVirtualGameState};
-    for(int d = 0; d < depth - 1; d++)
+    // // 何手先まで評価するか
+    // std::vector<VirtualGameState> gameStateVector = {mVirtualGameState};
+    // for(int d = 0; d < depth - 1; d++)
+    // {
+    //     // resultVectorの中のみ評価
+    //     for(auto index : resultIndex)
+    //     {
+    //         // typeの設定
+    //         EType type = mActiveTetromino;
+    //         if(resultVector[index][0] == 1)
+    //         {
+    //             type = mNextTetromino[0];
+    //         }
+
+    //         // 評価した結果を格納 
+    //         gameStateVector[index] = updateGameState(gameStateVector[index],
+    //                                                  type,
+    //                                                  resultVector[index][1],
+    //                                                  resultVector[index][2]);
+    //         resultVector[index][3] = getEmptyNumber(gameStateVector[index]);
+    //         resultVector[index][4] = getMaxHeight(gameStateVector[index]);
+    //         resultVector[index][5] = getMinHeight(gameStateVector[index]).y;
+    //     }
+        
+    //     // emptyの最小値の調査
+    //     int empty = 100;
+    //     for(auto index : resultIndex)
+    //     {
+    //         if(empty > resultVector[index][3])
+    //         {
+    //             empty = resultVector[index][3];
+    //         }
+    //     }
+    //     // emptyの最小値以外のindexを削除
+    //     auto iterator = resultIndex.begin();
+    //     while(iterator != resultIndex.end())
+    //     {
+    //         if(*iterator != empty)
+    //         {
+    //             iterator = resultIndex.erase(iterator);
+    //         }
+    //         else
+    //         {
+    //             iterator++;
+    //         }
+    //     }
+
+    //     // 最も高い位置にあるブロックのy座標を取得
+    //     int max = -1;
+    //     for(auto index : resultIndex)
+    //     {
+    //         if(max < resultVector[index][4])
+    //         {
+    //             max = resultVector[index][4];
+    //         }
+    //     }
+    //     // 最大値以外のインデックスを削除
+    //     iterator = resultIndex.begin();
+    //     while(iterator != resultIndex.end())
+    //     {
+    //         if(*iterator != max)
+    //         {
+    //             iterator = resultIndex.erase(iterator);
+    //         }
+    //         else
+    //         {
+    //             iterator++;
+    //         }
+    //     }
+
+    // }
+
+    // 結果を格納する構造体
+    struct DetailReult
     {
-        // resultVectorの中のみ評価
-        for(auto index : resultIndex)
+        struct Result result;
+        int empty;
+        int max;
+        int min;
+        VirtualGameState gameState;
+    };
+    // 結果をまとめて格納する配列
+    std::vector<DetailReult> detailResultVector;
+    
+    // 深度1の結果を格納(80)
+    for(unsigned int h = 0; h < 2; h++)
+    {
+        EType type = mActiveTetromino;
+        if(h == 1)
         {
-            // typeの設定
-            EType type = mActiveTetromino;
-            if(resultVector[index][0] == 1)
+            type = mHoldTetromino;
+            if(type == NONE)
             {
                 type = mNextTetromino[0];
             }
-
-            // 評価した結果を格納 
-            gameStateVector[index] = updateGameState(gameStateVector[index],
-                                                     type,
-                                                     resultVector[index][1],
-                                                     resultVector[index][2]);
-            resultVector[index][3] = getEmptyNumber(gameStateVector[index]);
-            resultVector[index][4] = getMaxHeight(gameStateVector[index]);
-            resultVector[index][5] = getMinHeight(gameStateVector[index]);
         }
-        
-        // emptyの最小値の調査
-        int empty = 100;
-        for(auto index : resultIndex)
+        for(int d = 0; d < 4; d++)
         {
-            if(empty > resultVector[index][3])
+            for(int c = 0; c < 10; c++)
             {
-                empty = resultVector[index][3];
+                VirtualGameState state = updateGameState(mVirtualGameState,
+                                                         type,
+                                                         d,
+                                                         c);
+                Result result = {h, d, c};
+                DetailReult detail = {result,
+                                      getEmptyNumber(state),
+                                      getMaxHeight(state),
+                                      getMinHeight(state).y,
+                                      state};
+                detailResultVector.push_back(detail);
             }
         }
-        // emptyの最小値以外のindexを削除
-        auto iterator = resultIndex.begin();
-        while(iterator != resultIndex.end())
-        {
-            if(*iterator != empty)
-            {
-                iterator = resultIndex.erase(iterator);
-            }
-            else
-            {
-                iterator++;
-            }
-        }
-
-        // 最も高い位置にあるブロックのy座標を取得
-        int max = -1;
-        for(auto index : resultIndex)
-        {
-            if(max < resultVector[index][4])
-            {
-                max = resultVector[index][4];
-            }
-        }
-        // 最大値以外のインデックスを削除
-        iterator = resultIndex.begin();
-        while(iterator != resultIndex.end())
-        {
-            if(*iterator != max)
-            {
-                iterator = resultIndex.erase(iterator);
-            }
-            else
-            {
-                iterator++;
-            }
-        }
-
     }
+
+    SDL_Log("%d", (int)detailResultVector.size());
+    detailResultVector.clear();
+    SDL_Log("%d", (int)detailResultVector.size());
 }
 
 Vector2 NPC::getMinHeight(VirtualGameState gameState)
