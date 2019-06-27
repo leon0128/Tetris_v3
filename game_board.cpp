@@ -69,8 +69,10 @@ void GameBoard::update()
     *  updateGameState();
     *  updateScore();
     */
-    pickTetromino();
+
     inputKeyboardAndNPC();
+    pickTetromino();
+    inputNPC();
     hold();
     updateActiveTetromino();
     updateGameState();
@@ -82,7 +84,7 @@ void GameBoard::inputKeyboardAndNPC()
     // keyboardの状態の更新
     mKeyboardState = mGame->getKeyboardState();
     // NPCが存在するなら更新に関わるkeyの上書き
-    inputNPC();
+    // inputNPC();
 }
 
 void GameBoard::inputNPC()
@@ -194,6 +196,11 @@ void GameBoard::pickTetromino()
                                  mHoldBoard->getType(),
                                  next,
                                  mGameState);
+
+        // NPC::isCalculationがtrueになるまで待つ
+        while(!NPC::isCalculating())
+        {
+        }
     }
 }
 
