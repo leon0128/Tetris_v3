@@ -69,9 +69,8 @@ void GameBoard::update()
     *  updateGameState();
     *  updateScore();
     */
-
-    inputKeyboardAndNPC();
     pickTetromino();
+    inputKeyboardAndNPC();
     hold();
     updateActiveTetromino();
     updateGameState();

@@ -16,6 +16,11 @@ void NPC::startCalculation(EType active,
     // 計算開始フラグ
     mIsCalculating = true;
 
+    // 結果の初期化
+    mResult.isHoled = 0;
+    mResult.direction = 0;
+    mResult.coordinate = 0;
+
     // 各メンバ変数の設定
     mActiveTetromino = active;
     mHoldTetromino = hold;
@@ -292,7 +297,7 @@ void NPC::calculate()
         }
     }
 
-    // emptyが最小値のもの以外を削除
+    // emptyが最小値のもの以外を削除(n)
     int minEmpty = 100;
     for(auto detail : detailResultVector)
     {
@@ -310,17 +315,143 @@ void NPC::calculate()
         else
         {
             iterator++;
-        }
-        
+        }   
     }
+    // 結果の確認
     SDL_Log("MIN_EMPTY: %d", minEmpty);
+    SDL_Log("detailResultVector.size(): %d", (int)detailResultVector.size());
+
+    // 2回目
+    // n個に減らした結果をもとに新しいdetailResultを生成(n * 80)
+    std::vector<DetailReult> tempResultVector;
+    EType tempActive = NONE;
+    EType tempHold = NONE;
+    std::vector<EType> tempNext;
     for(auto detail : detailResultVector)
     {
-        SDL_Log("detail.empty: %d", detail.empty );
+        if(detail.result.isHoled == 0)
+        {
+            tempActive = mNextTetromino[0];
+            tempNext.push_back(mNextTetromino[1]);
+        }
+        else
+        {
+            if(mHoldTetromino == NONE)
+            {
+                tempActive = mNextTetromino[1];
+                tempNext.push_back(mNextTetromino[2]);
+            }
+            else
+            {
+                tempActive = mNextTetromino[0];
+                tempNext.push_back(mNextTetromino[1]);
+            }
+            tempHold = mActiveTetromino;
+        }
+        
+        for(unsigned int h = 0; h < 2; h++)
+        {   
+            EType type = tempActive;
+            if(h == 1)
+            {
+                type = tempHold;
+                if(type == NONE)
+                {
+                    type = tempNext[0];
+                }
+            }
+            for(int d = 0; d < 4; d++)
+            {
+                for(int c = 0; c < 10; c++)
+                {
+                    VirtualGameState state = updateGameState(detail.gameState,
+                                                             type,
+                                                             d,
+                                                             c);
+                    // Result result = {h, d, c};
+                    DetailReult detail = {detail.result,
+                                          getEmptyNumber(state),
+                                          getMaxHeight(state),
+                                          getMinHeight(state).y,
+                                          state};
+                    tempResultVector.push_back(detail);
+                }
+            }
+        }
     }
-    SDL_Log("%d", (int)detailResultVector.size());
+    detailResultVector.clear();
+    SDL_Log("tempResultVector.size(): %d", (int)tempResultVector.size());
 
+    // emptyが最小値のもの以外を削除(n)
+    minEmpty = 100;
+    for(auto detail : tempResultVector)
+    {
+        if(detail.empty < minEmpty)
+            minEmpty = detail.empty;
+    }
+    for(int i = 0; i < (int)tempResultVector.size(); i++)
+    {
+        if(tempResultVector[i].empty == minEmpty)
+        {
+            detailResultVector.push_back(tempResultVector[i]);
+        }
+    }
+    tempResultVector.clear();
+    // 結果の確認
+    SDL_Log("MIN_EMPTY: %d", minEmpty);
+    SDL_Log("detailResultVector.size(): %d", (int)detailResultVector.size());
+    
+    // 高さが最も低くなるものを残す
+    int maxHeight = 100;
+    for(auto detail : detailResultVector)
+    {
+        if(detail.max < maxHeight)
+        {
+            maxHeight = detail.max;
+        }
+    }
+    iterator = detailResultVector.begin();
+    while(iterator != detailResultVector.end())
+    {
+        if(iterator->max != maxHeight)
+        {
+            std::iter_swap(iterator, detailResultVector.end() - 1);
+            detailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }   
+    }
+    SDL_Log("MAX_HEIGHT: %d", maxHeight);
+    SDL_Log("detailResultVector.size(): %d", (int)detailResultVector.size());
 
+    // 高さが最も低くなるものを残す
+    int minHeight = 100;
+    for(auto detail : detailResultVector)
+    {
+        if(detail.min < minHeight)
+        {
+            minHeight = detail.min;
+        }
+    }
+    iterator = detailResultVector.begin();
+    while(iterator != detailResultVector.end())
+    {
+        if(iterator->min != minHeight)
+        {
+            std::iter_swap(iterator, detailResultVector.end() - 1);
+            detailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }   
+    }
+    SDL_Log("MIN_HEIGHT: %d", minHeight);
+    SDL_Log("detailResultVector.size(): %d", (int)detailResultVector.size()); 
+
+    mResult = detailResultVector[rand() % detailResultVector.size()].result;
 
     detailResultVector.clear();
     SDL_Log("%d", (int)detailResultVector.size());
