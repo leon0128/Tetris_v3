@@ -292,7 +292,36 @@ void NPC::calculate()
         }
     }
 
+    // emptyが最小値のもの以外を削除
+    int minEmpty = 100;
+    for(auto detail : detailResultVector)
+    {
+        if(detail.empty < minEmpty)
+            minEmpty = detail.empty;
+    }
+    auto iterator = detailResultVector.begin();
+    while(iterator != detailResultVector.end())
+    {
+        if(iterator->empty != minEmpty)
+        {
+            std::iter_swap(iterator, detailResultVector.end() - 1);
+            detailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }
+        
+    }
+    SDL_Log("MIN_EMPTY: %d", minEmpty);
+    for(auto detail : detailResultVector)
+    {
+        SDL_Log("detail.empty: %d", detail.empty );
+    }
     SDL_Log("%d", (int)detailResultVector.size());
+
+
+
     detailResultVector.clear();
     SDL_Log("%d", (int)detailResultVector.size());
 }
