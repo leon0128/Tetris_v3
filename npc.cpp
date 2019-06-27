@@ -56,8 +56,9 @@ void NPC::startCalculation(EType active,
 void NPC::calculate()
 {
     int empty = getEmptyNumber(mVirtualGameState);
-    SDL_Log("empty : %d", empty);
-    sleep(15);
+    double dispersion = getDispersion(mVirtualGameState);
+    SDL_Log("empty : %d, dispersion : %lf", empty, dispersion);
+    sleep(10);
 }
 
 Vector2 NPC::getMinHeight(VirtualGameState gameState)
@@ -387,6 +388,54 @@ int NPC::getEmptyNumber(VirtualGameState gameState)
     }
     
     return emptyNumber;
+}
+
+double NPC::getDispersion(VirtualGameState gameState)
+{
+    // 各x軸で一番高い位置にあるブロックのy座標を格納
+    // ブロックが存在しない場合は、-1となる
+    std::array<int, GAMEBOARD_PARALLEL> maxHeights;
+    for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
+    {
+        for(int y = GAMEBOARD_VERTICAL -1; y >= 0; y--)
+        {
+            if(gameState.at(y).at(x))
+            {
+                maxHeights.at(x) = y + 1;
+                break;
+            }
+            else if(y == 0)
+            {
+                maxHeights.at(x) = 0;
+            }
+        }
+    }
+
+    // 高さの分散を求める
+    double dispersion = 0.0, average = 0.0, sum = 0;
+    // 平均
+    for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
+    {
+        sum += maxHeights.at(x);
+    }
+    average = sum / GAMEBOARD_PARALLEL;
+    // 分散
+    for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
+    {
+        dispersion = dispersion +
+                     (maxHeights.at(x) - average) * 
+                     (maxHeights.at(x) - average);
+    }
+    if(average != 0.0)
+    {
+        dispersion = dispersion / average;
+    }
+    else
+    {
+        dispersion = 0.0;
+    }
+    
+    return dispersion;
 }
 
 void NPC::printVirtualGameState(VirtualGameState gameState)

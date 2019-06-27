@@ -59,6 +59,8 @@ private:
     static Vector2 getMinHeight(VirtualGameState gameState);
     // 空白の数を返す
     static int getEmptyNumber(VirtualGameState gameState);
+    // 各x座標の最大値の分散
+    static double getDispersion(VirtualGameState gameState);
     // 引数のGameStateno状態をコンソールに出力する
     static void printVirtualGameState(VirtualGameState gameState);
 
