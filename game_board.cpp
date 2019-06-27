@@ -182,7 +182,7 @@ void GameBoard::pickTetromino()
     mPendingTetromino.erase(iterator);
 
     // NPCが存在し、計算をしていないなら計算開始
-    if(!NPC::isCalculating())
+    if(!NPC::isCalculating() && !mIsHolded)
     {
         std::vector<EType> next;
         for(auto board : mNextBoard)
@@ -222,6 +222,7 @@ void GameBoard::hold()
     delete mActiveTetrominio;
     mActiveTetrominio = nullptr;
 
+    mIsHolded = true;
     if(temp != NONE)
     {
         mActiveTetrominio = new Tetromino(mGame, 50, this, temp);
@@ -230,8 +231,6 @@ void GameBoard::hold()
     {
         pickTetromino();
     }
-    
-    mIsHolded = true;
 }
 
 void GameBoard::updateActiveTetromino()

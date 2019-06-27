@@ -18,8 +18,8 @@ void NPC::startCalculation(EType active,
 
     // 結果の初期化
     mResult.isHoled = 1;
-    mResult.direction = 0;
-    mResult.coordinate = 4;
+    mResult.direction = 2;
+    mResult.coordinate = 6;
 
     // 各メンバ変数の設定
     mActiveTetromino = active;
@@ -55,10 +55,125 @@ void NPC::startCalculation(EType active,
 
 void NPC::calculate()
 {
-    int empty = getEmptyNumber(mVirtualGameState);
-    double dispersion = getDispersion(mVirtualGameState);
-    SDL_Log("empty : %d, dispersion : %lf", empty, dispersion);
-    sleep(10);
+    // 詳細な結果を格納する構造体
+    struct DetailResult
+    {
+        Result result;
+        int empty;
+        int maxHeight;
+        double dispersion;
+    };
+
+    // 結果を格納する配列
+    std::vector<DetailResult> detailResultVector;
+
+    // ホールドと通常の合わせて80回
+    for(int h = 0; h < 2; h++)
+    {
+        EType type = mActiveTetromino;
+        if(h == 1)
+        {
+            if(mHoldTetromino != NONE)
+            {
+                type = mNextTetromino[0];
+            }
+            else
+            {
+                type = mHoldTetromino;
+            }
+        }
+
+        for(unsigned int d = 0; d < 4; d++)
+        {
+            for(int c = 0; c < 10; c++)
+            {
+                VirtualGameState gameState = updateGameState(mVirtualGameState,
+                                                             type,
+                                                             d,
+                                                             c);
+                Result result = {d, c, h};
+                DetailResult detail = {result,
+                                       getEmptyNumber(gameState),
+                                       getMaxHeight(gameState),
+                                       getDispersion(gameState)};
+                detailResultVector.push_back(detail);
+            }
+        }
+    }
+
+    // emptyが最小のもの以外の削除
+    int minEmpty = std::numeric_limits<int>::max();
+    for(auto detail : detailResultVector)
+    {
+        if(detail.empty < minEmpty)
+        {
+            minEmpty = detail.empty;
+        }
+    }
+    auto iterator = detailResultVector.begin();
+    while(iterator != detailResultVector.end())
+    {
+        if(iterator->empty != minEmpty)
+        {
+            std::iter_swap(iterator, detailResultVector.end() -1);
+            detailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }
+    }
+
+    // maxHeightが最小のもの
+    int minHeight = std::numeric_limits<int>::max();
+    for(auto detail : detailResultVector)
+    {
+        if(detail.maxHeight < minHeight)
+        {
+            minHeight = detail.maxHeight;
+        }
+    }
+    iterator = detailResultVector.begin();
+    while(iterator != detailResultVector.end())
+    {
+        if(iterator->maxHeight != minHeight)
+        {
+            std::iter_swap(iterator, detailResultVector.end() -1);
+            detailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }
+    }
+
+    // dispersionの最小値のみを残す
+    double minDispersion = std::numeric_limits<double>::max();
+    for(auto detail : detailResultVector)
+    {
+        if(detail.dispersion < minDispersion)
+        {
+            minDispersion = detail.dispersion;
+        }
+    }
+    iterator = detailResultVector.begin();
+    while(iterator != detailResultVector.end())
+    {
+        if(iterator->dispersion != minDispersion)
+        {
+            std::iter_swap(iterator, detailResultVector.end() -1);
+            detailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }
+    }
+
+    DetailResult detailResult = detailResultVector.at(rand() % detailResultVector.size());
+    // mResult = detailResult.result;
+    SDL_Log("empty: %d, dispersion: %lf", detailResult.empty, detailResult.dispersion);
+    sleep(5);
 }
 
 Vector2 NPC::getMinHeight(VirtualGameState gameState)
