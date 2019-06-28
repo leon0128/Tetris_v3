@@ -92,29 +92,6 @@ void NPC::calculate()
         }
     }
 
-    // emptyが最小のもの以外の削除
-    int minEmpty = std::numeric_limits<int>::max();
-    for(auto detail : detailResultVector)
-    {
-        if(detail.empty < minEmpty)
-        {
-            minEmpty = detail.empty;
-        }
-    }
-    auto iterator = detailResultVector.begin();
-    while(iterator != detailResultVector.end())
-    {
-        if(iterator->empty != minEmpty)
-        {
-            std::iter_swap(iterator, detailResultVector.end() -1);
-            detailResultVector.pop_back();
-        }
-        else
-        {
-            iterator++;
-        }
-    }
-
     // maxHeightが最小のもの
     int minHeight = std::numeric_limits<int>::max();
     for(auto detail : detailResultVector)
@@ -577,6 +554,32 @@ void NPC::deleteNonMinimumEmpty()
     while(iterator != mDetailResultVector.end())
     {
         if(iterator->empty != minEmpty)
+        {
+            std::iter_swap(iterator, mDetailResultVector.end() -1);
+            mDetailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }
+    }
+}
+
+void NPC::deleteNonMinimumHeight()
+{
+    // maxHeightが最小のもの
+    int minHeight = std::numeric_limits<int>::max();
+    for(auto detail : mDetailResultVector)
+    {
+        if(detail.maxHeight < minHeight)
+        {
+            minHeight = detail.maxHeight;
+        }
+    }
+    iterator = mDetailResultVector.begin();
+    while(iterator != mDetailResultVector.end())
+    {
+        if(iterator->maxHeight != minHeight)
         {
             std::iter_swap(iterator, mDetailResultVector.end() -1);
             mDetailResultVector.pop_back();
