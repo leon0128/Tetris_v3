@@ -86,7 +86,8 @@ void NPC::calculate()
                 DetailResult detail = {result,
                                        getEmptyNumber(gameState),
                                        getMaxHeight(gameState),
-                                       getDispersion(gameState)};
+                                       getDispersion(gameState),
+                                       getHeightDifference(gameState)};
                 mDetailResultVector.push_back(detail);
                 gameState.clear();
             }
@@ -604,6 +605,32 @@ void NPC::deleteNonMinimumDispersion()
             iterator++;
         }
     }
+}
+
+void NPC::deleteNonMinimumHeightDifference()
+{
+    // maxDifferenceの最小値のみを残す
+    int minHeightDifference = std::numeric_limits<int>::max();
+    for(auto detail : mDetailResultVector)
+    {
+        if(detail.maxHeightDifference < minHeightDifference)
+        {
+            minHeightDifference = detail.maxHeightDifference;
+        }
+    }
+    auto iterator = mDetailResultVector.begin();
+    while(iterator != mDetailResultVector.end())
+    {
+        if(iterator->maxHeightDifference != minHeightDifference)
+        {
+            std::iter_swap(iterator, mDetailResultVector.end() -1);
+            mDetailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }
+    }    
 }
 
 void NPC::printVirtualGameState(VirtualGameState gameState)

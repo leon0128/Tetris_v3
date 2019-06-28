@@ -23,6 +23,7 @@ public:
         int empty;
         int maxHeight;
         double dispersion;
+        int maxHeightDifference;
     };
 
     // 計算に必要な要素の設定
@@ -79,6 +80,8 @@ private:
     static void deleteNonMinimumHeight();
     // mDetailResultVectorの中でdispersionが最小のもの以外の削除
     static void deleteNonMinimumDispersion();
+    // mDetailResultVectorの中でminDifferenceが最小のもの以外の削除
+    static void deleteNonMinimumHeightDifference();
 
     // 引数のGameStateno状態をコンソールに出力する
     static void printVirtualGameState(VirtualGameState gameState);
