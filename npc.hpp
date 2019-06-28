@@ -59,6 +59,7 @@ private:
                                                     std::array<Vector2, 4> tetromino);
     // ブロックで満たされている列の削除
     static VirtualGameState deleteLine(VirtualGameState gameState);
+
     // 引数のx座標に被っていたらtrueを返す
     static bool isFilledX(VirtualGameState gameState,
                           int x,
@@ -67,6 +68,9 @@ private:
     static int getMaxHeight(VirtualGameState gameState);
     // gameStateの最も低い位置に存在するブロックの座標を返す
     static Vector2 getMinHeight(VirtualGameState gameState);
+    // 引数のx座標を除いた、最も低い位置にあるxの高さをかエス
+    static Vector2 getMinHeight(VirtualGameState gameState,
+                                int exclusionX);
     // 空白の数を返す
     static int getEmptyNumber(VirtualGameState gameState);
     // 各x座標の最大値の分散

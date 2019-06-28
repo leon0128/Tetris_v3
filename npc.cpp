@@ -58,6 +58,10 @@ void NPC::startCalculation(EType active,
 void NPC::calculate()
 {
     VirtualGameState gameState;
+    // 積み立てるか消すか
+    bool isDeleted = false;
+    if()
+
     // ホールドと通常の合わせて80回
     for(int h = 0; h < 2; h++)
     {
@@ -78,10 +82,13 @@ void NPC::calculate()
         {
             for(int c = 0; c < 10; c++)
             {
+                // gameStateの作成
                 gameState = updateGameState(mVirtualGameState,
                                             type,
                                             d,
                                             c);
+
+                
                 Result result = {d, c, h};
                 DetailResult detail = {result,
                                        getEmptyNumber(gameState),
@@ -96,14 +103,14 @@ void NPC::calculate()
 
     deleteNonMinimumEmpty();
     deleteNonMinimumDispersion();
-    deleteNonMinimumHeight();
+    deleteNonMinimumHeightDifference();
 
     // 結果
     if(!mDetailResultVector.empty())
     {
         DetailResult detailResult = mDetailResultVector.at(rand() % mDetailResultVector.size());
         mResult = detailResult.result;
-        SDL_Log("empty: %d, dispersion: %lf", detailResult.empty, detailResult.dispersion);
+        SDL_Log("emp: %d, dis: %lf, mHe: %d, mHD: %d", detailResult.empty, detailResult.dispersion, detailResult.maxHeight, detailResult.maxHeightDifference);
     }
     else
     {
@@ -154,6 +161,45 @@ Vector2 NPC::getMinHeight(VirtualGameState gameState)
     
     Vector2 coordinate(mins[rand() % mins.size()], mins[0]);
     return coordinate;
+}
+
+Vector2 NPC::getMinHeight(VirtualGameState gameState, int exclusionX)
+{
+    // 各x軸で一番高い位置にあるブロックのy座標を格納
+    // ブロックが存在しない場合は、-1となる
+    std::array<int, GAMEBOARD_PARALLEL> maxHeights;
+    for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
+    {
+        if(x != exclusionX)
+        {
+            for(int y = GAMEBOARD_VERTICAL -1; y >= 0; y--)
+            {
+                if(gameState.at(y).at(x))
+                {
+                    maxHeights.at(x) = y;
+                    break;
+                }
+                else if(y == 0)
+                {
+                    maxHeights.at(x) = -1;
+                }
+            }
+        }
+        else
+        {
+            maxHeights.at(exclusionX) = std::numeric_limits<int>::max();
+        }
+    }
+
+    int minHeight = std::numeric_limits<int>::max();
+    for(auto height : maxHeights)
+    {
+        if(height < minHeight)
+        {
+            minHeight = height;
+        }
+    }
+    return minHeight;
 }
 
 NPC::VirtualGameState NPC::updateGameState(VirtualGameState gameState,
