@@ -12,6 +12,7 @@
 #include <array>
 #include <cstring>
 #include <thread>
+#include <cmath>
 #include <limits>
 #include <time.h>
 #include <unistd.h>

@@ -67,9 +67,9 @@ private:
     // gameStateの最も高い位置に存在するブロックの座標を返す
     static int getMaxHeight(VirtualGameState gameState);
     // gameStateの最も低い位置に存在するブロックの座標を返す
-    static Vector2 getMinHeight(VirtualGameState gameState);
+    static int getMinHeight(VirtualGameState gameState);
     // 引数のx座標を除いた、最も低い位置にあるxの高さをかエス
-    static Vector2 getMinHeight(VirtualGameState gameState,
+    static int getMinHeight(VirtualGameState gameState,
                                 int exclusionX);
     // 空白の数を返す
     static int getEmptyNumber(VirtualGameState gameState);

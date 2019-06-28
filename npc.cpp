@@ -58,9 +58,21 @@ void NPC::startCalculation(EType active,
 void NPC::calculate()
 {
     VirtualGameState gameState;
-    // 積み立てるか消すか
-    bool isDeleted = false;
-    if()
+    // // 積み立てるか消すか
+    // bool isDeleted = false;
+    // if(getMinHeight(mVirtualGameState, GAMEBOARD_PARALLEL-1) >= 3)
+    // {
+    //     isDeleted = true;
+    // }
+    // int rightX = -1;
+    // for(int y = GAMEBOARD_VERTICAL-1; y >= 0; y--)
+    // {
+    //     if(mVirtualGameState.at(y).at(GAMEBOARD_PARALLEL-1))
+    //     {
+    //         rightX = y;
+    //         break;
+    //     }
+    // }
 
     // ホールドと通常の合わせて80回
     for(int h = 0; h < 2; h++)
@@ -88,29 +100,65 @@ void NPC::calculate()
                                             d,
                                             c);
 
-                
-                Result result = {d, c, h};
-                DetailResult detail = {result,
-                                       getEmptyNumber(gameState),
-                                       getMaxHeight(gameState),
-                                       getDispersion(gameState),
-                                       getHeightDifference(gameState)};
-                mDetailResultVector.push_back(detail);
-                gameState.clear();
+                // // もしIminoかつdelete可能以外ならx=9にブロックを設置しない
+                // if(type != I || !isDeleted)
+                // {
+                //     if(!isFilledX(gameState, 9, rightX))
+                //     {
+                //         Result result = {d, c, h};
+                //         DetailResult detail = {result,
+                //                             getEmptyNumber(gameState),
+                //                             getMaxHeight(gameState),
+                //                             getDispersion(gameState),
+                //                             getHeightDifference(gameState)};
+                //         mDetailResultVector.push_back(detail);                       
+                //     }
+                // }
+                // else
+                // {
+                //     gameState = deleteLine(gameState);
+                //     Result result = {d, c, h};
+                //     DetailResult detail = {result,
+                //                         getEmptyNumber(gameState),
+                //                         getMaxHeight(gameState),
+                //                         getDispersion(gameState),
+                //                         getHeightDifference(gameState)};
+                //     mDetailResultVector.push_back(detail);
+                //     gameState.clear();                      
+                // }
+                    gameState = deleteLine(gameState);
+                    Result result = {d, c, h};
+                    DetailResult detail = {result,
+                                        getEmptyNumber(gameState),
+                                        getMaxHeight(gameState),
+                                        getDispersion(gameState),
+                                        getHeightDifference(gameState)};
+                    mDetailResultVector.push_back(detail);
+                gameState.clear(); 
             }
         }
     }
 
-    deleteNonMinimumEmpty();
-    deleteNonMinimumDispersion();
-    deleteNonMinimumHeightDifference();
+    if(getMaxHeight(mVirtualGameState) > 8)
+    {
+        SDL_Log("======DENGER======");
+        deleteNonMinimumHeightDifference();
+        deleteNonMinimumEmpty();
+        deleteNonMinimumDispersion();       
+    }
+    else
+    {
+        deleteNonMinimumEmpty();
+        deleteNonMinimumHeightDifference();
+        deleteNonMinimumDispersion();
+    }
 
     // 結果
     if(!mDetailResultVector.empty())
     {
         DetailResult detailResult = mDetailResultVector.at(rand() % mDetailResultVector.size());
         mResult = detailResult.result;
-        SDL_Log("emp: %d, dis: %lf, mHe: %d, mHD: %d", detailResult.empty, detailResult.dispersion, detailResult.maxHeight, detailResult.maxHeightDifference);
+        SDL_Log("emp: %d, dis: %lf, mHe: %d, mHD: %d", detailResult.empty, sqrt(detailResult.dispersion), detailResult.maxHeight, detailResult.maxHeightDifference);
     }
     else
     {
@@ -118,52 +166,39 @@ void NPC::calculate()
     }
 }
 
-Vector2 NPC::getMinHeight(VirtualGameState gameState)
+int NPC::getMinHeight(VirtualGameState gameState)
 {
-    int heights[GAMEBOARD_PARALLEL] = {-1};
-    bool isEmpty = true;
-
-    // 各x座標の最高点を取得
-    for(int y = 0; y < (int)gameState.size(); y++)
+    // 各x軸で一番高い位置にあるブロックのy座標を格納
+    // ブロックが存在しない場合は、-1となる
+    std::array<int, GAMEBOARD_PARALLEL> maxHeights;
+    for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
     {
-        isEmpty = true;
-        for(int x = 0; x < (int)gameState[y].size(); x++)
+        for(int y = GAMEBOARD_VERTICAL -1; y >= 0; y--)
         {
-            if(gameState[y][x])
+            if(gameState.at(y).at(x))
             {
-                heights[x] = y;
-                isEmpty = false;
+                maxHeights.at(x) = y;
+                break;
+            }
+            else if(y == 0)
+            {
+                maxHeights.at(x) = -1;
             }
         }
-        if(isEmpty)
-        {
-            break;
-        }
     }
 
-    // 最高点が最も低いものの中から無作為に選択肢戻す
-    int min = GAMEBOARD_VERTICAL;
-    for(auto height : heights)
+    int minHeight = std::numeric_limits<int>::max();
+    for(auto height : maxHeights)
     {
-        if(min > height)
+        if(height < minHeight)
         {
-            min = height;
+            minHeight = height;
         }
     }
-    std::vector<int> mins;
-    for(int i = 0; i < (int)gameState[0].size(); i++)
-    {
-        if(min == heights[i])
-        {
-            mins.push_back(i);
-        }
-    }
-    
-    Vector2 coordinate(mins[rand() % mins.size()], mins[0]);
-    return coordinate;
+    return minHeight;
 }
 
-Vector2 NPC::getMinHeight(VirtualGameState gameState, int exclusionX)
+int NPC::getMinHeight(VirtualGameState gameState, int exclusionX)
 {
     // 各x軸で一番高い位置にあるブロックのy座標を格納
     // ブロックが存在しない場合は、-1となる
@@ -210,8 +245,7 @@ NPC::VirtualGameState NPC::updateGameState(VirtualGameState gameState,
     auto tetromino = getInitializeTetrominoCoordinate(type);
     tetromino = getRotationTetrominoCoordinate(tetromino, direction);
     tetromino = getParallelTetrominoCoordinate(tetromino, coordinate);
-    std::vector<std::array<bool, GAMEBOARD_PARALLEL>> gs = getQuickDropedGameState(gameState, tetromino);
-    gs = deleteLine(gs);
+    VirtualGameState gs = getQuickDropedGameState(gameState, tetromino);
     return gs;
 }
 
