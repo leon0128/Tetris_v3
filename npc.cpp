@@ -7,6 +7,7 @@ Actor::EType NPC::mHoldTetromino = NONE;
 std::vector<Actor::EType> NPC::mNextTetromino;
 bool NPC::mIsCalculating = false;
 struct NPC::Result NPC::mResult;
+std::vector<struct NPC::DetailResult> NPC::mDetailResultVector;
 
 void NPC::startCalculation(EType active, 
                           EType hold, 
@@ -86,56 +87,27 @@ void NPC::calculate()
                                        getEmptyNumber(gameState),
                                        getMaxHeight(gameState),
                                        getDispersion(gameState)};
-                detailResultVector.push_back(detail);
+                mDetailResultVector.push_back(detail);
                 gameState.clear();
             }
         }
     }
 
-    // dispersionの最小値のみを残す
-    double minDispersion = std::numeric_limits<double>::max();
-    for(auto detail : detailResultVector)
-    {
-        if(detail.dispersion < minDispersion)
-        {
-            minDispersion = detail.dispersion;
-        }
-    }
-    iterator = detailResultVector.begin();
-    while(iterator != detailResultVector.end())
-    {
-        if(iterator->dispersion != minDispersion)
-        {
-            std::iter_swap(iterator, detailResultVector.end() -1);
-            detailResultVector.pop_back();
-        }
-        else
-        {
-            iterator++;
-        }
-    }
+    deleteNonMinimumEmpty();
+    deleteNonMinimumDispersion();
+    deleteNonMinimumHeight();
 
-    DetailResult detailResult = detailResultVector.at(rand() % detailResultVector.size());
-    mResult = detailResult.result;
-    EType tempType = mActiveTetromino;
-    if(mResult.isHoled)
+    // 結果
+    if(!mDetailResultVector.empty())
     {
-        if(mHoldTetromino != NONE)
-        {
-            tempType = mHoldTetromino;
-        }
-        else
-        {
-            tempType = mNextTetromino[0];
-        }
+        DetailResult detailResult = mDetailResultVector.at(rand() % mDetailResultVector.size());
+        mResult = detailResult.result;
+        SDL_Log("empty: %d, dispersion: %lf", detailResult.empty, detailResult.dispersion);
     }
-    VirtualGameState temp = updateGameState(mVirtualGameState,
-                                            tempType,
-                                            mResult.direction,
-                                            mResult.coordinate);
-    printVirtualGameState(temp);
-    
-    SDL_Log("empty: %d, dispersion: %lf", detailResult.empty, detailResult.dispersion);
+    else
+    {
+        SDL_Log("NPC calculation result does not exist: %s", __func__);
+    }
 }
 
 Vector2 NPC::getMinHeight(VirtualGameState gameState)
@@ -553,7 +525,7 @@ void NPC::deleteNonMinimumHeight()
             minHeight = detail.maxHeight;
         }
     }
-    iterator = mDetailResultVector.begin();
+    auto iterator = mDetailResultVector.begin();
     while(iterator != mDetailResultVector.end())
     {
         if(iterator->maxHeight != minHeight)
@@ -579,7 +551,7 @@ void NPC::deleteNonMinimumDispersion()
             minDispersion = detail.dispersion;
         }
     }
-    iterator = mDetailResultVector.begin();
+    auto iterator = mDetailResultVector.begin();
     while(iterator != mDetailResultVector.end())
     {
         if(iterator->dispersion != minDispersion)

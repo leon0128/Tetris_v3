@@ -92,5 +92,5 @@ private:
     // 結果を格納する構造体
     static struct Result mResult;
     // 詳細な結果を纏める配列
-    std::vector<struct DetailResult> mDetailResultVector;
+    static std::vector<struct DetailResult> mDetailResultVector;
 };
