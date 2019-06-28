@@ -16,6 +16,15 @@ public:
         bool isHoled;            // ホールドするかどうか
     };
 
+    // 詳細な結果を格納する構造体
+    struct DetailResult
+    {
+        Result result;
+        int empty;
+        int maxHeight;
+        double dispersion;
+    };
+
     // 計算に必要な要素の設定
     // その後, NPC::calculate()の呼び出し
     static void startCalculation(EType active,
@@ -61,6 +70,14 @@ private:
     static int getEmptyNumber(VirtualGameState gameState);
     // 各x座標の最大値の分散
     static double getDispersion(VirtualGameState gameState);
+
+    // mDetailResultVectorの中でemptyが最小のもの以外の削除
+    static void deleteNonMinimumEmpty();
+    // mDetailResultVectorの中でheightが最小のもの以外の削除
+    static void deleteNonMinimumHeight();
+    // mDetailResultVectorの中でdispersionが最小のもの以外の削除
+    static void deleteNonMinimumDispersion();
+
     // 引数のGameStateno状態をコンソールに出力する
     static void printVirtualGameState(VirtualGameState gameState);
 
@@ -74,4 +91,6 @@ private:
     static bool mIsCalculating;
     // 結果を格納する構造体
     static struct Result mResult;
+    // 詳細な結果を纏める配列
+    std::vector<struct DetailResult> mDetailResultVector;
 };

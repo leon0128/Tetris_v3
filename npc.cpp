@@ -48,6 +48,7 @@ void NPC::startCalculation(EType active,
     calculate();
     // mVirticalGameStateの削除
     mVirtualGameState.clear();
+    mDetailResultVector.clear();
 
     // 計算終了フラグ
     mIsCalculating = false;
@@ -55,18 +56,6 @@ void NPC::startCalculation(EType active,
 
 void NPC::calculate()
 {
-    // 詳細な結果を格納する構造体
-    struct DetailResult
-    {
-        Result result;
-        int empty;
-        int maxHeight;
-        double dispersion;
-    };
-
-    // 結果を格納する配列
-    std::vector<DetailResult> detailResultVector;
-
     VirtualGameState gameState;
     // ホールドと通常の合わせて80回
     for(int h = 0; h < 2; h++)
@@ -571,6 +560,32 @@ double NPC::getDispersion(VirtualGameState gameState)
     }
     
     return dispersion;
+}
+
+void NPC::deleteNonMinimumEmpty()
+{
+    // emptyが最小のもの以外の削除
+    int minEmpty = std::numeric_limits<int>::max();
+    for(auto detail : mDetailResultVector)
+    {
+        if(detail.empty < minEmpty)
+        {
+            minEmpty = detail.empty;
+        }
+    }
+    auto iterator = mDetailResultVector.begin();
+    while(iterator != mDetailResultVector.end())
+    {
+        if(iterator->empty != minEmpty)
+        {
+            std::iter_swap(iterator, mDetailResultVector.end() -1);
+            mDetailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }
+    }
 }
 
 void NPC::printVirtualGameState(VirtualGameState gameState)
