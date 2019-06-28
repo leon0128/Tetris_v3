@@ -67,13 +67,14 @@ void NPC::calculate()
     // 結果を格納する配列
     std::vector<DetailResult> detailResultVector;
 
+    VirtualGameState gameState;
     // ホールドと通常の合わせて80回
     for(int h = 0; h < 2; h++)
     {
         EType type = mActiveTetromino;
         if(h == 1)
         {
-            if(mHoldTetromino != NONE)
+            if(mHoldTetromino == NONE)
             {
                 type = mNextTetromino[0];
             }
@@ -87,16 +88,17 @@ void NPC::calculate()
         {
             for(int c = 0; c < 10; c++)
             {
-                VirtualGameState gameState = updateGameState(mVirtualGameState,
-                                                             type,
-                                                             d,
-                                                             c);
+                gameState = updateGameState(mVirtualGameState,
+                                            type,
+                                            d,
+                                            c);
                 Result result = {d, c, h};
                 DetailResult detail = {result,
                                        getEmptyNumber(gameState),
                                        getMaxHeight(gameState),
                                        getDispersion(gameState)};
                 detailResultVector.push_back(detail);
+                gameState.clear();
             }
         }
     }
@@ -171,9 +173,26 @@ void NPC::calculate()
     }
 
     DetailResult detailResult = detailResultVector.at(rand() % detailResultVector.size());
-    // mResult = detailResult.result;
+    mResult = detailResult.result;
+    EType tempType = mActiveTetromino;
+    if(mResult.isHoled)
+    {
+        if(mHoldTetromino != NONE)
+        {
+            tempType = mHoldTetromino;
+        }
+        else
+        {
+            tempType = mNextTetromino[0];
+        }
+    }
+    VirtualGameState temp = updateGameState(mVirtualGameState,
+                                            tempType,
+                                            mResult.direction,
+                                            mResult.coordinate);
+    printVirtualGameState(temp);
+    
     SDL_Log("empty: %d, dispersion: %lf", detailResult.empty, detailResult.dispersion);
-    sleep(5);
 }
 
 Vector2 NPC::getMinHeight(VirtualGameState gameState)
@@ -290,6 +309,7 @@ std::array<Vector2, 4> NPC::getInitializeTetrominoCoordinate(EType type)
             break;
         
         default:
+            SDL_Log("Cannot create tetromino: %s", __func__);
             break;
     }
     return tetromino;
