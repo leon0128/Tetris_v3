@@ -488,7 +488,7 @@ double NPC::getDispersion(VirtualGameState gameState)
     return dispersion;
 }
 
-void NPC::getHeightDifference(VirtualGameState gameState)
+int NPC::getHeightDifference(VirtualGameState gameState)
 {
     // 各x軸で一番高い位置にあるブロックのy座標を格納
     // ブロックが存在しない場合は、0となる
@@ -512,9 +512,9 @@ void NPC::getHeightDifference(VirtualGameState gameState)
     // 隣接する列の高さの差を取得し、最も高いものを探す
     int maxDifference = -1;
     int diff = 0;
-    for(int i = 0; i < (int)maxHeights -1; i++)
+    for(int i = 0; i < (int)maxHeights.size() -1; i++)
     {
-        diff = maxHeights[i] - maxHeights[i+1];
+        diff = maxHeights.at(i) - maxHeights.at(i+1);
         if(diff < 0)
         {
             diff *= -1;
