@@ -70,6 +70,8 @@ private:
     static int getEmptyNumber(VirtualGameState gameState);
     // 各x座標の最大値の分散
     static double getDispersion(VirtualGameState gameState);
+    // 隣接する列との高さを比較し最大のものを返す
+    static int getHeightDifference(VirtualGameState gameState);
 
     // mDetailResultVectorの中でemptyが最小のもの以外の削除
     static void deleteNonMinimumEmpty();

@@ -488,6 +488,46 @@ double NPC::getDispersion(VirtualGameState gameState)
     return dispersion;
 }
 
+void NPC::getHeightDifference(VirtualGameState gameState)
+{
+    // 各x軸で一番高い位置にあるブロックのy座標を格納
+    // ブロックが存在しない場合は、0となる
+    std::array<int, GAMEBOARD_PARALLEL> maxHeights;
+    for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
+    {
+        for(int y = GAMEBOARD_VERTICAL -1; y >= 0; y--)
+        {
+            if(gameState.at(y).at(x))
+            {
+                maxHeights.at(x) = y + 1;
+                break;
+            }
+            else if(y == 0)
+            {
+                maxHeights.at(x) = 0;
+            }
+        }
+    }
+
+    // 隣接する列の高さの差を取得し、最も高いものを探す
+    int maxDifference = -1;
+    int diff = 0;
+    for(int i = 0; i < (int)maxHeights -1; i++)
+    {
+        diff = maxHeights[i] - maxHeights[i+1];
+        if(diff < 0)
+        {
+            diff *= -1;
+        }
+        if(diff > maxDifference)
+        {
+            maxDifference = diff;
+        }
+    }
+    
+    return maxDifference;
+}
+
 void NPC::deleteNonMinimumEmpty()
 {
     // emptyが最小のもの以外の削除
