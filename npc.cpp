@@ -92,29 +92,6 @@ void NPC::calculate()
         }
     }
 
-    // maxHeightが最小のもの
-    int minHeight = std::numeric_limits<int>::max();
-    for(auto detail : detailResultVector)
-    {
-        if(detail.maxHeight < minHeight)
-        {
-            minHeight = detail.maxHeight;
-        }
-    }
-    iterator = detailResultVector.begin();
-    while(iterator != detailResultVector.end())
-    {
-        if(iterator->maxHeight != minHeight)
-        {
-            std::iter_swap(iterator, detailResultVector.end() -1);
-            detailResultVector.pop_back();
-        }
-        else
-        {
-            iterator++;
-        }
-    }
-
     // dispersionの最小値のみを残す
     double minDispersion = std::numeric_limits<double>::max();
     for(auto detail : detailResultVector)
@@ -580,6 +557,32 @@ void NPC::deleteNonMinimumHeight()
     while(iterator != mDetailResultVector.end())
     {
         if(iterator->maxHeight != minHeight)
+        {
+            std::iter_swap(iterator, mDetailResultVector.end() -1);
+            mDetailResultVector.pop_back();
+        }
+        else
+        {
+            iterator++;
+        }
+    }
+}
+
+void NPC::deleteNonMinimumDispersion()
+{
+    // dispersionの最小値のみを残す
+    double minDispersion = std::numeric_limits<double>::max();
+    for(auto detail : mDetailResultVector)
+    {
+        if(detail.dispersion < minDispersion)
+        {
+            minDispersion = detail.dispersion;
+        }
+    }
+    iterator = mDetailResultVector.begin();
+    while(iterator != mDetailResultVector.end())
+    {
+        if(iterator->dispersion != minDispersion)
         {
             std::iter_swap(iterator, mDetailResultVector.end() -1);
             mDetailResultVector.pop_back();
