@@ -1,5 +1,6 @@
 #pragma once
 
+#include "controller.hpp"
 // SDL関連
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -50,6 +51,8 @@ public:
 
     // 現在のフレームを取得
     int getFrameCount(){return mFrameCount;}
+    // mControllerを取得
+    const class Controller* getController() const {return mController;}
     // mKeyboardStateを返す
     auto getKeyboardState(){return mKeyboardState;}
     // フォントとレンダラーの取得
@@ -89,6 +92,9 @@ private:
     std::vector<class SpriteActor*> mComponentSpriteActor;
     // テクスチャのファイルパスとポインタを格納するマップ
     std::unordered_map<std::string, SDL_Texture*> mTextureMap;
+
+    // ゲームの全体的な動きを制御するクラス
+    class Controller* mController;
 
     // キーボードの状態を格納
     // キーボードが何フレーム押し続けられているか

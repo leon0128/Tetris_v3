@@ -1,13 +1,15 @@
 #pragma once
 
-#include "actor.hpp"
+#include "game.hpp"
 
-class Controller : public Actor
+class Controller
 {
 public:
-    Controller(class Game* game,
-               int order);
+    Controller(class Game* game);
 
 private:
     void createGameBoard() const;
+
+    // Gameオブジェクトのポインタ
+    class Game* mGame;
 };

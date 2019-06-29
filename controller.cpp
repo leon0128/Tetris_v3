@@ -2,8 +2,8 @@
 #include "back_ground.hpp"
 #include "game_board.hpp"
 
-Controller::Controller(Game* game, int order):
-    Actor(game, order)
+Controller::Controller(Game* game):
+    mGame(game)
 {
     createGameBoard();
 }

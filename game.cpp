@@ -9,6 +9,7 @@ Game::Game():
     mIsContinuedGame(true),
     mTicksCount(0),
     mFrameCount(0),
+    mController(nullptr),
     mWindow(nullptr),
     mRenderer(nullptr),
     mFont(nullptr)
@@ -296,8 +297,7 @@ void Game::initializeActor()
     // 乱数の初期化
     srand((unsigned int)time(NULL));
     // 主要オブジェクト
-    new BackGround(this, 10);
-    new GameBoard(this, 30);
+    mController = new Controller(this);
 }
 
 void Game::finalizeActor()
