@@ -102,4 +102,6 @@ private:
     static struct Result mResult;
     // 詳細な結果を纏める配列
     static std::vector<struct DetailResult> mDetailResultVector;
+    // 何回連続で危険な状態か
+    static int mDenger;
 };

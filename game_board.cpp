@@ -198,8 +198,15 @@ void GameBoard::pickTetromino()
                                  mGameState);
 
         // NPC::isCalculationがtrueになるまで待つ
+        auto timeout = SDL_GetTicks() + 100;
         while(!NPC::isCalculating())
         {
+            // 無限ループ回避
+            if(SDL_TICKS_PASSED(SDL_GetTicks(), timeout))
+            {
+                SDL_Log("Loop exited because an infinite loop may have occurred: %s", __func__);
+                break;
+            }
         }
     }
 }

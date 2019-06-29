@@ -8,6 +8,7 @@ std::vector<Actor::EType> NPC::mNextTetromino;
 bool NPC::mIsCalculating = false;
 struct NPC::Result NPC::mResult;
 std::vector<struct NPC::DetailResult> NPC::mDetailResultVector;
+int NPC::mDenger = 0;
 
 void NPC::startCalculation(EType active, 
                           EType hold, 
@@ -58,21 +59,6 @@ void NPC::startCalculation(EType active,
 void NPC::calculate()
 {
     VirtualGameState gameState;
-    // // 積み立てるか消すか
-    // bool isDeleted = false;
-    // if(getMinHeight(mVirtualGameState, GAMEBOARD_PARALLEL-1) >= 3)
-    // {
-    //     isDeleted = true;
-    // }
-    // int rightX = -1;
-    // for(int y = GAMEBOARD_VERTICAL-1; y >= 0; y--)
-    // {
-    //     if(mVirtualGameState.at(y).at(GAMEBOARD_PARALLEL-1))
-    //     {
-    //         rightX = y;
-    //         break;
-    //     }
-    // }
 
     // ホールドと通常の合わせて80回
     for(int h = 0; h < 2; h++)
@@ -100,57 +86,69 @@ void NPC::calculate()
                                             d,
                                             c);
 
-                // // もしIminoかつdelete可能以外ならx=9にブロックを設置しない
-                // if(type != I || !isDeleted)
-                // {
-                //     if(!isFilledX(gameState, 9, rightX))
-                //     {
-                //         Result result = {d, c, h};
-                //         DetailResult detail = {result,
-                //                             getEmptyNumber(gameState),
-                //                             getMaxHeight(gameState),
-                //                             getDispersion(gameState),
-                //                             getHeightDifference(gameState)};
-                //         mDetailResultVector.push_back(detail);                       
-                //     }
-                // }
-                // else
-                // {
-                //     gameState = deleteLine(gameState);
-                //     Result result = {d, c, h};
-                //     DetailResult detail = {result,
-                //                         getEmptyNumber(gameState),
-                //                         getMaxHeight(gameState),
-                //                         getDispersion(gameState),
-                //                         getHeightDifference(gameState)};
-                //     mDetailResultVector.push_back(detail);
-                //     gameState.clear();                      
-                // }
-                    gameState = deleteLine(gameState);
-                    Result result = {d, c, h};
-                    DetailResult detail = {result,
-                                        getEmptyNumber(gameState),
-                                        getMaxHeight(gameState),
-                                        getDispersion(gameState),
-                                        getHeightDifference(gameState)};
-                    mDetailResultVector.push_back(detail);
+                gameState = deleteLine(gameState);
+                Result result = {d, c, h};
+                DetailResult detail = {result,
+                                    getEmptyNumber(gameState),
+                                    getMaxHeight(gameState),
+                                    getDispersion(gameState),
+                                    getHeightDifference(gameState)};
+                mDetailResultVector.push_back(detail);
                 gameState.clear(); 
             }
         }
     }
 
-    if(getMaxHeight(mVirtualGameState) > 8)
+    if(getMaxHeight(mVirtualGameState) > 6 &&
+       getMaxHeight(mVirtualGameState) <= 8 && 
+       mDenger == 0)
     {
-        SDL_Log("======DENGER======");
+        SDL_Log("=CAUTION=");
+        
         deleteNonMinimumHeightDifference();
         deleteNonMinimumEmpty();
-        deleteNonMinimumDispersion();       
+        deleteNonMinimumDispersion();
+        sleep(5);
+        mDenger += 2; 
+    }
+    else if(getMaxHeight(mVirtualGameState) > 8 &&
+            getMaxHeight(mVirtualGameState) <= 10 &&
+            mDenger == 0)
+    {
+        SDL_Log("==WARNING==");
+        deleteNonMinimumHeightDifference();
+        deleteNonMinimumEmpty();
+        deleteNonMinimumDispersion();
+        mDenger += 4;         
+    }
+    else if(getMaxHeight(mVirtualGameState) > 10 &&
+            getMaxHeight(mVirtualGameState) <= 14 &&
+            mDenger == 0)
+    {
+        SDL_Log("===DENGER===");
+        deleteNonMinimumHeightDifference();
+        deleteNonMinimumEmpty();
+        deleteNonMinimumDispersion();
+        mDenger += 6;         
+    }
+    else if(getMaxHeight(mVirtualGameState) > 14 &&
+            mDenger == 0)
+    {
+        SDL_Log("====DESPERATION====");
+        deleteNonMinimumEmpty();
+        deleteNonMinimumHeightDifference();
+        deleteNonMinimumDispersion();
+        mDenger += 2;
     }
     else
     {
         deleteNonMinimumEmpty();
         deleteNonMinimumHeightDifference();
         deleteNonMinimumDispersion();
+        if(mDenger > 0)
+        {
+            mDenger--;
+        }
     }
 
     // 結果
@@ -158,7 +156,7 @@ void NPC::calculate()
     {
         DetailResult detailResult = mDetailResultVector.at(rand() % mDetailResultVector.size());
         mResult = detailResult.result;
-        SDL_Log("emp: %d, dis: %lf, mHe: %d, mHD: %d", detailResult.empty, sqrt(detailResult.dispersion), detailResult.maxHeight, detailResult.maxHeightDifference);
+        // SDL_Log("emp: %d, dis: %lf, mHD: %d, mHe: %d", detailResult.empty, sqrt(detailResult.dispersion), detailResult.maxHeightDifference, detailResult.maxHeight);
     }
     else
     {
