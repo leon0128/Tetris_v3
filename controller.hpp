@@ -7,4 +7,7 @@ class Controller : public Actor
 public:
     Controller(class Game* game,
                int order);
+
+private:
+    void createGameBoard() const;
 };
