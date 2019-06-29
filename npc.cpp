@@ -108,7 +108,6 @@ void NPC::calculate()
         deleteNonMinimumHeightDifference();
         deleteNonMinimumEmpty();
         deleteNonMinimumDispersion();
-        sleep(5);
         mDenger += 2; 
     }
     else if(getMaxHeight(mVirtualGameState) > 8 &&
