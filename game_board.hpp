@@ -31,7 +31,7 @@ public:
 
 private:
     // 入力処理
-    void inputKeyboardAndNPC();
+    void inputKeyboard();
     // NPCが出した計算結果を処理
     void inputNPC();
     // mActiveTetrominoがnullptrの場合、新しいミノを作成
@@ -64,6 +64,8 @@ private:
 
     // 更新フレーム数
     int mUpdateFrame;
+    // GameBoardを更新するかどうか
+    bool mIsUpdated;
 
     // next用のSideBoard配列
     std::array<class SideBoard*, NEXT_SIZE> mNextBoard = {nullptr};

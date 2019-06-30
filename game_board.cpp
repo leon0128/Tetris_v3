@@ -8,6 +8,7 @@ GameBoard::GameBoard(Game* game, int order):
     SpriteActor(game, order),
     mActiveTetrominio(nullptr),
     mUpdateFrame(0),
+    mIsUpdated(true),
     mHoldBoard(nullptr),
     mIsHolded(false),
     mScoreBoard(nullptr),
@@ -79,23 +80,35 @@ GameBoard::~GameBoard()
 
 void GameBoard::update()
 {
-    inputKeyboardAndNPC();
-    pickTetromino();
-    inputNPC();
-    hold();
-    updateActiveTetromino();
-    updateGameState();
-    updateScore();
-    
-    mUpdateFrame ++;
+    // キーボードの状態を取得
+    inputKeyboard();
+
+    if(mIsUpdated)
+    {
+        pickTetromino();
+        inputNPC();
+        hold();
+        updateActiveTetromino();
+        updateGameState();
+        updateScore();
+        
+        mUpdateFrame ++;
+    }
 }
 
-void GameBoard::inputKeyboardAndNPC()
+void GameBoard::inputKeyboard()
 {
     // keyboardの状態の更新
     mKeyboardState = mGame->getKeyboardState();
-    // NPCが存在するなら更新に関わるkeyの上書き
-    // inputNPC();
+    
+    // SPACEキーが押されたらmIsUpdateを変更
+    if(mKeyboardState.at(SDL_SCANCODE_SPACE) == 1)
+    {
+        if(mIsUpdated)
+            mIsUpdated = false;
+        else
+            mIsUpdated = true;
+    }
 }
 
 void GameBoard::inputNPC()
