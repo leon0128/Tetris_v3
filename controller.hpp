@@ -19,14 +19,16 @@ public:
     void update() override;
 
     // Gameの状態を変更する時に呼び出す
-    void changeMode(EState state){mState = state;};
+    void changeMode(EState state){mCurrentState = state;};
 
 private:
+    void createTitle();
     void createGameBoard();
 
     // gameの状態
-    EState mState;
+    EState mCurrentState;
+    EState mBeforeState;
     
-    // ゲームの進行に必要な各クラスのポインタとクラス名
-    std::vector<std::pair<std::string, class Actor*>> mPairVector;
+    // ゲームの状態と作成したクラスのポインタ
+    std::vector<std::pair<EState, class Actor*>> mPairVector;
 };

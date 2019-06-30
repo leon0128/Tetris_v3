@@ -1,23 +1,25 @@
 #include "controller.hpp"
 #include "back_ground.hpp"
 #include "game_board.hpp"
+#include "title.hpp"
 
 Controller::Controller(Game* game, int order):
     Actor(game, order),
-    mState(TITLE)
+    mCurrentState(TITLE),
+    mBeforeState(TITLE)
 {
     createGameBoard();
+    mCurrentState = PLAYING;
 }
 
 void Controller::update()
 {
-    if(mState == RESULT)
+    if(mBeforeState != mCurrentState)
     {
         auto iterator = mPairVector.begin();
         while(iterator != mPairVector.end())
         {
-            if(iterator->first == "GameBoard" ||
-               iterator->first == "BackGround")
+            if(iterator->first != mCurrentState)
             {
                 delete iterator->second;
                 std::iter_swap(iterator, mPairVector.end() -1);
@@ -28,14 +30,20 @@ void Controller::update()
                 iterator ++;
             }
         }
-        mState = TITLE;
     }
+    
+    mBeforeState = mCurrentState;
+}
+
+void Controller::createTitle()
+{
+    // titleの表示
+    mPairVector.emplace_back(TITLE, new Title(mGame));
 }
 
 void Controller::createGameBoard()
 {
     // GameBoardを作成
-    mPairVector.emplace_back("BackGround", new BackGround(mGame, 10));
-    mPairVector.emplace_back("GameBoard", new GameBoard(mGame, 30));
-    mState = PLAYING;
+    mPairVector.emplace_back(PLAYING, new BackGround(mGame, 10));
+    mPairVector.emplace_back(PLAYING, new GameBoard(mGame, 30));
 }
