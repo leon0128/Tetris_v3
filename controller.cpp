@@ -4,9 +4,7 @@
 
 Controller::Controller(Game* game, int order):
     Actor(game, order),
-    mState(TITLE),
-    mBackGround(nullptr),
-    mGameBoard(nullptr)
+    mState(TITLE)
 {
     createGameBoard();
 }
@@ -15,21 +13,29 @@ void Controller::update()
 {
     if(mState == RESULT)
     {
-        delete mBackGround;
-        delete mGameBoard;
+        auto iterator = mPairVector.begin();
+        while(iterator != mPairVector.end())
+        {
+            if(iterator->first == "GameBoard" ||
+               iterator->first == "BackGround")
+            {
+                delete iterator->second;
+                std::iter_swap(iterator, mPairVector.end() -1);
+                mPairVector.pop_back();
+            }
+            else
+            {
+                iterator ++;
+            }
+        }
         mState = TITLE;
     }
-}
-
-void Controller::gameover()
-{
-    mState = RESULT;
 }
 
 void Controller::createGameBoard()
 {
     // GameBoardを作成
-    mBackGround = new BackGround(mGame, 10);
-    mGameBoard = new GameBoard(mGame, 30);
+    mPairVector.emplace_back("BackGround", new BackGround(mGame, 10));
+    mPairVector.emplace_back("GameBoard", new GameBoard(mGame, 30));
     mState = PLAYING;
 }

@@ -329,6 +329,6 @@ void Tetromino::createBlock(EType type)
     }
     if(!isCoordinateCorrect(mBlock))
     {
-        mGame->getController()->gameover();
+        mGame->getController()->changeMode(Controller::RESULT);
     }
 }
