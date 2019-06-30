@@ -50,9 +50,12 @@ GameBoard::GameBoard(Game* game, int order):
 GameBoard::~GameBoard()
 {
     mNPCThread.detach();
-    for(int i = 0; i < (int)mActiveTetrominio->getBlock().size(); i++)
+    if(mActiveTetrominio)
     {
-        delete mActiveTetrominio->getBlock().at(i);
+        for(int i = 0; i < (int)mActiveTetrominio->getBlock().size(); i++)
+        {
+            delete mActiveTetrominio->getBlock().at(i);
+        }
     }
     delete mActiveTetrominio;
     delete mScoreBoard;
