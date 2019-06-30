@@ -16,7 +16,7 @@ const int NEXT_SIZE = 5;
 class GameBoard : public SpriteActor
 {
 public:
-    GameBoard(class Game* game, int order);
+    GameBoard(class Game* game, int order = 30);
     ~GameBoard();
 
     // いくつかの関数の実行

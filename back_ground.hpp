@@ -5,5 +5,5 @@
 class BackGround : public SpriteActor
 {
 public:
-    BackGround(class Game* game, int order);
+    BackGround(class Game* game, int order = 10);
 };

@@ -22,8 +22,8 @@ public:
     void changeMode(EState state){mCurrentState = state;};
 
 private:
-    void createTitle();
-    void createGameBoard();
+    // 引数の状態に必要なオブジェクトの生成
+    void createGameActor(EState state);
 
     // gameの状態
     EState mCurrentState;

@@ -7,4 +7,6 @@ class Title : public SpriteActor
 public:
     Title(class Game* game, 
           int order = 100);
+    
+    void update() override;
 };

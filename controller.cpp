@@ -8,8 +8,7 @@ Controller::Controller(Game* game, int order):
     mCurrentState(TITLE),
     mBeforeState(TITLE)
 {
-    createGameBoard();
-    mCurrentState = PLAYING;
+    createGameActor(mCurrentState);
 }
 
 void Controller::update()
@@ -30,20 +29,28 @@ void Controller::update()
                 iterator ++;
             }
         }
+        
+        createGameActor(mCurrentState);
     }
     
     mBeforeState = mCurrentState;
 }
 
-void Controller::createTitle()
+void Controller::createGameActor(EState state)
 {
-    // titleの表示
-    mPairVector.emplace_back(TITLE, new Title(mGame));
-}
-
-void Controller::createGameBoard()
-{
-    // GameBoardを作成
-    mPairVector.emplace_back(PLAYING, new BackGround(mGame, 10));
-    mPairVector.emplace_back(PLAYING, new GameBoard(mGame, 30));
+    switch(state)
+    {
+        case (TITLE):
+            mPairVector.emplace_back(TITLE, new Title(mGame));
+            break;
+        
+        case (PLAYING):
+            mPairVector.emplace_back(PLAYING, new GameBoard(mGame));
+            mPairVector.emplace_back(PLAYING, new BackGround(mGame));
+            break;
+        
+        default:
+            SDL_Log("It is an enumeration that is not defined: %s", __func__);
+            break;
+    }
 }
