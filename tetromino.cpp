@@ -14,8 +14,8 @@ Tetromino::Tetromino(Game* game,
     mIsQuickDrop(false)
 {
     createBlock(mType);
-    mDownFrame = mGame->getFrameCount();
-    mMoveFrame = mGame->getFrameCount();
+    mDownFrame = mGameBoard->getUpdateFrame();
+    mMoveFrame = mGameBoard->getUpdateFrame();
 }
 
 Tetromino::~Tetromino()
@@ -66,7 +66,7 @@ bool Tetromino::parallelMove(int direction)
 bool Tetromino::verticalMove(int direction)
 {
     if(direction == 0 &&
-       mGame->getFrameCount() - mDownFrame  < DROP_COUNT)
+       mGameBoard->getUpdateFrame() - mDownFrame  < DROP_COUNT)
     {
         return true;
     }
@@ -89,7 +89,7 @@ bool Tetromino::verticalMove(int direction)
     else
     {
         // 下に下がった時のフレームの更新
-        mDownFrame = mGame->getFrameCount();
+        mDownFrame = mGameBoard->getUpdateFrame();
         return true;
     }
 }
@@ -170,7 +170,7 @@ void Tetromino::quickDrop(bool isQuickDrop)
 
 void Tetromino::updateShadow()
 {
-    if(mMoveFrame != mGame->getFrameCount())
+    if(mMoveFrame != mGameBoard->getUpdateFrame())
     {
         return ;
     }
@@ -222,7 +222,7 @@ bool Tetromino::isCoordinateCorrect(std::vector<Block*> blocks)
         }
     }
 
-    mMoveFrame = mGame->getFrameCount();
+    mMoveFrame = mGameBoard->getUpdateFrame();
     return true;
 }
 

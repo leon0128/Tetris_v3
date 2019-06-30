@@ -26,6 +26,8 @@ public:
     auto getGameState(){return mGameState;}
     // Scoreの取得
     auto getScore(){return mScores;}
+    // mUpdateFrameの取得
+    const int getUpdateFrame() const {return mUpdateFrame;}
 
 private:
     // 入力処理
@@ -59,6 +61,9 @@ private:
 
     // Game::mKeyboardStateを格納する配列
     std::vector<int> mKeyboardState;
+
+    // 更新フレーム数
+    int mUpdateFrame;
 
     // next用のSideBoard配列
     std::array<class SideBoard*, NEXT_SIZE> mNextBoard = {nullptr};

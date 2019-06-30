@@ -7,6 +7,7 @@
 GameBoard::GameBoard(Game* game, int order):
     SpriteActor(game, order),
     mActiveTetrominio(nullptr),
+    mUpdateFrame(0),
     mHoldBoard(nullptr),
     mIsHolded(false),
     mScoreBoard(nullptr),
@@ -95,6 +96,8 @@ void GameBoard::update()
     updateActiveTetromino();
     updateGameState();
     updateScore();
+    
+    mUpdateFrame ++;
 }
 
 void GameBoard::inputKeyboardAndNPC()
@@ -144,7 +147,7 @@ void GameBoard::inputNPC()
         return;
     }
     // 並行移動処理
-    if(mActiveTetrominio->getMoveFrame() >= mGame->getFrameCount() - 1)
+    if(mActiveTetrominio->getMoveFrame() >= mUpdateFrame - 1)
     {
         if(mNPCResult.coordinate < mActiveTetrominio->getCenter().x)
         {
@@ -291,7 +294,7 @@ void GameBoard::updateActiveTetromino()
 
 void GameBoard::updateGameState()
 {
-    if(mGame->getFrameCount() - mActiveTetrominio->getMoveFrame() < FIX_COUNT && 
+    if(mUpdateFrame - mActiveTetrominio->getMoveFrame() < FIX_COUNT && 
        !mActiveTetrominio->isQuickDrop())
     {
         return ;
@@ -425,7 +428,7 @@ void GameBoard::updateScore()
     // それぞれの計算
     // IGT
     int hour, minute, second, millisecond, remainder;
-    int frameCount = mGame->getFrameCount();
+    int frameCount = mUpdateFrame;
     hour = frameCount / (60 * 60 * 60);
     minute = (frameCount - hour * (60 * 60 * 60)) / (60 * 60);
     second = (frameCount - hour * (60 * 60 * 60) - minute * (60 * 60)) / 60;
