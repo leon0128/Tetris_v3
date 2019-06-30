@@ -4,6 +4,7 @@
 #include "sprite_actor.hpp"
 #include "back_ground.hpp"
 #include "game_board.hpp"
+#include "controller.hpp"
 
 Game::Game():
     mIsContinuedGame(true),
@@ -172,7 +173,7 @@ void Game::updateGame()
     // アクターの更新
     for(int i = 0; i < (int)mComponentActor.size(); i++)
     {
-        mComponentActor[i]->update();
+        mComponentActor.at(i)->update();
     }
 }
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "controller.hpp"
 // SDL関連
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -52,15 +51,12 @@ public:
     // 現在のフレームを取得
     int getFrameCount(){return mFrameCount;}
     // mControllerを取得
-    const class Controller* getController() const {return mController;}
+    class Controller* getController() const {return mController;}
     // mKeyboardStateを返す
     auto getKeyboardState(){return mKeyboardState;}
     // フォントとレンダラーの取得
     SDL_Renderer* getRenderer(){return mRenderer;}
     TTF_Font* getFont(){return mFont;}
-
-    // ゲーム終了の呼び出し
-    void gameover(){mIsContinuedGame = false;}
 
 private:
     // 入力処理

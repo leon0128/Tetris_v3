@@ -1,5 +1,6 @@
 #include "tetromino.hpp"
 #include "game_board.hpp"
+#include "controller.hpp"
 
 Tetromino::Tetromino(Game* game, 
                      int order, 
@@ -328,6 +329,6 @@ void Tetromino::createBlock(EType type)
     }
     if(!isCoordinateCorrect(mBlock))
     {
-        mGame->gameover();
+        mGame->getController()->gameover();
     }
 }
