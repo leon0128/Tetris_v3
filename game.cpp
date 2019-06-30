@@ -246,6 +246,7 @@ bool Game::initializeSDL()
     createTexture("image/score_board.png");
     createTexture("image/back_ground_01.png");
     createTexture("image/back_ground_02.png");
+    createTexture("image/title.png");
 
     createTexture("image/blocks/i.png");
     createTexture("image/blocks/j.png");

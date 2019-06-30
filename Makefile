@@ -1,7 +1,7 @@
 CC            = g++
 CFLAGS        = -g3 -Wall 
 LIBS          = `sdl2-config --cflags --libs` -lSDL2_ttf -lSDL2_image -lpthread
-OBJS          = main.o game.o actor.o sprite_actor.o back_ground.o game_board.o tetromino.o block.o side_board.o score_board.o npc.o controller.o
+OBJS          = main.o game.o actor.o sprite_actor.o back_ground.o game_board.o tetromino.o block.o side_board.o score_board.o npc.o controller.o title.o
 PROGRAM       = main
 
 all:            $(PROGRAM)
