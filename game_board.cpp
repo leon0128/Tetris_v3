@@ -79,16 +79,6 @@ GameBoard::~GameBoard()
 
 void GameBoard::update()
 {
-    /* // キーボードの状態の更新
-    *  mKeyboardState = mGame->getKeyboardState();
-    
-    *  pickTetromino();
-    *  hold();
-    *  updateActiveTetromino();
-    *  updateGameState();
-    *  updateScore();
-    */
-
     inputKeyboardAndNPC();
     pickTetromino();
     inputNPC();
