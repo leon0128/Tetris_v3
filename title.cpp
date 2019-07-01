@@ -14,7 +14,7 @@ void Title::update()
     auto keyboardState = mGame->getKeyboardState();
     for(auto key : keyboardState)
     {
-        if(key != 0)
+        if(key == 1)
         {
             mGame->getController()->changeMode(Controller::PLAYING);
         }

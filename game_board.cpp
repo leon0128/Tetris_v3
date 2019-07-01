@@ -100,15 +100,6 @@ void GameBoard::inputKeyboard()
 {
     // keyboardの状態の更新
     mKeyboardState = mGame->getKeyboardState();
-    
-    // SPACEキーが押されたらmIsUpdateを変更
-    if(mKeyboardState.at(SDL_SCANCODE_SPACE) == 1)
-    {
-        if(mIsUpdated)
-            mIsUpdated = false;
-        else
-            mIsUpdated = true;
-    }
 }
 
 void GameBoard::inputNPC()

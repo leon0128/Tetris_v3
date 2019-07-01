@@ -21,6 +21,7 @@ public:
     // Gameの状態を変更する時に呼び出す
     void changeMode(EState state){mCurrentState = state;}
     // 現在のモードを初期化する
+    // mBeforeCurrentを変更し、強制的に更新させる
     void initializeMode();
 
 private:

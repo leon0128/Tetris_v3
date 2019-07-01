@@ -19,16 +19,9 @@ void Controller::update()
         auto iterator = mPairVector.begin();
         while(iterator != mPairVector.end())
         {
-            if(iterator->first != mCurrentState)
-            {
-                delete iterator->second;
-                std::iter_swap(iterator, mPairVector.end() -1);
-                mPairVector.pop_back();
-            }
-            else
-            {
-                iterator ++;
-            }
+            delete iterator->second;
+            std::iter_swap(iterator, mPairVector.end() -1);
+            mPairVector.pop_back();
         }
         
         createGameActor(mCurrentState);
@@ -39,22 +32,14 @@ void Controller::update()
 
 void Controller::initializeMode()
 {
-    auto iterator = mPairVector.begin();
-    while(iterator != mPairVector.end())
+    if(mBeforeState == TITLE)
     {
-        if(iterator->first == mCurrentState)
-        {
-            delete iterator->second;
-            std::iter_swap(iterator, mPairVector.end() -1);
-            mPairVector.pop_back();
-        }
-        else
-        {
-            iterator ++;
-        }
+        mBeforeState = PLAYING;
     }
-    
-    createGameActor(mCurrentState);
+    else
+    {
+        mBeforeState = TITLE;
+    }
 }
 
 void Controller::createGameActor(EState state)
