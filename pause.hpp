@@ -9,6 +9,7 @@ public:
           int order = 150);
 
     void update() override;
+    void draw(SDL_Renderer* renderer) override;
 
     void addGameBoard(class GameBoard* gameBoard);
 

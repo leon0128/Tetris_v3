@@ -2,6 +2,7 @@
 #include "back_ground.hpp"
 #include "game_board.hpp"
 #include "title.hpp"
+#include "pause.hpp"
 
 Controller::Controller(Game* game, int order):
     Actor(game, order),
@@ -38,6 +39,8 @@ void Controller::update()
 
 void Controller::createGameActor(EState state)
 {
+    Pause* pause = nullptr;
+    GameBoard* gameBoard = nullptr;
     switch(state)
     {
         case (TITLE):
@@ -45,7 +48,11 @@ void Controller::createGameActor(EState state)
             break;
         
         case (PLAYING):
-            mPairVector.emplace_back(PLAYING, new GameBoard(mGame));
+            pause = new Pause(mGame);
+            gameBoard = new GameBoard(mGame);
+            pause->addGameBoard(gameBoard);
+            mPairVector.emplace_back(PLAYING, pause);
+            mPairVector.emplace_back(PLAYING, gameBoard);
             mPairVector.emplace_back(PLAYING, new BackGround(mGame));
             break;
         

@@ -41,6 +41,27 @@ void Pause::update()
     }
 }
 
+void Pause::draw(SDL_Renderer* renderer)
+{
+    // 更新停止中のみpause画面の描写
+    if(!mIsAllUpdated)
+    {
+        SDL_SetRenderDrawColor(renderer,
+                               0,
+                               0,
+                               0,
+                               100);
+        
+        SDL_Rect rectangle = {0,
+                              0,
+                              WINDOW_WIDTH,
+                              WINDOW_HEIGHT};
+
+        SDL_RenderFillRect(renderer, &rectangle);
+        SDL_Log("paused");
+    }
+}
+
 void Pause::addGameBoard(GameBoard* gameBoard)
 {
     mGameBoardVector.push_back(gameBoard);
