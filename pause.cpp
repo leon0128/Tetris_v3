@@ -6,6 +6,9 @@ Pause::Pause(Game* game, int order):
     SpriteActor(game, order),
     mIsAllUpdated(true)
 {
+    mPosition.set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    setTexture(mGame->getTexture("image/score_board.png"));
+    setClear(0.75f);
 }
 
 void Pause::update()
@@ -58,7 +61,8 @@ void Pause::draw(SDL_Renderer* renderer)
                               WINDOW_HEIGHT};
 
         SDL_RenderFillRect(renderer, &rectangle);
-        SDL_Log("paused");
+
+        SpriteActor::draw(renderer);
     }
 }
 
