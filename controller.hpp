@@ -19,7 +19,9 @@ public:
     void update() override;
 
     // Gameの状態を変更する時に呼び出す
-    void changeMode(EState state){mCurrentState = state;};
+    void changeMode(EState state){mCurrentState = state;}
+    // 現在のモードを初期化する
+    void initializeMode();
 
 private:
     // 引数の状態に必要なオブジェクトの生成

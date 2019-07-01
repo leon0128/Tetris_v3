@@ -37,6 +37,26 @@ void Controller::update()
     mBeforeState = mCurrentState;
 }
 
+void Controller::initializeMode()
+{
+    auto iterator = mPairVector.begin();
+    while(iterator != mPairVector.end())
+    {
+        if(iterator->first == mCurrentState)
+        {
+            delete iterator->second;
+            std::iter_swap(iterator, mPairVector.end() -1);
+            mPairVector.pop_back();
+        }
+        else
+        {
+            iterator ++;
+        }
+    }
+    
+    createGameActor(mCurrentState);
+}
+
 void Controller::createGameActor(EState state)
 {
     Pause* pause = nullptr;
