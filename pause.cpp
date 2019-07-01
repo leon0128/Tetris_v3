@@ -70,3 +70,35 @@ void Pause::addGameBoard(GameBoard* gameBoard)
 {
     mGameBoardVector.push_back(gameBoard);
 }
+
+void Pause::createTexturePair()
+{
+    SDL_Color color = {0x00, 0x00, 0x00};
+
+    std::vector<std::string> message;
+    message.push_back("ゲームに戻る");
+    message.push_back(" はじめから ");
+    message.push_back(" タイトルへ ");
+
+    for(int i = 0; i < (int)message.size(); i++)
+    {
+        SDL_Surface* surface = TTF_RenderUTF8_Blended(mGame->getFont(),
+                                                      message.at(i).c_str(),
+                                                      color);
+
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(mGame->getRenderer(),
+                                                            surface);
+        SDL_FreeSurface(surface);
+
+        SDL_Rect rectangle;
+        SDL_QueryTexture(texture,
+                         nullptr,
+                         nullptr,
+                         &rectangle.w,
+                         &rectangle.h);
+        rectangle.x = static_cast<int>(mPosition.x - rectangle.w / 2);
+        rectangle.y = static_cast<int>(mTextureSize.y / message.size() * i);
+
+        mTexturePairVector.emplace_back(texture, rectangle);
+    }
+}
