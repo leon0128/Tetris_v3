@@ -19,10 +19,7 @@ void Pause::update()
 {
     // mGameBoardVectorに格納しているGameBoardが1つでも更新停止した場合、
     // 全体の更新を止める
-    if(mGame->getKeyboardState().at(SDL_SCANCODE_SPACE) == 1 &&
-       !mIsAllUpdatedCurrent)
-        mIsAllUpdatedCurrent = true;
-    else if(mGame->getKeyboardState().at(SDL_SCANCODE_SPACE) == 1)
+    if(mGame->getKeyboardState().at(SDL_SCANCODE_SPACE) == 1)
         mIsAllUpdatedCurrent = false;
 
     for(int i = 0; i < (int)mGameBoardVector.size(); i++)
