@@ -9,6 +9,7 @@ GameBoard::GameBoard(Game* game, int order):
     mActiveTetrominio(nullptr),
     mUpdateFrame(0),
     mIsUpdated(true),
+    mIsGameover(false),
     mHoldBoard(nullptr),
     mIsHolded(false),
     mScoreBoard(nullptr),

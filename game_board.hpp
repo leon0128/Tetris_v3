@@ -29,8 +29,9 @@ public:
     // mUpdateFrameの取得
     const int getUpdateFrame() const {return mUpdateFrame;}
 
-    const bool isUpdated() const {return mIsUpdated;}
     void changeIsUpdated(const bool isUpdate) {mIsUpdated = isUpdate;}
+    const bool isGameover() const {return mIsGameover;}
+    void setGameover(){mIsGameover = true; mIsUpdated = false;}
  
 private:
     // 入力処理
@@ -69,6 +70,8 @@ private:
     int mUpdateFrame;
     // GameBoardを更新するかどうか
     bool mIsUpdated;
+    // gameoverかどうか
+    bool mIsGameover;
 
     // next用のSideBoard配列
     std::array<class SideBoard*, NEXT_SIZE> mNextBoard = {nullptr};
