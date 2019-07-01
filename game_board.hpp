@@ -29,6 +29,9 @@ public:
     // mUpdateFrameの取得
     const int getUpdateFrame() const {return mUpdateFrame;}
 
+    const bool isUpdated() const {return mIsUpdated;}
+    void changeIsUpdated(const bool isUpdate) {mIsUpdated = isUpdate;}
+ 
 private:
     // 入力処理
     void inputKeyboard();
