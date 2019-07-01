@@ -30,8 +30,7 @@ public:
     const int getUpdateFrame() const {return mUpdateFrame;}
 
     void changeIsUpdated(const bool isUpdate) {mIsUpdated = isUpdate;}
-    const bool isGameover() const {return mIsGameover;}
-    void setGameover(){mIsGameover = true; mIsUpdated = false;}
+    void gameover();
  
 private:
     // 入力処理

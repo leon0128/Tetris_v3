@@ -47,7 +47,7 @@ void NPC::startCalculation(EType active,
     }
 
     // 計算結果をmResultに格納
-    calculate();
+    // calculate();
     // mVirticalGameStateの削除
     mVirtualGameState.clear();
     mDetailResultVector.clear();

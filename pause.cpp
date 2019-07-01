@@ -39,7 +39,6 @@ void Pause::update()
             mSelectIndex = 0;
     }
 
-    // 
     if((!mIsAllUpdatedBefore && !mIsAllUpdatedCurrent) &&
        (mGame->getKeyboardState().at(SDL_SCANCODE_J) == 1 ||
         mGame->getKeyboardState().at(SDL_SCANCODE_SPACE) == 1))

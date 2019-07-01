@@ -1,6 +1,5 @@
 #include "tetromino.hpp"
 #include "game_board.hpp"
-#include "controller.hpp"
 
 Tetromino::Tetromino(Game* game, 
                      int order, 

@@ -97,6 +97,12 @@ void GameBoard::update()
     }
 }
 
+void GameBoard::gameover()
+{
+    mIsGameover = true;
+    mIsUpdated = false;
+}
+
 void GameBoard::inputKeyboard()
 {
     // keyboardの状態の更新
