@@ -58,7 +58,7 @@ void SpriteActor::setTexture(SDL_Texture* texture)
                      &height);
     
     mTextureSize.set(width, height);
-
+    mTextureSize = mTextureSize * mScale;
     updateRectangle();
 }
 

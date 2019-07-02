@@ -99,8 +99,21 @@ void GameBoard::update()
 
 void GameBoard::gameover()
 {
+    // フラグの設定
     mIsGameover = true;
     mIsUpdated = false;
+    SDL_Log("=========================================");
+    // テクスチャの変更
+    for(int y = 0; y < GAMEBOARD_VERTICAL; y++)
+    {
+        for(int x = 0; x < GAMEBOARD_PARALLEL; x++)
+        {
+            if(mGameState.at(y).at(x))
+            {
+                mGameState.at(y).at(x)->setTexture(mGame->getTexture("image/blocks/none.png"));
+            }
+        }
+    }
 }
 
 void GameBoard::inputKeyboard()

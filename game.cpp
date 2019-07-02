@@ -255,6 +255,7 @@ bool Game::initializeSDL()
     createTexture("image/blocks/s.png");
     createTexture("image/blocks/z.png");
     createTexture("image/blocks/t.png");
+    createTexture("image/blocks/none.png");
 
     createTexture("image/tetromino/i_mino.png");
     createTexture("image/tetromino/j_mino.png");    
