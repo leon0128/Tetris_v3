@@ -24,6 +24,8 @@ private:
     // 全てのGameBoardを更新するか
     bool mIsAllUpdatedCurrent;
     bool mIsAllUpdatedBefore;
+    // gameoverかどうか
+    bool mIsGameover;
     // mTexturePairVectorのどれを選択しているか
     int mSelectIndex;
 };

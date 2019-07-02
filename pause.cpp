@@ -7,6 +7,7 @@ Pause::Pause(Game* game, int order):
     SpriteActor(game, order),
     mIsAllUpdatedCurrent(true),
     mIsAllUpdatedBefore(true),
+    mIsGameover(false),
     mSelectIndex(0)
 {
     mPosition.set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -26,7 +27,18 @@ void Pause::update()
     for(int i = 0; i < (int)mGameBoardVector.size(); i++)
     {
         if(mGameBoardVector.at(i)->isGameover())
+        {
             mIsAllUpdatedCurrent = false;
+            mIsGameover = true;
+        }
+    }
+
+    // gameoverの場合は、ゲームを続けるの削除
+    if(mIsGameover && !mIsAllUpdatedCurrent && mIsAllUpdatedBefore)
+    {
+        SDL_DestroyTexture(mTexturePairVector.at(0).first);
+        mTexturePairVector.erase(mTexturePairVector.begin());
+        SDL_Log("pass");
     }
 
     for(int i = 0; i < (int)mGameBoardVector.size(); i++)
@@ -50,6 +62,8 @@ void Pause::update()
        (mGame->getKeyboardState().at(SDL_SCANCODE_J) == 1 ||
         mGame->getKeyboardState().at(SDL_SCANCODE_SPACE) == 1))
     {
+        if(mIsGameover)
+            mSelectIndex++;
         switch (mSelectIndex)
         {
             case (0):
@@ -72,6 +86,8 @@ void Pause::update()
                 SDL_Log("Invalid value for switch statement: %s", __PRETTY_FUNCTION__);
                 break;
         }
+        if(mIsGameover)
+            mSelectIndex --;
     }
 
     mIsAllUpdatedBefore = mIsAllUpdatedCurrent;

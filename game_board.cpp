@@ -102,7 +102,6 @@ void GameBoard::gameover()
     // フラグの設定
     mIsGameover = true;
     mIsUpdated = false;
-    SDL_Log("=========================================");
     // テクスチャの変更
     for(int y = 0; y < GAMEBOARD_VERTICAL; y++)
     {
