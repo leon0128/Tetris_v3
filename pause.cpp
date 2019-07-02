@@ -22,6 +22,13 @@ void Pause::update()
     if(mGame->getKeyboardState().at(SDL_SCANCODE_SPACE) == 1)
         mIsAllUpdatedCurrent = false;
 
+    // gameoverになったら更新停止
+    for(int i = 0; i < (int)mGameBoardVector.size(); i++)
+    {
+        if(mGameBoardVector.at(i)->isGameover())
+            mIsAllUpdatedCurrent = false;
+    }
+
     for(int i = 0; i < (int)mGameBoardVector.size(); i++)
         mGameBoardVector.at(i)->changeIsUpdated(mIsAllUpdatedCurrent);
 

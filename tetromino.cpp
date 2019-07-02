@@ -328,6 +328,6 @@ void Tetromino::createBlock(EType type)
     }
     if(!isCoordinateCorrect(mBlock))
     {
-        mGameBoard->setGameover();
+        mGameBoard->gameover();
     }
 }

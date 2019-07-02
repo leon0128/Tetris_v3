@@ -30,6 +30,7 @@ public:
     const int getUpdateFrame() const {return mUpdateFrame;}
 
     void changeIsUpdated(const bool isUpdate) {mIsUpdated = isUpdate;}
+    const bool isGameover() const {return mIsGameover;}
     void gameover();
  
 private:
