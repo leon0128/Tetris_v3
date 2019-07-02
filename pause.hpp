@@ -7,6 +7,7 @@ class Pause : public SpriteActor
 public:
     Pause(class Game* game, 
           int order = 150);
+    ~Pause();
 
     void update() override;
     void draw(SDL_Renderer* renderer) override;

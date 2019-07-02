@@ -11,9 +11,17 @@ Pause::Pause(Game* game, int order):
     mSelectIndex(0)
 {
     mPosition.set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-    setTexture(mGame->getTexture("image/score_board.png"));
+    setTexture(mGame->getTexture("image/pause.png"));
     setClear(0.75f);
     createTexturePair();
+}
+
+Pause::~Pause()
+{
+    for(int i = 0; i < (int)mTexturePairVector.size(); i++)
+    {
+        SDL_DestroyTexture(mTexturePairVector.at(i).first);
+    }
 }
 
 void Pause::update()
@@ -165,7 +173,7 @@ void Pause::createTexturePair()
         rectangle.y = static_cast<int>(mPosition.y - 
                                        mTextureSize.y / 2 +
                                        mTextureSize.y / message.size() * i +
-                                       20);
+                                       3);
 
         mTexturePairVector.emplace_back(texture, rectangle);
     }
