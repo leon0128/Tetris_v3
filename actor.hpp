@@ -17,6 +17,11 @@ public:
         NONE, I, O, T, L, J, S, Z
     };
 
+    enum EMode
+    {
+        MARATHON
+    };
+
     virtual void update(){}
 
     // メンバ変数の設定、取得

@@ -1,10 +1,14 @@
 #pragma once
 
-#include "sprite_actor.hpp"
+#include "sprite_actor.hpp" 
 
 class Mode : public SpriteActor
 {
 public:
     explicit Mode(class Game* game,
+                  EMode mode,
                   int order = 100);
+    
+private:
+    EMode mMode;
 };

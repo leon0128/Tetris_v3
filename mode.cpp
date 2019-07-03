@@ -1,7 +1,10 @@
 #include "mode.hpp"
 
-Mode::Mode(Game* game, int order):
-    SpriteActor(game, order)
+#include "menu.hpp"
+
+Mode::Mode(Game* game, EMode mode, int order):
+    SpriteActor(game, order),
+    mMode(mode)
 {
 
 }

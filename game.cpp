@@ -249,6 +249,8 @@ bool Game::initializeSDL()
     createTexture("image/title.png");
     createTexture("image/pause.png");
 
+    createTexture("image/mode/marathon.png");
+
     createTexture("image/blocks/i.png");
     createTexture("image/blocks/j.png");
     createTexture("image/blocks/l.png");
