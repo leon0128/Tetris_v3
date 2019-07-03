@@ -10,5 +10,8 @@ public:
                   int order = 100);
     
 private:
+    // mModeに応じてテクスチャの設定
+    void setTextureFromMode();
+
     EMode mMode;
 };

@@ -7,4 +7,8 @@ class Menu : public SpriteActor
 public:
     explicit Menu(class Game* game,
                   int order = 50);
+    ~Menu();
+
+private:
+    std::vector<class Mode*> mModeVector;
 };
