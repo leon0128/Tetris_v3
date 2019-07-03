@@ -23,20 +23,23 @@ ScoreBoard::ScoreBoard(Game* game, int order, GameBoard* gameBaord):
 
 ScoreBoard::~ScoreBoard()
 {  
-    // printScore();
-    // for(int i = 0; i < (int)mDescriptionTexture.size(); i++)
-    // {
-    //     if(!mDescriptionTexture[i].texture)
-    //     {
-    //         SDL_DestroyTexture(mDescriptionTexture[i].texture);
-    //     }
-    // }
-    // mDescriptionTexture.clear();
-    // for(auto texture: mScoreTexture)
-    // {
-    //     SDL_DestroyTexture(texture.second);
-    // }
-    // mScoreTexture.clear();
+    // 結果の表示
+    printScore();
+
+    // mDescriptionTextureの削除
+    for(int i = 0; i < (int)mDescriptionPairVector.size(); i++)
+    {
+        SDL_DestroyTexture(mDescriptionPairVector.at(i).first);
+    }
+    mDescriptionPairVector.clear();
+
+    // mScoreTextureの削除
+    const char* text = "0123456789:.";
+    for(int i = 0; i < (int)mScoreTexture.size(); i++)
+    {
+        SDL_DestroyTexture(mScoreTexture.at(text[i]));
+    }
+    mScoreTexture.clear();
 }
 
 void ScoreBoard::draw(SDL_Renderer* renderer)
