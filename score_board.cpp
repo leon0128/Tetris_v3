@@ -23,32 +23,32 @@ ScoreBoard::ScoreBoard(Game* game, int order, GameBoard* gameBaord):
 
 ScoreBoard::~ScoreBoard()
 {  
-    printScore();
-    for(int i = 0; i < (int)mDescriptionTexture.size(); i++)
-    {
-        if(!mDescriptionTexture[i].texture)
-        {
-            SDL_DestroyTexture(mDescriptionTexture[i].texture);
-        }
-    }
-    mDescriptionTexture.clear();
-    for(auto texture: mScoreTexture)
-    {
-        SDL_DestroyTexture(texture.second);
-    }
-    mScoreTexture.clear();
+    // printScore();
+    // for(int i = 0; i < (int)mDescriptionTexture.size(); i++)
+    // {
+    //     if(!mDescriptionTexture[i].texture)
+    //     {
+    //         SDL_DestroyTexture(mDescriptionTexture[i].texture);
+    //     }
+    // }
+    // mDescriptionTexture.clear();
+    // for(auto texture: mScoreTexture)
+    // {
+    //     SDL_DestroyTexture(texture.second);
+    // }
+    // mScoreTexture.clear();
 }
 
 void ScoreBoard::draw(SDL_Renderer* renderer)
 {
     SpriteActor::draw(renderer);
 
-    for(int i = 0; i < (int)mDescriptionTexture.size(); i++)
+    for(int i = 0; i < (int)mDescriptionPairVector.size(); i++)
     {
         SDL_RenderCopy(renderer,
-                       mDescriptionTexture[i].texture,
+                       mDescriptionPairVector.at(i).first,
                        nullptr,
-                       &mDescriptionTexture[i].rectangle);
+                       &mDescriptionPairVector.at(i).second);
     }
     drawScore(renderer);
 }
@@ -110,39 +110,26 @@ void ScoreBoard::createDescriptionTexture()
                                        (mTextureSize.y - 30) / 2 +
                                        mTextureSize.y / message.size() * i);
 
-        TextureAndRectangle tar = {texture, rectangle};
-        mDescriptionTexture.push_back(tar);
+        mDescriptionPairVector.emplace_back(texture, rectangle);
     }
 }
 
 void ScoreBoard::createMap()
 {
     // scoreの描画に必要な文字
-    std::vector<std::string> temp;
-    temp.push_back("0");
-    temp.push_back("1");
-    temp.push_back("2");
-    temp.push_back("3");
-    temp.push_back("4");
-    temp.push_back("5");
-    temp.push_back("6");
-    temp.push_back("7");
-    temp.push_back("8");
-    temp.push_back("9");
-    temp.push_back(":");
-    temp.push_back(".");
+    std::vector<std::string> text = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", "."};
     
     // textureの作成
-    for(auto element : temp)
+    for(int i = 0; i < (int)text.size(); i++)
     {
         SDL_Surface* surface = TTF_RenderUTF8_Blended(mGame->getFont(),
-                                                      element.c_str(),
+                                                      text.at(i).c_str(),
                                                       mColor);       
         SDL_Texture* texture = SDL_CreateTextureFromSurface(mGame->getRenderer(),
                                                             surface);
         SDL_FreeSurface(surface);
         
-        mScoreTexture.emplace(element.c_str()[0], texture);
+        mScoreTexture.emplace(text.at(i).c_str()[0], texture);
     }
 }
 

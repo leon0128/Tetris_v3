@@ -13,19 +13,12 @@ public:
     void draw(SDL_Renderer* renderer) override;
 
 private:
-    // 文字列テクスチャと描画用SDL_Rectを紐付けておく
-    struct TextureAndRectangle
-    {
-        SDL_Texture* texture;
-        SDL_Rect rectangle;
-    };
-    
     // 終了時にScoreをコンソールに出力
     void printScore();
 
     // Description用のテクスチャを作成しmDescriptionTextureに格納
     void createDescriptionTexture();
-    std::vector<struct TextureAndRectangle> mDescriptionTexture;
+    std::vector<std::pair<SDL_Texture*, SDL_Rect>> mDescriptionPairVector;
     // scoreを描画する
     void createMap();
     void drawScore(SDL_Renderer* renderer);
