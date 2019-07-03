@@ -87,7 +87,7 @@ void GameBoard::update()
     if(mIsUpdated)
     {
         pickTetromino();
-        inputNPC();
+        // inputNPC();
         hold();
         updateActiveTetromino();
         updateGameState();
@@ -215,34 +215,34 @@ void GameBoard::pickTetromino()
                               type);
     mPendingTetromino.erase(iterator);
 
-    // NPCが存在し、計算をしていないなら計算開始
-    if(!NPC::isCalculating() && !mIsHolded)
-    {
-        std::vector<EType> next;
-        for(auto board : mNextBoard)
-        {
-            next.push_back(board->getType());
-        }
+    // // NPCが存在し、計算をしていないなら計算開始
+    // if(!NPC::isCalculating() && !mIsHolded)
+    // {
+    //     std::vector<EType> next;
+    //     for(auto board : mNextBoard)
+    //     {
+    //         next.push_back(board->getType());
+    //     }
 
-        mNPCThread.detach();
-        mNPCThread = std::thread(NPC::startCalculation,
-                                 mActiveTetrominio->getType(),
-                                 mHoldBoard->getType(),
-                                 next,
-                                 mGameState);
+    //     mNPCThread.detach();
+    //     mNPCThread = std::thread(NPC::startCalculation,
+    //                              mActiveTetrominio->getType(),
+    //                              mHoldBoard->getType(),
+    //                              next,
+    //                              mGameState);
 
-        // NPC::isCalculationがtrueになるまで待つ
-        auto timeout = SDL_GetTicks() + 100;
-        while(!NPC::isCalculating())
-        {
-            // 無限ループ回避
-            if(SDL_TICKS_PASSED(SDL_GetTicks(), timeout))
-            {
-                SDL_Log("Loop exited because an infinite loop may have occurred: %s", __func__);
-                break;
-            }
-        }
-    }
+    //     // NPC::isCalculationがtrueになるまで待つ
+    //     auto timeout = SDL_GetTicks() + 100;
+    //     while(!NPC::isCalculating())
+    //     {
+    //         // 無限ループ回避
+    //         if(SDL_TICKS_PASSED(SDL_GetTicks(), timeout))
+    //         {
+    //             SDL_Log("Loop exited because an infinite loop may have occurred: %s", __func__);
+    //             break;
+    //         }
+    //     }
+    // }
 }
 
 void GameBoard::hold()
