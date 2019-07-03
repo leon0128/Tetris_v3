@@ -3,6 +3,7 @@
 #include "game_board.hpp"
 #include "title.hpp"
 #include "pause.hpp"
+#include "menu.hpp"
 
 Controller::Controller(Game* game, int order):
     Actor(game, order),
@@ -50,6 +51,10 @@ void Controller::createGameActor(EState state)
     {
         case (TITLE):
             mPairVector.emplace_back(TITLE, new Title(mGame));
+            break;
+
+        case (MENU):
+            mPairVector.emplace_back(MENU, new Menu(mGame));
             break;
         
         case (PLAYING):

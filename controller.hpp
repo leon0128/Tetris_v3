@@ -11,8 +11,8 @@ public:
     enum EState
     {
         TITLE,
-        PLAYING,
-        RESULT
+        MENU,
+        PLAYING
     };
 
     // フラグに応じて何をするか決める

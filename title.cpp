@@ -16,7 +16,7 @@ void Title::update()
     {
         if(key == 1)
         {
-            mGame->getController()->changeMode(Controller::PLAYING);
+            mGame->getController()->changeMode(Controller::MENU);
         }
     }
 }

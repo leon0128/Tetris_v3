@@ -83,7 +83,7 @@ void Pause::update()
                 break;
 
             case (2):
-                SDL_Log("This mode has not been implementated yet: %s", __PRETTY_FUNCTION__);
+                mGame->getController()->changeMode(Controller::MENU);
                 break;
 
             case(3):
