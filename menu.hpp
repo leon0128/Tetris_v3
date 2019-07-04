@@ -9,6 +9,8 @@ public:
                   int order = 50);
     ~Menu();
 
+    void update() override;
+
 private:
     // 表示されるModeを格納する配列
     std::vector<class Mode*> mModeVector;

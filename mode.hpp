@@ -15,7 +15,8 @@ public:
     // メンバ変数の設定、取得
     const bool isSelected() const {return mIsSelected;}
     void changeSelected(const bool isSelected) {mIsSelected = isSelected;}
-    
+    const EMode getMode() const {return mMode;}
+
 private:
     // mModeに応じてテクスチャの設定
     void setTextureFromMode();
