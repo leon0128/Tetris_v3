@@ -87,7 +87,7 @@ void GameBoard::update()
     if(mIsUpdated)
     {
         pickTetromino();
-        inputNPC();
+        // inputNPC();
         hold();
         updateActiveTetromino();
         updateGameState();
